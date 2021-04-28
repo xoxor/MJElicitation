@@ -1,0 +1,134 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[version=3.21, pagesize, twoside=off, bibliography=totoc, DIV=calc, fontsize=12pt, a4paper]{scrartcl}
+\input{preamble/packages}
+\input{preamble/redac}
+\input{preamble/math_basics}
+\input{preamble/math_mine}
+%\input{preamble/draw}
+%\input{preamble/jdoc}
+
+%I find these settings useful in draft mode. Should be removed for final versions.
+	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
+		\tolerance=2000
+	%Accept overfull hbox up to...
+		\hfuzz=2cm
+	%Reduces verbosity about the bad line breaks.
+		\hbadness 5000
+	%Reduces verbosity about the underful vboxes.
+		\vbadness=1300
+
+\title{Preference Elicitation under Majority Judgment}
+\author{}
+%\title{The title \thanks{Thanks.}}
+%\author{Olivier Cailloux}
+%\author{Name2}
+%\affil{Université Paris-Dauphine, Université PSL, CNRS, LAMSADE, 75016 PARIS, FRANCE\\
+%	\href{mailto:olivier.cailloux@dauphine.fr}{olivier.cailloux@dauphine.fr}
+%}
+%\author{Name3}
+%\affil{Affil2}
+%\hypersetup{
+%	pdfsubject={},
+%	pdfkeywords={},
+%}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\acl{MJ} (\acs{MJ}) is a voting system where voters assign grades to candidates using an ordinal scale. The winner is the candidate with the highest majority-grade \textemdash which is the median of the grades received. This method has attracted increasing attention of french associations and political parties which have started to use \acs{MJ} for internal decisions or local elections. In particular LaPrimaire.org is a french association that uses \acs{MJ} to choose its candidate for the french presidential election. The vote is conducted in two rounds: in the first one the voters judge five candidates randomly picked; the five candidates with the highest medians pass at the second round as finalists and the voters are asked to judge them. Is the random selection of candidates a good elicitation technique? In this paper we explore the consequences of profile incompleteness and we question the elicitation of voters preferences.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+\acl{MJ} (\acs{MJ}) is a voting method proposed by \citet{Balinski2007,Balinski2011} to elect one out of $m$ candidates based on the judgments of $n$ voters. The latter express their preferences by assigning to each candidate one of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be rejected. Those adjectives represent a common language whose semantic is assumed to be a shared knowledge among the voters carrying thus an absolute meaning. For each candidate the median of the grades she received is computed, this is called \textit{majority-grade}. The candidate with the highest majority-grade is elected. Ties are broken by considering the majority-grade of first order: one vote associated with the majority-grade of each tied candidates is removed and their medians are recomputed. The candidate with the highest new median is elected. If there is still a tie the process is repeated until a unique winner is found. The authors describe an additional tie breaking procedure that uses the \textit{majority-gauge}, but \citet{Felsenthal2008} show that it does not always yield the same result as the iterative mechanism.
+
+\subsection{Related work}
+The idea of using the median in voting is not new, the first use can be traced back to Galton's 'middlemost' \citep{Galton1907a,Galton1907b}. More recently \citet{Bassett1999} proposed the median as a substitute for Borda's mean, advocating for its statistical robustness \textemdash which measures the sensitivity to departures from the hypothesized model.
+
+Numerous observers described the median grade as the highest level at which a candidate obtains the support of the majority of the voters. In other words, starting for the highest grade $h$ we check if the majority of the voters assigned at least $h$ to some candidate $c$. If this is not the case, we descend in the grading scale until such level $\hat{h}$ is found where a candidate $\hat{c}$ satisfies half population. The grade $\hat{h}$ is then the median of $\hat{c}$ grades, and, since it is the first level we stopped at, it corresponds to the best possible median. This method was proposed by James W. Bucklin in the early twentieth century \citep{Hoag1926} and it was rediscovered several times in literature for example under the names of \textit{Majoritarian Compromise} \citep{Sertel1986,Sertel1999} and \textit{Fallback Bargaining} \citep{Brams2001}. Note, also, that when the number of grades is equal to two (approve, disapprove) then \acs{MJ} is reduced to Approval Voting.
+
+\paragraph{Pros}
+\begin{itemize}
+	\item It maximizes voter-expressiveness;
+	\item it satisfies anonymity, neutrality, unanimity, monotonicity and independence from irrelevant alternatives;
+	\item it is immune to candidate cloning;
+	\item truth is a dominant strategy.
+\end{itemize}
+
+\paragraph{Cons}
+\begin{itemize}
+	\item The monotonicity axiom holds only for a fixed population \citep{Felsenthal2008,Laslier2018}. This violates the participation criterion leading to the no show paradox \citep{Fishburn1983}: a voter can obtain a more desirable outcome if they do not participate in the election than the one they obtain by participating and voting sincerely. *\\
+	* \citet{Balinski2011}(pp. 285-290) state that "in practice, the no-show paradox is simply not important."
+	\item \acs{MJ} is manipulable if voters can obtain information on other voters preferences by exaggerating their grades.* \\
+	* Although \citet{Bassett1999} proved that the high breakdown property of the median \textemdash sensitivity to outlying observations \textemdash makes difficult for a minority to manipulate the ranking. However, \citet{Gehrlein2003} studied that the probability of being subject to manipulation is just slightly smaller than other methods like Borda and Copeland.
+	\item \acs{MJ} does not respect the majority principle.
+	\begin{example}\citet{Laslier2018}\\ Consider the following profile formed by three voters $i_1, i_2, i_3$ and two candidates $x, y$. Suppose the voters assign to candidates a grade between 0 and 20.
+		\begin{center}
+			$
+			\begin{array}{ccc}
+				& x & y \\
+				\mathbf{i_1} \quad &20&11\\
+				\mathbf{i_2} \quad &9&0\\
+				\mathbf{i_3} \quad &9&10\\
+			\end{array}\quad .
+			$
+		\end{center}
+		The median of $x$ is $9$ and the median of $y$ is $10$, thus $y$ is elected although only one voter slightly prefers $y$ to $x$. This example can be reproduced with \acs{MJ} grades and with a larger number of voters:
+		\begin{center}
+			$
+			\begin{array}{ccc}
+				& x & y \\
+				\mathbf{50} \quad &\text{Excellent}&\text{Good}\\
+				\mathbf{50} \quad &\text{Mediocre}&\text{To be rejected}\\
+				\mathbf{1} \quad &\text{Mediocre}&\text{Average}\\
+			\end{array}\quad .
+			$
+		\end{center}
+	\label{ex:laslier}
+	\end{example}
+\end{itemize}
+Is it worth mentioning that Balinski replied to these critics in an article written in french published on the Revue économique \citep{Balinski2019}. In particular he dismissed criticism based on toy examples that he said have little relevance in real cases. The Example \ref{ex:laslier} proposed by \citet{Laslier2018} is also studied by \citet{Balinski2011} (pp. 281), where the authors stress the fact that is very unlikely that the last voter would associate a different grade to 9 and 10. In a large electorate the distinction would be too fine to make a significance difference between 20 and 19 or 10 and 9, so they affirm that the example would more realistically translate to: 
+	\begin{center}
+		$
+		\begin{array}{ccc}
+			& x & y \\
+			\mathbf{50} \quad &\text{Excellent}&\text{Good}\\
+			\mathbf{50} \quad &\text{Mediocre}&\text{To be rejected}\\
+			\mathbf{1} \quad &\text{Average}&\text{Average}\\
+		\end{array}\quad .
+		$
+	\end{center}
+And $x$ would be preferred.
+
+\section{Where is it used?}
+\acs{MJ} has being adopted by a progressively larger number of french political parties including: Le Parti Pirate, Génération(s), LaPrimaire.org, France Insoumise and La République en Marche.
+%https://www.lopinion.fr/edition/politique/en-marche-teste-elections-jugement-majoritaire-mode-scrutin-tres-201884
+"Mieux Voter" \citep{MV} is a french association that promotes the use of \acs{MJ} as voting method whenever a collective choice has to be selected: public administration, associations, companies. On their website it is possible to find all the citizens lists \textendash party lists that are not affiliated to any national political party \textemdash that used \acs{MJ} to rank their candidates during the local elections of 2020. In two cases, Bordeaux et Annecy, the candidate selected using \acs{MJ} was then elected as a mayor. 
+
+
+\subsection{Case LaPrimaire.org}
+LaPrimaire.org \citep{LaPrimaire} is a french political initiative whose goal is to select an independent candidate for the french presidential election using \acs{MJ} as voting rule. All french citizens over 18 with rights to vote can participate as candidates or voters. The association Democratech implemented the platform for the first time in 2016 in view of the 2017 presidential elections. The number of voters who participated in the election was $10676$ during the first round (with $53383$ votes) and $32685$ during the second round (with $163425$ votes). Between May and October 2021 the process will be repeated to select the candidate who will run for the 2022 presidential elections \citep{LaPrimaire2022}.
+
+The procedure consists of several steps whose duration is defined by a calendar. In the first phase, any eligible candidate can submit her nomination to the platform and the voters can support one or multiple nominations. The candidacies that receive at least 500 supports pass to the next phase and represent the candidates for the first round of the election. In the first round each voter is asked to express her judgment, using \acs{MJ}, on five random candidates. At the end of this phase the five candidates with the highest medians are considered the finalists who qualify for the second round. In the second round each voter is asked to express her judgment, using \acs{MJ}, on all the five finalists. The candidate with the best median at the end of this phase is selected as representative for the presidential election.
+
+It is important to mention that the participation of this candidate to the actual election is not granted. In fact, by the french law a candidate must collect at least 500 signatures of elected officials in order to participate to the presidential election. The candidate selected by the voters of LaPrimaire.org in 2016 collected only 135 signatures and did not participate in the 2017 presidential elections.  
+
+\paragraph{Questions}
+\begin{itemize}
+	\item Does expressing judgment on randomly selected candidates influence the result? (If we change the questions does the result change?)
+	\item Does the number of questions influence the result? (If we change the number of questions does the result change?)
+	\item If yes, do these effects are mitigated by a second round?
+	\item Which is the right number of questions? (Best trade-off between communication cost and optimal result.)
+	\item Can we select the next question with minimax regret instead of randomly selecting a candidate?
+	\item Can we say anything about the "fairness" of proposing the candidates to judge? Suppose I have strong opinions about only two candidates: one I extremely like and one I extremely dislike. There is a chance I will not be asked about those two candidates, in this case I cannot say much about the other candidates and I am also frustrated because I did not get to express my opinions.
+\end{itemize}
+
+
+\section{Incomplete Profile}
+Consider $n$ voters and $m$ candidates and assume that a voter $i \in N$ judges only a fraction of the $m$ candidates. What is the resulting voting rule? What are its properties? Can a voter manipulate the result by judging only some candidates? 
+
+\bibliography{biblio}
+
+\end{document}
+
