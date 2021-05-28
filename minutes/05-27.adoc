@@ -1,0 +1,16 @@
+output of the second round
+* define formally the winner function. This is a function of:
+. voters preferences:  describe formally the elicitation process, voters know but we don't and we need to discover
+. the five random canditates
+
+First two questions:
+* Is this function really a function of the candidates?
+** prove with a counterexample
+
+Another question: the random process is fair in terms of probability of being asked about a voter v, but not in terms of v being elected
+* define a real winner
+** probability of non real winner being elected: is there a profile st this probability is very high? L and H bounds.
+*** probability distribution defined on the questions space
+
+What if the set of candidates is variable among the voters:
+* they can decide who to rank and how many to rank
