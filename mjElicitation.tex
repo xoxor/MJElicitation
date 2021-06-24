@@ -6,7 +6,8 @@
 \input{preamble/math_mine}
 %\input{preamble/draw}
 %\input{preamble/jdoc}
-
+\usepackage{stmaryrd}
+\usepackage{xcolor}
 %I find these settings useful in draft mode. Should be removed for final versions.
 	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
 		\tolerance=2000
@@ -46,75 +47,167 @@
 \subsection{Related work}
 The idea of using the median in voting is not new, the first use can be traced back to Galton's 'middlemost' \citep{Galton1907a,Galton1907b}. More recently \citet{Bassett1999} proposed the median as a substitute for Borda's mean, advocating for its statistical robustness \textemdash which measures the sensitivity to departures from the hypothesized model.
 
-Numerous observers described the median grade as the highest level at which a candidate obtains the support of the majority of the voters. In other words, starting for the highest grade $h$ we check if the majority of the voters assigned at least $h$ to some candidate $c$. If this is not the case, we descend in the grading scale until such level $\hat{h}$ is found where a candidate $\hat{c}$ satisfies half population. The grade $\hat{h}$ is then the median of $\hat{c}$ grades, and, since it is the first level we stopped at, it corresponds to the best possible median. This method was proposed by James W. Bucklin in the early twentieth century \citep{Hoag1926} and it was rediscovered several times in literature for example under the names of \textit{Majoritarian Compromise} \citep{Sertel1986,Sertel1999} and \textit{Fallback Bargaining} \citep{Brams2001}. Note, also, that when the number of grades is equal to two (approve, disapprove) then \acs{MJ} is reduced to Approval Voting.
+Numerous observers described the median grade as the highest level at which a candidate obtains the support of the majority of the voters. In other words, starting for the highest grade $h$ we check if the majority of the voters assigned at least $h$ to some candidate $c$. If this is not the case, we descend in the grading scale until such level $\hat{h}$ is found where a candidate $\hat{c}$ satisfies half population. The grade $\hat{h}$ is then the median of $\hat{c}$ grades, and, since it is the first level we stopped at, it corresponds to the best possible median. This method was proposed by James W. Bucklin in the early twentieth century \citep{Hoag1926} and it was rediscovered several times in literature for example under the names of \textit{Majoritarian Compromise} \citep{Sertel1986,Sertel1999} and \textit{Fallback Bargaining} \citep{Brams2001}. Note, also, that when the number of grades is equal to two (approve, disapprove) then \acs{MJ} is reduced to Approval Voting. Several authors studied the strengths and the weakness of this method \citep{Felsenthal2008,Laslier2018} and Balinski replied to most of the critics in an article written in french published on the Revue économique \citep{Balinski2019}.
 
-\paragraph{Pros}
-\begin{itemize}
-	\item It maximizes voter-expressiveness;
-	\item it satisfies anonymity, neutrality, unanimity, monotonicity and independence from irrelevant alternatives;
-	\item it is immune to candidate cloning;
-	\item truth is a dominant strategy.
-\end{itemize}
 
-\paragraph{Cons}
-\begin{itemize}
-	\item The monotonicity axiom holds only for a fixed population \citep{Felsenthal2008,Laslier2018}. This violates the participation criterion leading to the no show paradox \citep{Fishburn1983}: a voter can obtain a more desirable outcome if they do not participate in the election than the one they obtain by participating and voting sincerely. *\\
-	* \citet{Balinski2011}(pp. 285-290) state that "in practice, the no-show paradox is simply not important."
-	\item \acs{MJ} is manipulable if voters can obtain information on other voters preferences by exaggerating their grades.* \\
-	* Although \citet{Bassett1999} proved that the high breakdown property of the median \textemdash sensitivity to outlying observations \textemdash makes difficult for a minority to manipulate the ranking. However, \citet{Gehrlein2003} studied that the probability of being subject to manipulation is just slightly smaller than other methods like Borda and Copeland.
-	\item \acs{MJ} does not respect the majority principle.
-	\begin{example}\citet{Laslier2018}\\ Consider the following profile formed by three voters $i_1, i_2, i_3$ and two candidates $x, y$. Suppose the voters assign to candidates a grade between 0 and 20.
-		\begin{center}
-			$
-			\begin{array}{ccc}
-				& x & y \\
-				\mathbf{i_1} \quad &20&11\\
-				\mathbf{i_2} \quad &9&0\\
-				\mathbf{i_3} \quad &9&10\\
-			\end{array}\quad .
-			$
-		\end{center}
-		The median of $x$ is $9$ and the median of $y$ is $10$, thus $y$ is elected although only one voter slightly prefers $y$ to $x$. This example can be reproduced with \acs{MJ} grades and with a larger number of voters:
-		\begin{center}
-			$
-			\begin{array}{ccc}
-				& x & y \\
-				\mathbf{50} \quad &\text{Excellent}&\text{Good}\\
-				\mathbf{50} \quad &\text{Mediocre}&\text{To be rejected}\\
-				\mathbf{1} \quad &\text{Mediocre}&\text{Average}\\
-			\end{array}\quad .
-			$
-		\end{center}
-	\label{ex:laslier}
-	\end{example}
-\end{itemize}
-Is it worth mentioning that Balinski replied to these critics in an article written in french published on the Revue économique \citep{Balinski2019}. In particular he dismissed criticism based on toy examples that he said have little relevance in real cases. The Example \ref{ex:laslier} proposed by \citet{Laslier2018} is also studied by \citet{Balinski2011} (pp. 281), where the authors stress the fact that is very unlikely that the last voter would associate a different grade to 9 and 10. In a large electorate the distinction would be too fine to make a significance difference between 20 and 19 or 10 and 9, so they affirm that the example would more realistically translate to: 
-	\begin{center}
-		$
-		\begin{array}{ccc}
-			& x & y \\
-			\mathbf{50} \quad &\text{Excellent}&\text{Good}\\
-			\mathbf{50} \quad &\text{Mediocre}&\text{To be rejected}\\
-			\mathbf{1} \quad &\text{Average}&\text{Average}\\
-		\end{array}\quad .
-		$
-	\end{center}
-And $x$ would be preferred.
-
-\section{Where is it used?}
+\subsection{Where is it used?}
 \acs{MJ} has being adopted by a progressively larger number of french political parties including: Le Parti Pirate, Génération(s), LaPrimaire.org, France Insoumise and La République en Marche.
 %https://www.lopinion.fr/edition/politique/en-marche-teste-elections-jugement-majoritaire-mode-scrutin-tres-201884
 "Mieux Voter" \citep{MV} is a french association that promotes the use of \acs{MJ} as voting method whenever a collective choice has to be selected: public administration, associations, companies. On their website it is possible to find all the citizens lists \textendash party lists that are not affiliated to any national political party \textemdash that used \acs{MJ} to rank their candidates during the local elections of 2020. In two cases, Bordeaux et Annecy, the candidate selected using \acs{MJ} was then elected as a mayor. 
 
 
 \subsection{Case LaPrimaire.org}
+\label{sec:primaire}
 LaPrimaire.org \citep{LaPrimaire} is a french political initiative whose goal is to select an independent candidate for the french presidential election using \acs{MJ} as voting rule. All french citizens over 18 with rights to vote can participate as candidates or voters. The association Democratech implemented the platform for the first time in 2016 in view of the 2017 presidential elections. The number of voters who participated in the election was $10676$ during the first round (with $53383$ votes) and $32685$ during the second round (with $163425$ votes). Between May and October 2021 the process will be repeated to select the candidate who will run for the 2022 presidential elections \citep{LaPrimaire2022}.
 
 The procedure consists of several steps whose duration is defined by a calendar. In the first phase, any eligible candidate can submit her nomination to the platform and the voters can support one or multiple nominations. The candidacies that receive at least 500 supports pass to the next phase and represent the candidates for the first round of the election. In the first round each voter is asked to express her judgment, using \acs{MJ}, on five random candidates. At the end of this phase the five candidates with the highest medians are considered the finalists who qualify for the second round. In the second round each voter is asked to express her judgment, using \acs{MJ}, on all the five finalists. The candidate with the best median at the end of this phase is selected as representative for the presidential election.
 
 It is important to mention that the participation of this candidate to the actual election is not granted. In fact, by the french law a candidate must collect at least 500 signatures of elected officials in order to participate to the presidential election. The candidate selected by the voters of LaPrimaire.org in 2016 collected only 135 signatures and did not participate in the 2017 presidential elections.  
 
-\paragraph{Questions}
+\section{Notation}
+Let us formally define the problem. Consider a finite set $N$ of voters (or judges) with $\#N=n\geq 2$ and a finite set $A$ of alternatives (or competitors) with $\#A=m\geq 3$. 
+A \textit{common language} $\Delta = \{ \alpha, \beta, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\alpha \geq \beta$ indicates that $\alpha$ is a better or equivalent grade than $\beta$. A profile $P = P(A,N) = \Delta^{m \times n}$ is a $m$ by $n$ matrix of grades. A row $P_i$, $i\in \intvl{1,m}$, represents the ordered vector of grades $(r_1 , \dots, r_n )$ associated to the alternative $i$. The double brackets denote an interval in the integers. 
+
+A grading function $f: P \rightarrow \Delta^m$ is a function that assigns to a profile $P$ a vector of final grades, one for each alternative. In \citet{Balinski2007} definition, in order to be a social grading function, $f$ must be neutral, anonymous, unanimous, monotonic, independent of irrelevant alternatives and continuous. 
+% the \emph{middlemost} aggregation function $f$, for each vector of grades $r_i= (r_1 , \dots, r_n )$ associated to the alternative $i \in \intvl{1,m}$, returns: 
+%\begin{align}
+%	f(r_i) &= r_{(n+1)/2} \text{ when n is odd,} \\
+%	r_{n/2} \geq f(r_i) &\geq r_{(n+2)/2} \text{ otherwise.}
+%\end{align}
+The \emph{majority-grade}, $f_{maj}$, is a social grading function that associates to each row $i$ of the profile $P$ its median grade value. With a small abuse of notation we can define the value $f_{maj}(P_i)$, i.e. the median grade of the alternative $i$, as:
+\begin{align}
+	f_{maj}(P_i) = \begin{cases}
+		r_{(n+1)/2} \text{ when n is odd,} \\
+		r_{(n+2)/2} \text{ otherwise.}
+	\end{cases}
+\end{align}
+%i.e. it corresponds to the lower middlemost.
+% It could also be written as $f_{maj}(P_i) = \lfloor \frac{n}{2} \rfloor + 1$.
+The winner function $F:\Delta^{m} \rightarrow i\in A$ is a function that selects the alternative with the highest median grade as a winner: $i^* = \argmax_{i\in A}f_{maj}(r_i)$. In case two or more alternatives have the same highest median grade $\alpha$, the tie is broken by removing one $\alpha$ grade from each of the tied alternatives, recomputing the new median grade and repeating the process until one unique winner is found. We will refer with $F^P$ the result of the function $F(f_{maj}(P))$.
+
+\subsection{Incomplete Profile}
+In order to analyse the study case described in \Cref{sec:primaire} we need to adapt the mechanism to incomplete profiles. We define with $\bar{P} \subseteq P$ our knowledge about the profile $P$. %The voters have full knowledge of their own judgments that we need to elicit starting from zero knowledge.
+The starting knowledge is represented by a matrix $m\times n$ of \textit{Undefined} grades. This is an additional grade that will not count in the computation of the median grade. We define with $K_j \in A$ a set of $k$ random alternatives that we ask the voter $j\in N$ to judge. The resulting incomplete profile obtained from repeating this process for every $j \in N$, is a matrix $k \times n$ of grades, $\Delta^{k\times n}$, and its said to be $k$-sized. Note that when $k=n$ we obtain the complete profile.
+
+The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \rightarrow \Delta^m$ is a function that assigns to an incomplete profile $\bar{P}$ a vector of final grades, one for each alternative. The \emph{first-step selection function} $F':\Delta^{m} \rightarrow S \subseteq A$ is a function that selects the $s \in \intvl{1,m}$ alternatives with the highest median grades as candidates for the second phase. All the voters are then asked to judge the alternatives in $S$ and we denote this restriction of the complete profile as $P_{S}$. Note that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f_{maj}$, function to $P_{S}$ to determine the median grades and then the winner function $F$ to select the winner.
+
+\begin{definition}
+	We define the real winner of a profile $P$ the result of $F^P$ when $P$ is complete.
+\end{definition}
+
+\begin{proposition}
+	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exists a profile $P$ and two $k$-sized incomplete profiles of $P$, $\bar{P}$ and $\bar{P}'$, such that $F^{\bar{P}} \neq F^{\bar{P}'}$.
+\end{proposition}
+
+\begin{proof} Consider the following complete profile $P$:
+	\begin{center}
+		$
+		\begin{array}{cccc}
+			  & j_1 & j_2 & j_3 \\
+			a &	Excellent	& Excellent & Inadequate\\
+			b &	Mediocre	& Mediocre	& Mediocre\\
+			c &	Mediocre	& Mediocre & Inadequate\\
+			d &	Average	& Average	& Average\\
+			e &	Average	& Mediocre	& Inadequate \\
+			f &	Average	& Mediocre & Mediocre	  \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The vector of medians $f_{maj}(P)$ is:
+	\begin{center}
+		$
+		\begin{array}{cc}
+			a &	Excellent \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Mediocre \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The real winner is $F^P=a$. 
+	
+	Consider now the following incomplete profiles $\bar{P}$ and $\bar{P}'$ obtained after having asked each voter to judge $k=5$ random chosen alternatives:
+	\begin{center}
+		$\bar{P}: \qquad
+		\begin{array}{cccc}
+			& j_1 & j_2 & j_3 \\
+			a &	Excellent	& {\color{red}Undefined} & Inadequate\\
+			b &	Mediocre	& Mediocre	& Mediocre\\
+			c &	Mediocre	& Mediocre & Inadequate\\
+			d &	Average	& Average	& {\color{red}Undefined} \\
+			e &	Average	& Mediocre	& Inadequate \\
+			f &	{\color{red}Undefined}	& Mediocre & Mediocre	  \\
+		\end{array} \quad,
+		$
+	\end{center}
+	\begin{center}
+		$\bar{P}': \qquad
+		\begin{array}{cccc}
+			& j_1 & j_2 & j_3 \\
+			a &	Excellent	& Excellent & Inadequate\\
+			b &	Mediocre	& {\color{red}Undefined}	& Mediocre\\
+			c &	Mediocre	& Mediocre & {\color{red}Undefined}\\
+			d &	Average	& Average	& Average \\
+			e &	{\color{red}Undefined}	& Mediocre	& Inadequate \\
+			f &	Average	& Mediocre & Mediocre	  \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The vector of medians are:
+	\begin{center}
+		$f_{maj}(\bar{P})= \quad
+		\begin{array}{cc}
+			a &	Inadequate \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Mediocre \\
+		\end{array} \quad,\quad%
+		f_{maj}(\bar{P}')= \quad
+		\begin{array}{cc}
+			a &	Excellent \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Inadequate \\
+			f & Mediocre \\
+		\end{array} \quad.
+		$
+	\end{center}
+
+	Consider the sets of $s=5$ alternatives with the highest median grades for the two profiles, $S'=\{b,c,d,e,f\}$ for $\bar{P}$, and $S^{\prime\prime}=\{a,b,c,d,f\}$ for $\bar{P}'$, and the two restrictions $P_{S'}$ and $P_{S^{\prime\prime}}$. In particular, $P_{S'}$ corresponds to the complete profile when eliminating the alternative $a$, and $P_{S^{\prime\prime}}$ to the complete profile without the alternative $e$.
+	The vector of medians are:
+	\begin{center}
+		$f_{maj}(P_S')= \quad
+		\begin{array}{cc}
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Mediocre \\
+		\end{array} \quad,\quad%
+		f_{maj}(P_S^{\prime\prime})= \quad
+		\begin{array}{cc}
+			a & Excellent \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			f & Mediocre \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The winner associated to the incomplete profile $\bar{P}$ is then $F^{P_{S'}} = d$ and the one associated to $\bar{P}'$ is $F^{P_{S^{\prime\prime}}} = a$, thus $F^{\bar{P}} \neq F^{\bar{P}'}$.
+\end{proof}
+
+\begin{corollary}
+	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\bar{P}$, such that $F^{\bar{P}}$ is not the real winner.
+\end{corollary}
+
+\newpage
+\paragraph{My draft - do not read}
 \begin{itemize}
 	\item Does expressing judgment on randomly selected candidates influence the result? (If we change the questions does the result change?)
 	\item Does the number of questions influence the result? (If we change the number of questions does the result change?)
@@ -122,12 +215,10 @@ It is important to mention that the participation of this candidate to the actua
 	\item Which is the right number of questions? (Best trade-off between communication cost and optimal result.)
 	\item Can we select the next question with minimax regret instead of randomly selecting a candidate?
 	\item Can we say anything about the "fairness" of proposing the candidates to judge? Suppose I have strong opinions about only two candidates: one I extremely like and one I extremely dislike. There is a chance I will not be asked about those two candidates, in this case I cannot say much about the other candidates and I am also frustrated because I did not get to express my opinions.
+	\item Consider $n$ voters and $m$ candidates and assume that a voter $i \in N$ judges only a fraction of the $m$ candidates. What is the resulting voting rule? What are its properties? Can a voter manipulate the result by judging only some candidates? 
 \end{itemize}
 
-
-\section{Incomplete Profile}
-Consider $n$ voters and $m$ candidates and assume that a voter $i \in N$ judges only a fraction of the $m$ candidates. What is the resulting voting rule? What are its properties? Can a voter manipulate the result by judging only some candidates? 
-
+\newpage
 \bibliography{biblio}
 
 \end{document}

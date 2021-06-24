@@ -7,7 +7,7 @@
 %https://tex.stackexchange.com/a/45732, works within both \set and \set*, same spacing than \mid (https://tex.stackexchange.com/a/52905).
 \NewDocumentCommand{\suchthat}{}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
 %Integer interval.
-\NewDocumentCommand{\intvl}{m}{⟦#1⟧}
+\NewDocumentCommand{\intvl}{m}{\llbracket#1\rrbracket}
 %Allows for \abs and \abs*, which resizes the delimiters.
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\card{\lvert}{\rvert}
