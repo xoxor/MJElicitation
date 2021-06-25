@@ -8,6 +8,7 @@
 %\input{preamble/jdoc}
 \usepackage{stmaryrd}
 \usepackage{xcolor}
+\usepackage{siunitx}
 %I find these settings useful in draft mode. Should be removed for final versions.
 	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
 		\tolerance=2000
@@ -86,16 +87,17 @@ The \emph{majority-grade}, $f_{maj}$, is a social grading function that associat
 The winner function $F:\Delta^{m} \rightarrow i\in A$ is a function that selects the alternative with the highest median grade as a winner: $i^* = \argmax_{i\in A}f_{maj}(r_i)$. In case two or more alternatives have the same highest median grade $\alpha$, the tie is broken by removing one $\alpha$ grade from each of the tied alternatives, recomputing the new median grade and repeating the process until one unique winner is found. We will refer with $F^P$ the result of the function $F(f_{maj}(P))$.
 
 \subsection{Incomplete Profile}
-In order to analyse the study case described in \Cref{sec:primaire} we need to adapt the mechanism to incomplete profiles. We define with $\bar{P} \subseteq P$ our knowledge about the profile $P$. %The voters have full knowledge of their own judgments that we need to elicit starting from zero knowledge.
+In order to analyse the study case described in \Cref{sec:primaire} we need to adapt the mechanism to incomplete profiles. Let $\bar{P} \subseteq P$ be our knowledge about the profile $P$. %The voters have full knowledge of their own judgments that we need to elicit starting from zero knowledge.
 The starting knowledge is represented by a matrix $m\times n$ of \textit{Undefined} grades. This is an additional grade that will not count in the computation of the median grade. We define with $K_j \in A$ a set of $k$ random alternatives that we ask the voter $j\in N$ to judge. The resulting incomplete profile obtained from repeating this process for every $j \in N$, is a matrix $k \times n$ of grades, $\Delta^{k\times n}$, and its said to be $k$-sized. Note that when $k=n$ we obtain the complete profile.
 
 The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \rightarrow \Delta^m$ is a function that assigns to an incomplete profile $\bar{P}$ a vector of final grades, one for each alternative. The \emph{first-step selection function} $F':\Delta^{m} \rightarrow S \subseteq A$ is a function that selects the $s \in \intvl{1,m}$ alternatives with the highest median grades as candidates for the second phase. All the voters are then asked to judge the alternatives in $S$ and we denote this restriction of the complete profile as $P_{S}$. Note that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f_{maj}$, function to $P_{S}$ to determine the median grades and then the winner function $F$ to select the winner.
 
 \begin{definition}
-	We define the real winner of a profile $P$ the result of $F^P$ when $P$ is complete.
+	We define the real winner $w^*$ of a profile $P$ as the result of $F^P$ when $P$ is complete.
 \end{definition}
 
 \begin{proposition}
+	\label{prop:notsamewinner}
 	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exists a profile $P$ and two $k$-sized incomplete profiles of $P$, $\bar{P}$ and $\bar{P}'$, such that $F^{\bar{P}} \neq F^{\bar{P}'}$.
 \end{proposition}
 
@@ -205,6 +207,103 @@ The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \righta
 \begin{corollary}
 	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\bar{P}$, such that $F^{\bar{P}}$ is not the real winner.
 \end{corollary}
+
+
+Consider $\bar{P_i}$ the partial vector of ordered grades associated to the alternative $i\in A$, let $C(\bar{P_i}) = \{P_i \in \Delta^n | \bar{P_i} \subseteq P_i\}$ denote the set of possible completions of $\bar{P_i}$. The set $C(\bar{P}) = \prod_{i \in A} C(\bar{P_i})$ represents the set of complete profiles extending $\bar{P}$; note that $P \in C(\bar{P})$. We define the best completion of a partial vector $\bar{P_i}$ the completion $\hat{P_i}\in C(\bar{P_i})$ such that $f_{maj}(\hat{P_i})\geq f_{maj}(P_i'), \ \forall P_i' \in C(\bar{P_i})$.
+
+We want to investigate the probability of electing an alternative different from the real winner when considering an incomplete profile.
+
+\begin{figure}
+	\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				ylabel=Prob. \%,
+				xlabel=Grades Better than Med. \%,
+				ymin=0,
+				ymax=40,
+				xmin=5338,
+				xmax=10675,
+				xtick={5339,6405,7472,8540,9607,10675},
+				xticklabels={50,60,70,80,90,100}
+				]
+				\addplot[thick, red] table [x=Percentage, y=ProbOfMiss]{data/distr.dat};			
+			\end{axis}
+		\end{tikzpicture}
+	\caption{Probability of electing a non-real winner in the worst case scenario, for different proportions of \emph{better-than-the-median} grades in the real vector $P_w^*$, with $n=10675$, $k=5$.}
+	\label{fig:gradesDistribution}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			ylabel=Prob. \%,
+			xlabel=k,
+			ymin=0,
+			ymax=100,
+			xmin=0,
+			xmax=106,
+			xtick distance=10
+			]
+			\addplot[thick, blue] table [x=k, y=ProbOfMiss]{data/changingK.dat};			
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Probability of electing a non-real winner in the worst case scenario, for different values of $k$, with $n=10675$, and $60\%-40\%$ proportion of \emph{better-than-the-median} grades.}
+	\label{fig:differentK}
+\end{figure}
+
+\sisetup{table-number-alignment = center, table-figures-integer=2, table-figures-decimal=1, table-auto-round}
+\begin{table}
+	\centering
+	\begin{tabular}{S[table-figures-integer=3, table-figures-decimal=0]S[table-figures-integer=3, table-figures-decimal=2]}
+			\toprule
+			{k} & {Prob. of Miss} \\
+			\midrule
+			0	&	100.00	\\
+			5	&	23.04	\\
+			11	&	14.72	\\
+			17	&	10.70	\\
+			23	&	8.23	\\
+			29	&	6.52	\\
+			35	&	5.27	\\
+			45	&	3.80	\\
+			55	&	2.81	\\
+			65	&	2.11	\\
+			75	&	1.60	\\
+			105	&	0.73	\\
+			205	&	0.06	\\
+			315	&	0.00	\\
+			\bottomrule
+		\end{tabular}
+	\caption{Detailed numbers of \Cref{fig:differentK}.}
+	\label{tab:differentK}
+\end{table}
+
+\subsection{Unfixed k}
+
+\begin{example}
+%	 Consider the complete profile $P$ of \Cref{prop:notsamewinner}. Assume that each voter only express its best and worst judgments and construct the complete profile $P'$ from $P$ in the following way: for each alternative that is not the real winner add as many voters as needed such that its known median grade is better than the known median grade of the real winner, add an additional alternative that is rejected by all these new voters. Since the voters only express the best and the worst grades, we can assume that they judge the rest of the alternatives according to the current known median. The resulting profile $P'$ is: 
+	
+	 \begin{center}
+	 	\scalebox{0.75}{
+	 	$
+	 	\begin{array}{cccccccc}
+	 		& j_1 & j_2 & j_3 & j_4 & j_5 & j_6 & j_7 \\
+	 		a	&	Average	&	Average	&	Excellent	&	Average	&	Average	&	Average	&	Average	\\
+	 		b	&	To be rejected	&	Good	&	Good	&	Good	&	Good	&	Good	&	Good	\\
+	 		c	&	Mediocre	&	Excellent	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	\\
+	 		d	&	Average	&	Average	&	To be rejected	&	Excellent	&	Excellent	&	Average	&	Average	\\
+	 		e	&	Mediocre	&	To be rejected	&	Mediocre	&	Mediocre	&	Mediocre	&	Excellent	&	Excellent	\\
+	 		f	&	Excellent	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	\\
+	 		g	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	\\	 		
+	 	\end{array} \quad.
+	 	$}
+	 \end{center}
+
+\end{example}
+	
+
+
 
 \newpage
 \paragraph{My draft - do not read}
