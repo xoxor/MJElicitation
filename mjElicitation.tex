@@ -84,7 +84,7 @@ The \emph{majority-grade}, $f_{maj}$, is a social grading function that associat
 \end{align}
 %i.e. it corresponds to the lower middlemost.
 % It could also be written as $f_{maj}(P_i) = \lfloor \frac{n}{2} \rfloor + 1$.
-The winner function $F:\Delta^{m} \rightarrow i\in A$ is a function that selects the alternative with the highest median grade as a winner: $i^* = \argmax_{i\in A}f_{maj}(r_i)$. In case two or more alternatives have the same highest median grade $\alpha$, the tie is broken by removing one $\alpha$ grade from each of the tied alternatives, recomputing the new median grade and repeating the process until one unique winner is found. We will refer with $F^P$ the result of the function $F(f_{maj}(P))$.
+The winner function $F:\Delta^{m} \rightarrow i\in A$ is a function that selects the alternative with the highest median grade as a winner: $w^* = \argmax_{i\in A}f_{maj}(P_i)$. In case two or more alternatives have the same highest median grade $\alpha$, the tie is broken by removing one $\alpha$ grade from each of the tied alternatives, recomputing the new median grade and repeating the process until one unique winner is found. We will refer with $F^P$ the result of the function $F(f_{maj}(P))$.
 
 \subsection{Incomplete Profile}
 In order to analyse the study case described in \Cref{sec:primaire} we need to adapt the mechanism to incomplete profiles. Let $\bar{P} \subseteq P$ be our knowledge about the profile $P$. %The voters have full knowledge of their own judgments that we need to elicit starting from zero knowledge.
@@ -93,7 +93,7 @@ The starting knowledge is represented by a matrix $m\times n$ of \textit{Undefin
 The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \rightarrow \Delta^m$ is a function that assigns to an incomplete profile $\bar{P}$ a vector of final grades, one for each alternative. The \emph{first-step selection function} $F':\Delta^{m} \rightarrow S \subseteq A$ is a function that selects the $s \in \intvl{1,m}$ alternatives with the highest median grades as candidates for the second phase. All the voters are then asked to judge the alternatives in $S$ and we denote this restriction of the complete profile as $P_{S}$. Note that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f_{maj}$, function to $P_{S}$ to determine the median grades and then the winner function $F$ to select the winner.
 
 \begin{definition}
-	We define the real winner $w^*$ of a profile $P$ as the result of $F^P$ when $P$ is complete.
+	We define the real winner $w^*$ of a profile $P$ as the result of $F^P$ when $P$ is complete, i.e. $w^* = \argmax_{i\in A}f_{maj}(P_i)$.
 \end{definition}
 
 \begin{proposition}
@@ -101,7 +101,7 @@ The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \righta
 	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exists a profile $P$ and two $k$-sized incomplete profiles of $P$, $\bar{P}$ and $\bar{P}'$, such that $F^{\bar{P}} \neq F^{\bar{P}'}$.
 \end{proposition}
 
-\begin{proof} Consider the following complete profile $P$:
+\begin{proof} Consider $n=3, m=6, k=5$ and the following complete profile $P$:
 	\begin{center}
 		$
 		\begin{array}{cccc}
@@ -208,28 +208,44 @@ The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \righta
 	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\bar{P}$, such that $F^{\bar{P}}$ is not the real winner.
 \end{corollary}
 
+\subsection{Electing a non-real winner}
+
+In this Section we want to investigate the probability of electing an alternative different from the real winner when considering an incomplete profile.
 
 Consider $\bar{P_i}$ the partial vector of ordered grades associated to the alternative $i\in A$, let $C(\bar{P_i}) = \{P_i \in \Delta^n | \bar{P_i} \subseteq P_i\}$ denote the set of possible completions of $\bar{P_i}$. The set $C(\bar{P}) = \prod_{i \in A} C(\bar{P_i})$ represents the set of complete profiles extending $\bar{P}$; note that $P \in C(\bar{P})$. We define the best completion of a partial vector $\bar{P_i}$ the completion $\hat{P_i}\in C(\bar{P_i})$ such that $f_{maj}(\hat{P_i})\geq f_{maj}(P_i'), \ \forall P_i' \in C(\bar{P_i})$.
 
-We want to investigate the probability of electing an alternative different from the real winner when considering an incomplete profile.
+The only way for a real winner $w^*$ not to get elected is to not appear in the set of candidates for the second phase $S$. In fact, when $w^*\in S$ even if its partial median $f_{maj}(\bar{P_{w^*}})$ is lower than the one of another candidate $i\in A\setminus\{w^*\}$, in the second phase the complete profile restricted to the alternatives in $S$ is built. Thus, a real winner will always win in the second phase. Consider the $s$ alternatives with the highest median grades $f_{maj}(\bar{P})$, in particular let $v$ be the $s$-th highest median, i.e. the value associated to the last alternative to enter in $S$. For $w^*$ not to be in $S$ it must be $f_{maj}(\bar{P_{w^*}})<v$. Because we know that $f_{maj}(P_{w^*})>v$, then the grades vector of $w^*$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha>v$ and the rest of grades $\beta<v$. Without loss of generality consider both $n$ and $k$ odd values, then the vector $P_{w^*}$ in the worst case contains exactly $\frac{n+1}{2}$ grades greater than $v$ and $\frac{n-1}{2}$ grades lower than $v$. Thus the partial vector $\bar{P_{w^*}}$ must be composed of at least $\frac{k+1}{2}$ grades $\beta<v$ and at most $\frac{k-1}{2}$ grades $\alpha>v$.
+%Try to fix the bynomial parenthesis 
+\begin{align}
+	P_{w^*}: \qquad [ \underbrace{\alpha_1, \dots , \alpha_{\frac{n+1}{2}}}_{\begin{pmatrix}\frac{n+1}{2} \\ \frac{k-1}{2}\end{pmatrix}}, \underbrace{\beta_1, \dots , \beta_{\frac{n-1}{2}}}_{\begin{pmatrix}\frac{n-1}{2} \\ {\frac{k+1}{2}}\end{pmatrix}} ] \\
+	\bar{P_{w^*}}:\qquad [ \overbrace{\alpha_1, \dots , \alpha_{\frac{k-1}{2}}}, \overbrace{\beta_1, \dots , \beta_{\frac{k+1}{2}}}]
+\end{align} 
+
+We define the probability of electing a non-real winner as the probability of $w^*$ not being in $S$. The latter can be defined as the number of incomplete vectors $\bar{P_{w^*}}$ for which $f_{maj}(\bar{P_{w^*}})<v$, over the total number of possible incomplete vectors of $k$ elements:
+\[ \frac{ \begin{pmatrix}\frac{n+1}{2} \\ {\frac{k-1}{2}}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2} \\ {\frac{k+1}{2}}\end{pmatrix}}{\begin{pmatrix}n \\ k\end{pmatrix}}\]
+
+We simulated this probability using the same parameters used in the 2016 election organised by LaPrimaire.org: $n=10675$, $k=5$. \Cref{fig:gradesDistribution} shows the probability of electing a non-real winner for different proportions of $\alpha$ and $\beta$ grades in the real vector $P_w^*$. We can see that when we have a $50\%-50\%$ proportion the probability that $w^*$ will not reach the second phase is more than $30\%$. This, obviously, decreases when increasing the polarization of the electorate \textemdash when all the voters unanimously agree on the excellence of a candidate there is zero probability she will not win \textendash but it is still greater than $10\%$ with a proportion of $70\%-30\%$.  Note that the $50\%-50\%$ proportion is not exactly half-half, there is at least one grade $\beta$ more than the $\alpha$ grades.
+
+\Cref{fig:differentK} shows how this probability changing when asking more questions to the voters, with a fixed a proportion of $60\%-40\%$. 
 
 \begin{figure}
 	\centering
 		\begin{tikzpicture}
 			\begin{axis}[
-				ylabel=Prob. \%,
-				xlabel=Grades Better than Med. \%,
+				ylabel=Prob. of Miss \%,
+				xlabel=Percentage of $\alpha$ Grades \%,
 				ymin=0,
 				ymax=40,
 				xmin=5338,
 				xmax=10675,
+				scaled ticks = false,
 				xtick={5339,6405,7472,8540,9607,10675},
 				xticklabels={50,60,70,80,90,100}
 				]
 				\addplot[thick, red] table [x=Percentage, y=ProbOfMiss]{data/distr.dat};			
 			\end{axis}
 		\end{tikzpicture}
-	\caption{Probability of electing a non-real winner in the worst case scenario, for different proportions of \emph{better-than-the-median} grades in the real vector $P_w^*$, with $n=10675$, $k=5$.}
+	\caption{Probability of electing a non-real winner, for different proportions of $\alpha$ and $\beta$ grades in the real vector $P_w^*$, with $n=10675$, $k=5$.}
 	\label{fig:gradesDistribution}
 \end{figure}
 
@@ -248,7 +264,7 @@ We want to investigate the probability of electing an alternative different from
 			\addplot[thick, blue] table [x=k, y=ProbOfMiss]{data/changingK.dat};			
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Probability of electing a non-real winner in the worst case scenario, for different values of $k$, with $n=10675$, and $60\%-40\%$ proportion of \emph{better-than-the-median} grades.}
+	\caption{Probability of electing a non-real winner, for different values of $k$, with $n=10675$, and $60\%-40\%$ proportion of $\alpha - \beta$ grades.}
 	\label{fig:differentK}
 \end{figure}
 
@@ -281,26 +297,77 @@ We want to investigate the probability of electing an alternative different from
 
 \subsection{Unfixed k}
 
-\begin{example}
-%	 Consider the complete profile $P$ of \Cref{prop:notsamewinner}. Assume that each voter only express its best and worst judgments and construct the complete profile $P'$ from $P$ in the following way: for each alternative that is not the real winner add as many voters as needed such that its known median grade is better than the known median grade of the real winner, add an additional alternative that is rejected by all these new voters. Since the voters only express the best and the worst grades, we can assume that they judge the rest of the alternatives according to the current known median. The resulting profile $P'$ is: 
-	
-	 \begin{center}
-	 	\scalebox{0.75}{
-	 	$
-	 	\begin{array}{cccccccc}
-	 		& j_1 & j_2 & j_3 & j_4 & j_5 & j_6 & j_7 \\
-	 		a	&	Average	&	Average	&	Excellent	&	Average	&	Average	&	Average	&	Average	\\
-	 		b	&	To be rejected	&	Good	&	Good	&	Good	&	Good	&	Good	&	Good	\\
-	 		c	&	Mediocre	&	Excellent	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	\\
-	 		d	&	Average	&	Average	&	To be rejected	&	Excellent	&	Excellent	&	Average	&	Average	\\
-	 		e	&	Mediocre	&	To be rejected	&	Mediocre	&	Mediocre	&	Mediocre	&	Excellent	&	Excellent	\\
-	 		f	&	Excellent	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	\\
-	 		g	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	&	To be rejected	\\	 		
-	 	\end{array} \quad.
-	 	$}
-	 \end{center}
+One of the most natural questions that comes to mind when considering the process of asking the voters to judge random alternatives is: how feasible it is? Especially when applying it to political elections, it is safe to say that voters have strong opinions. There are always some candidates that we would never want to see in office, while we would really like to support our favorite candidate. By applying the random selection of questions there is a chance we do not get to express our opinions on those particular candidates. In the worst case, we may be asked to judge only candidates of whom we do not have a strong opinion, or worse, that we do not even know. Is our judgment relevant in this case? How willing are we to take the risk to go and vote without the certainty of being able to express the judgments we consider important?
 
-\end{example}
+Because of all these reasons, we may want to consider the possibility for the voters to choose the candidates to judge. One extreme situation that may occur is that each voter judges only its best and worst choice. 
+
+\begin{proposition}
+	Given two integers $k=5$ and $s=5$, $m$ alternatives and $n$ voters who only judge their best and worst candidates, there exist a complete profile $P'$ and an incomplete profile $\bar{P'}$ such that $P'\in C(\bar{P'})$ and $F(P')\neq F(\bar{P'})$.
+\end{proposition}	
+
+\begin{proof} Consider the following complete profile $P$:
+
+	\begin{center}
+		\begin{tabular}{cccccccc}
+			& j$_1$ & j$_2$ & j$_3$ \\
+			a	&	Average	&	Average	&	Excellent	\\
+			b	&	To be rejected	&	Good	&	Good	\\
+			c	&	Mediocre	&	Excellent	&	Mediocre	\\
+			d	&	Average	&	Average	&	To be rejected	\\
+			e	&	Mediocre	&	To be rejected	&	Mediocre	\\
+			f	&	Excellent	&	Inadequate	&	Inadequate \\
+		\end{tabular}
+	\end{center}
+	
+	
+	for the sake of the example the rows are not ordered vectors because the identity of the voters is considered.
+	
+	The vector of medians $f_{maj}(P)$ is:
+	\begin{center}
+		$
+		\begin{array}{cc}
+			a &	Average \\
+			b &	Good \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Inadequate \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The real winner is $F^P=b$. 
+	
+	Assume that each voter only express its best and worst judgments and construct the complete profile $P'$ from $P$ in the following way: for each alternative $i$ that is not the real winner $w^*$ add as many voters as needed such that its known median grade ($f_{maj}(\bar{P'_i})$) is better than the known median grade of the real winner ($f_{maj}(\bar{P'_{w^*}})$); then add an additional alternative that is rejected by all these new voters. Since the voters only express the best and the worst grades, we are not interested in how they judge the rest of the alternatives, to construct a complete profile we can assume that they judge them according to the current known median. The resulting complete profile $P'$ is the following, but our information $\bar{P'}$ is only restricted to the green values: 
+
+		\scalebox{0.75}{
+			\begin{tabular}{cccccccc}
+				& j$_1$ & j$_2$ & j$_3$ & j$_4$ & j$_5$ & j$_6$ & j$_7$ \\
+				a	&	Average	&	Average	&	{\color{teal}Excellent}	&	Average	&	Average	&	Average	&	Average	\\
+				b	&	{\color{teal}To be rejected}	&	Good	&	Good	&	Good	&	Good	&	Good	&	Good	\\
+				c	&	Mediocre	&	{\color{teal}Excellent}	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	\\
+				d	&	Average	&	Average	&	{\color{teal}To be rejected}	&	{\color{teal}Excellent}	&	{\color{teal}Excellent}	&	Average	&	Average	\\
+				e	&	Mediocre	&	{\color{teal}To be rejected}	&	Mediocre	&	Mediocre	&	Mediocre	&	{\color{teal}Excellent}	&	{\color{teal}Excellent}	\\
+				f	&	{\color{teal}Excellent}	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	\\
+				g	&	{\color{teal}To be rejected}	&	{\color{teal}To be rejected} & {\color{teal}To be rejected}& {\color{teal}To be rejected} & {\color{teal}To be rejected} & {\color{teal}To be rejected} & {\color{teal}To be rejected}	\\
+			\end{tabular}
+		}
+		
+	The vector of medians $f_{maj}(\bar{P'})$ is:
+	\begin{center}
+		$
+		\begin{array}{cc}
+			a &	\text{Excellent} \\
+			b &	\text{To be rejected} \\
+			c &	\text{Excellent} \\
+			d &	\text{Excellent}	\\
+			e &	\text{Excellent} \\
+			f & \text{Excellent} \\
+			g & \text{To be rejected} \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The real winner $b$ does not appear in the set of candidates for the second round $S=\{a,c,d,e,f\}$, so it will not be elected from the incomplete profile $\bar{P'}$.
+\end{proof}
 	
 
 
