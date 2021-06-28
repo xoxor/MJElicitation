@@ -9,6 +9,7 @@
 \usepackage{stmaryrd}
 \usepackage{xcolor}
 \usepackage{siunitx}
+\usepackage{relsize}
 %I find these settings useful in draft mode. Should be removed for final versions.
 	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
 		\tolerance=2000
@@ -210,94 +211,166 @@ The \emph{majority-grade} for incomplete profile $f_{\bar{maj}}: \bar{P} \righta
 
 \subsection{Electing a non-real winner}
 
-In this Section we want to investigate the probability of electing an alternative different from the real winner when considering an incomplete profile.
+In this section we want to investigate the probability of electing an alternative different from the real winner when considering an incomplete profile.
 
 Consider $\bar{P_i}$ the partial vector of ordered grades associated to the alternative $i\in A$, let $C(\bar{P_i}) = \{P_i \in \Delta^n | \bar{P_i} \subseteq P_i\}$ denote the set of possible completions of $\bar{P_i}$. The set $C(\bar{P}) = \prod_{i \in A} C(\bar{P_i})$ represents the set of complete profiles extending $\bar{P}$; note that $P \in C(\bar{P})$. We define the best completion of a partial vector $\bar{P_i}$ the completion $\hat{P_i}\in C(\bar{P_i})$ such that $f_{maj}(\hat{P_i})\geq f_{maj}(P_i'), \ \forall P_i' \in C(\bar{P_i})$.
 
-The only way for a real winner $w^*$ not to get elected is to not appear in the set of candidates for the second phase $S$. In fact, when $w^*\in S$ even if its partial median $f_{maj}(\bar{P_{w^*}})$ is lower than the one of another candidate $i\in A\setminus\{w^*\}$, in the second phase the complete profile restricted to the alternatives in $S$ is built. Thus, a real winner will always win in the second phase. Consider the $s$ alternatives with the highest median grades $f_{maj}(\bar{P})$, in particular let $v$ be the $s$-th highest median, i.e. the value associated to the last alternative to enter in $S$. For $w^*$ not to be in $S$ it must be $f_{maj}(\bar{P_{w^*}})<v$. Because we know that $f_{maj}(P_{w^*})>v$, then the grades vector of $w^*$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha>v$ and the rest of grades $\beta<v$. Without loss of generality consider both $n$ and $k$ odd values, then the vector $P_{w^*}$ in the worst case contains exactly $\frac{n+1}{2}$ grades greater than $v$ and $\frac{n-1}{2}$ grades lower than $v$. Thus the partial vector $\bar{P_{w^*}}$ must be composed of at least $\frac{k+1}{2}$ grades $\beta<v$ and at most $\frac{k-1}{2}$ grades $\alpha>v$.
+The only way for a real winner $w^*$ not to get elected is to not be part of the set of candidates for the second phase $S$. In fact, suppose $w^*\in S$ and its partial median $f_{maj}(\bar{P_{w^*}})$ is lower than the one of another candidate $i\in A\setminus\{w^*\}$; in the second phase the complete profile restricted to the alternatives in $S$ is built and because $w^*$ is a real winner, then $f_{maj}(P_{S, w^*})\geq f_{maj}(P_{S, i}), \ \forall i \in A$. Thus, a real winner will always win in the second phase. 
+
+Consider the $s$ alternatives with the highest median grades in $\bar{P}$, in particular, let $v$ be the $s$-th highest median, i.e. $v=\max_{i\in S}f_{maj}(\bar{P_i})$ . For $w^*$ not to be in $S$ it must be $f_{maj}(\bar{P_{w^*}})<v$. Since $w^*$ is a real winner then $f_{maj}(P_{w^*})>v$, and the grades vector of $w^*$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha>v$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta<v$. Without loss of generality consider $n$ an odd value, then the vector $P_{w^*}$ in the worst case contains exactly $\frac{n+1}{2}$ grades greater than $v$ and $\frac{n-1}{2}$ grades lower than $v$. Thus, for $f_{maj}(\bar{P_{w^*}})$ to be smaller than $v$, the partial vector $\bar{P_{w^*}}$ of size $x$ must be composed of at least $\frac{x+1}{2}$ grades $\beta<v$ and at most $\frac{x-1}{2}$ grades $\alpha>v$. 
 %Try to fix the bynomial parenthesis 
 \begin{align}
-	P_{w^*}: \qquad [ \underbrace{\alpha_1, \dots , \alpha_{\frac{n+1}{2}}}_{\begin{pmatrix}\frac{n+1}{2} \\ \frac{k-1}{2}\end{pmatrix}}, \underbrace{\beta_1, \dots , \beta_{\frac{n-1}{2}}}_{\begin{pmatrix}\frac{n-1}{2} \\ {\frac{k+1}{2}}\end{pmatrix}} ] \\
-	\bar{P_{w^*}}:\qquad [ \overbrace{\alpha_1, \dots , \alpha_{\frac{k-1}{2}}}, \overbrace{\beta_1, \dots , \beta_{\frac{k+1}{2}}}]
+	P_{w^*}: \qquad [ \underbrace{\alpha_1, \dots , \alpha_{\frac{n+1}{2}}}_{\begin{pmatrix}\frac{n+1}{2} \\ \frac{x-1}{2}\end{pmatrix}}, \underbrace{\beta_1, \dots , \beta_{\frac{n-1}{2}}}_{\begin{pmatrix}\frac{n-1}{2} \\ {\frac{x+1}{2}}\end{pmatrix}} ] \\
+	\bar{P_{w^*}}:\qquad [ \overbrace{\alpha_1, \dots , \alpha_{\frac{x-1}{2}}}, \overbrace{\beta_1, \dots , \beta_{\frac{x+1}{2}}}]
 \end{align} 
 
-We define the probability of electing a non-real winner as the probability of $w^*$ not being in $S$. The latter can be defined as the number of incomplete vectors $\bar{P_{w^*}}$ for which $f_{maj}(\bar{P_{w^*}})<v$, over the total number of possible incomplete vectors of $k$ elements:
-\[ \frac{ \begin{pmatrix}\frac{n+1}{2} \\ {\frac{k-1}{2}}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2} \\ {\frac{k+1}{2}}\end{pmatrix}}{\begin{pmatrix}n \\ k\end{pmatrix}}\]
+\newcommand{\largemath}[1]{{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger#1}}}}}}
+%note to myself: find a better way please
+We define the probability of electing a non-real winner as the probability of $w^*$ not being in $S$. The latter can be defined as the number of incomplete vectors $\bar{P_{w^*}}$ of size $x$ for which $f_{maj}(\bar{P_{w^*}})<v$, over the total number of possible incomplete vectors of $x$ elements:
+\[ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n+1}{2} \\ {\frac{x-1}{2}-i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2} \\ {\frac{x+1}{2}+i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} \]
 
-We simulated this probability using the same parameters used in the 2016 election organised by LaPrimaire.org: $n=10675$, $k=5$. \Cref{fig:gradesDistribution} shows the probability of electing a non-real winner for different proportions of $\alpha$ and $\beta$ grades in the real vector $P_w^*$. We can see that when we have a $50\%-50\%$ proportion the probability that $w^*$ will not reach the second phase is more than $30\%$. This, obviously, decreases when increasing the polarization of the electorate \textemdash when all the voters unanimously agree on the excellence of a candidate there is zero probability she will not win \textendash but it is still greater than $10\%$ with a proportion of $70\%-30\%$.  Note that the $50\%-50\%$ proportion is not exactly half-half, there is at least one grade $\beta$ more than the $\alpha$ grades.
+The size $x$ of an incomplete vector $\bar{P_i}$ for $i \in A$, depends on the number of questions $k$ asked to the voters, in fact, if we ask $n$ voters to judge $k$ random alternatives, ideally, each alternative $i$ will be judged $\frac{k\cdot n}{m}$ times. Consider the value $k$ as a function of the number of alternatives: $k=c \cdot m$ where $c \in \R$. If $m=10$ and $k=5$ then $k=1/2 m$, i.e. we ask the voters to judge half of the candidates. Thus, the value $x$ depends only on the number of voters $n$ $x=\frac{k\cdot n}{m}= c \cdot n$, $c\in \R$. Without loss of generality we consider both $x$ and $n$ odd values.
 
-\Cref{fig:differentK} shows how this probability changing when asking more questions to the voters, with a fixed a proportion of $60\%-40\%$. 
+Consider the worst case scenario: the real vector $P_{w^*}$ has a proportion of $51\%-49\%$ of $\alpha-\beta$ grades. \Cref{fig:differentX51-49} shows the probability of electing a non-real winner in this scenario for different size $x$ of the incomplete vector $\bar{P_{w^*}}$. \Cref{tab:differentX51-49} shows in details those values. Note that when $x=1001$ the probability is about $25\%$, but we should keep in mind that $x= c \cdot n$, thus a vector of size $1000$ means that the alternative $w^*$ was judged by only $1/10$ of the voters. With this in mind, we see that with $x=\frac{n}{2}$ we obtain a very low probability of only $2.12\%$, but we need $4/5$ of the voters to judge each alternative to get zero probability of "miss-qualification".
 
+The situation change drastically for different proportions of $\alpha-\beta$ grades as \Cref{fig:differentX} shows. In particular, we only need about $200$ judgments (thus $1/50$n) to reach an almost zero probability of electing a non real winner when the real vector $P_{w^*}$ has a proportion of $60\% \alpha -40\% \beta$ grades. Recalling the formula:
+\begin{align}
+	x&=\frac{k \cdot n}{m} \\
+	200&=\frac{k}{m}\cdot 10000 \\
+	\frac{1}{50}&=\frac{k}{m} \\
+	k&=\frac{m}{50}
+\end{align}
+we note that asking one question per voter is more than enough to avoid the election of a non-real winner.
+
+In the 2016 elections organised by LaPrimaire.org $n=10675$ voters participated in the first round, and each of them judged $k=5$ random alternatives out of the $m=12$ total ones. Each alternative received an average of $4449$ judgments. Using this data, we simulated th probability of electing a non-real winner for different proportions of $\alpha-\beta$ grades. \Cref{fig:original} and \Cref{tab:original} show the results.
+
+By crossing these results we note that we could have asked the voters far less than $5$ questions, reducing the communication and the cognitive cost of the elicitation process.
+
+%xticklabel style = {font=\footnotesize},
+%x label style={at={(axis description cs:0.5,-0.05)},anchor=north}
 \begin{figure}
 	\centering
-		\begin{tikzpicture}
-			\begin{axis}[
-				ylabel=Prob. of Miss \%,
-				xlabel=Percentage of $\alpha$ Grades \%,
-				ymin=0,
-				ymax=40,
-				xmin=5338,
-				xmax=10675,
-				scaled ticks = false,
-				xtick={5339,6405,7472,8540,9607,10675},
-				xticklabels={50,60,70,80,90,100}
-				]
-				\addplot[thick, red] table [x=Percentage, y=ProbOfMiss]{data/distr.dat};			
-			\end{axis}
-		\end{tikzpicture}
-	\caption{Probability of electing a non-real winner, for different proportions of $\alpha$ and $\beta$ grades in the real vector $P_w^*$, with $n=10675$, $k=5$.}
-	\label{fig:gradesDistribution}
+	\begin{tikzpicture}
+		\begin{axis}[
+			ylabel=Prob. \%,
+			xlabel= x,
+			ymin=0,
+			ymax=50,
+			xmin=1,
+			xmax=10001,
+			xtick={1,1001,2001,3001,4001,5001,6001,7001,8001,9001,10001},
+			xticklabels={$10^{-3}$,1,2,3,4,5,6,7,8,9,10},
+			xticklabel style = {yshift=-0.5ex},
+			scaled x ticks= real:1000,
+			x label style={at={(axis description cs:0.5,-0.03)},anchor=north}
+			]
+			\addplot[thick, blue] table [x=x, y=ProbOfMiss, col sep=comma]{data/51-49-100.csv};			
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Probability of electing a non-real winner, for different values of $x$, with $n=10000$, and $51\%-49\%$ proportion of $\alpha - \beta$ grades.}
+	\label{fig:differentX51-49}
 \end{figure}
+
+\sisetup{table-number-alignment = center, table-figures-integer=2, table-figures-decimal=1, table-auto-round}
+\begin{table}
+	\centering
+	\begin{tabular}{S[table-figures-integer=5, table-figures-decimal=0]S[table-figures-integer=2, table-figures-decimal=2]}
+			\toprule
+			{x} & {Prob. of Miss} \\
+			\midrule
+			1	&	48.9853044087	\\
+			1001	&	24.9190117413	\\
+			2001	&	15.5009678852	\\
+			3001	&	9.1920240364	\\
+			4001	&	4.8710050444	\\
+			5001	&	2.1180123415	\\
+			6001	&	0.645530701	\\
+			7001	&	0.096388706	\\
+			8001	&	0.0024354987	\\
+			9001	&	0.000000051	\\
+			10001	&	0.00	\\
+			\bottomrule
+		\end{tabular}
+	\caption{Detailed numbers of \Cref{fig:differentX51-49}.}
+	\label{tab:differentX51-49}
+\end{table}
 
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
 			ylabel=Prob. \%,
-			xlabel=k,
+			xlabel= x,
 			ymin=0,
-			ymax=100,
-			xmin=0,
-			xmax=106,
-			xtick distance=10
+			ymax=50,
+			xmin=1,
+			xmax=201,
+			enlarge x limits=-1, %hack to plot on the full x-axis scale
+			width=13cm, %set bigger width
+			height=6cm,
+			legend style={font=\scriptsize}
 			]
-			\addplot[thick, blue] table [x=k, y=ProbOfMiss]{data/changingK.dat};			
+			\addlegendimage{mark=*,teal,mark size=1.5}
+			\addlegendimage{mark=triangle*,orange,mark size=1.5}
+			\addlegendimage{mark=square*,blue,mark size=1.5}
+			\addlegendimage{mark=diamond*,red,mark size=1.5}
+			
+			\addplot[thick, mark=*, mark size = {2}, mark indices = {15}, teal] table [x=x, y=ProbOfMiss, col sep=comma]{data/60-40-2.csv};
+			\addlegendentry{$60\%-40\%$}
+			\addplot[thick, mark=triangle*, mark size = {2}, mark indices = {6}, orange] table [x=x, y=ProbOfMiss, col sep=comma]{data/70-30-2.csv};
+			\addlegendentry{$70\%-30\%$}	
+			\addplot[thick, mark=square*, mark size = {2}, mark indices = {4}, blue] table [x=x, y=ProbOfMiss, col sep=comma]{data/80-20-2.csv};	
+			\addlegendentry{$80\%-20\%$}
+			\addplot[thick, mark=diamond*, mark size = {2}, mark indices = {2}, red] table [x=x, y=ProbOfMiss, col sep=comma]{data/90-10-2.csv};			
+			\addlegendentry{$90\%-10\%$}
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Probability of electing a non-real winner, for different values of $k$, with $n=10675$, and $60\%-40\%$ proportion of $\alpha - \beta$ grades.}
-	\label{fig:differentK}
+	\caption{Probability of electing a non-real winner, for different values of $x$ and different proportion of $\alpha - \beta$ grades, with $n=10000$.}
+	\label{fig:differentX}
 \end{figure}
 
-\sisetup{table-number-alignment = center, table-figures-integer=2, table-figures-decimal=1, table-auto-round}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			ylabel=Prob. of Miss \%,
+			xlabel=Percentage of $\alpha$ Grades \%,
+			ymin=0,
+			ymax=5,
+			xmin=5445,
+			xmax=9608,
+			scaled ticks = false,
+			xtick={5445,6405,7473,8540,9608},
+			xticklabels={51,60,70,80,90}
+			]
+			\addplot[thick, red] table [x=BetterThanMed, y=ProbOfMiss, col sep=comma]{data/original.csv};			
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Probability of electing a non-real winner, for $n=10675$, $x=4449$ and different proportion of $\alpha - \beta$ grades.}
+	\label{fig:original}
+\end{figure}
+
 \begin{table}
 	\centering
-	\begin{tabular}{S[table-figures-integer=3, table-figures-decimal=0]S[table-figures-integer=3, table-figures-decimal=2]}
-			\toprule
-			{k} & {Prob. of Miss} \\
-			\midrule
-			0	&	100.00	\\
-			5	&	23.04	\\
-			11	&	14.72	\\
-			17	&	10.70	\\
-			23	&	8.23	\\
-			29	&	6.52	\\
-			35	&	5.27	\\
-			45	&	3.80	\\
-			55	&	2.81	\\
-			65	&	2.11	\\
-			75	&	1.60	\\
-			105	&	0.73	\\
-			205	&	0.06	\\
-			315	&	0.00	\\
-			\bottomrule
-		\end{tabular}
-	\caption{Detailed numbers of \Cref{fig:differentK}.}
-	\label{tab:differentK}
+	\begin{tabular}{cc}
+		\toprule
+		{$\alpha-\beta$} & {Prob. of Miss} \\
+		\midrule
+		$51\%-49\%$	&	3.92	\\
+		$60\%-40\%$	&	2.79$10^{-69}$	\\
+		$70\%-30\%$	&	5.80$10^{-318}$	\\
+		$80\%-20\%$	&	0.00	\\
+		$90\%-10\%$	&	0.00	\\
+		\bottomrule
+	\end{tabular}
+	\caption{Detailed numbers of \Cref{fig:original}.}
+	\label{tab:original}
 \end{table}
 
 \subsection{Unfixed k}
 
-One of the most natural questions that comes to mind when considering the process of asking the voters to judge random alternatives is: how feasible it is? Especially when applying it to political elections, it is safe to say that voters have strong opinions. There are always some candidates that we would never want to see in office, while we would really like to support our favorite candidate. By applying the random selection of questions there is a chance we do not get to express our opinions on those particular candidates. In the worst case, we may be asked to judge only candidates of whom we do not have a strong opinion, or worse, that we do not even know. Is our judgment relevant in this case? How willing are we to take the risk to go and vote without the certainty of being able to express the judgments we consider important?
+A natural question that comes to mind when considering the process of asking the voters to judge random alternatives is: how feasible is it? Especially when applying it to political elections, it is safe to say that voters have strong opinions. There are always some candidates that we would never want to see in office, while we would really like to support our favorite candidate. By applying the random selection of questions there is a chance we do not get to express our opinions on those particular candidates. In the worst case, we may be asked to judge only candidates of whom we do not have a strong opinion, or worse, that we do not even know. Is our judgment relevant in this case? How willing are we to take the risk to go and vote without the certainty of being able to express the judgments we consider important?
 
 Because of all these reasons, we may want to consider the possibility for the voters to choose the candidates to judge. One extreme situation that may occur is that each voter judges only its best and worst choice. 
 
