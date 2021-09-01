@@ -71,7 +71,7 @@ Several authors studied the strengths and the weakness of this method \citep{Fel
 
 \section{Notation}
 \label{sec:complete}
-Consider a finite set $N$ of voters (or judges) with $\#N=n\geq 2$ and a finite set $A$ of alternatives (or competitors) with $\#A=m\geq 3$. 
+Consider a finite set $N$ of voters (or judges) with $\#N=n$ and a finite set $A$ of alternatives (or competitors) with $\#A=m$. 
 A \textit{common language} $\Delta = \{ \alpha, \beta, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\alpha \geq \beta$ indicates that $\alpha$ is a better or equivalent grade than $\beta$. A profile $P = P(A,N) = \Delta^{m \times n}$ is a $m$ by $n$ matrix of grades. The operator $\rho: \Delta^{n} \rightarrow \Delta^n$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
 
 Consider a set of alternatives $S\subseteq A$ where $|S|=s$ and $s \in \intvl{1,m}$ \textemdash the double brackets represent an interval in the integers. We denote by $P^S$ a restriction of the profile $P$ to only the alternatives in $S$. Note that when $S=A$ then $P^S=P$.
@@ -115,122 +115,36 @@ Given the set $\tilde{K}$ of the "best" $k$ alternatives, every voter is then as
 
 Please note that $P^{\tilde{K}}$ is a complete matrix of $k \times n$ grades and that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f^k_{maj}$, function to $P^{\tilde{K}}$ to determine the median grades and then the winner function $F^k_{maj}$ to select the winners. For simplicity we denote by $\bar{W} \subseteq A$ the results of this process.
 
+\begin{remark}
+	Because we are interested into investigating \acs{MJ}, we are going to use the same alphabet of grades proposed by \citet{Balinski2011} composed of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be Rejected. Therefore, $\Delta=\{$E, VG, G, A, M, I, TbR$\}$ 
+\end{remark}
+
+Once having defined the notation, the first question that comes to mind is about the risks of incomplete knowledge. Assuming there exists a profile which we only partially know, would we always select the same set of alternatives as winners in case of complete and incomplete knowledge?
+
 \begin{proposition}
 	\label{prop:notsamewinner}
-	Given $m$ alternatives, $n$ voters and any integer $k \in \intvl{1,m-1}$, there exist a complete profile $P$ and an incomplete profile $\bar{P^k}$, such that $P \in C(\bar{P^k})$ and $F_{maj}(P) \neq \bar{W}$.
+	Given $A$ the set of $m\geq 3$ alternatives, $N$ the set of $n\geq3$ voters and any integer $k \in \intvl{1,m-1}$, there exist a complete profile $P$ and an incomplete profile $\bar{P^k}$, such that $P \in C(\bar{P^k})$ and $F_{maj}(P) \nsubseteq \bar{W}$.
 \end{proposition}
 \begin{proof}
+	Pick an alternative $i\in A$ and a voter $j \in N$, let us build a profile $P$ in the following way: the voter $j$ judges \textit{To be Rejected} the alternative $i$ and she judges \textit{Inadequate} all the other alternatives $x \in A \setminus \{i\}$; every other voter $y\in N \setminus \{j\}$ judges \textit{Excellent} the alternative $i$ and \textit{Very Good} all the other alternatives $x \in A \setminus \{i\}$. The resulting profile $P$ will have the form:
+	\begin{center}
+		$
+		\begin{array}{ccccccc}
+			& j_1 & j_2 & \dots & j & \dots & j_n \\
+			i_1 &	VG & VG & \dots & I & \dots & VG \\
+			i_2 &	VG & VG & \dots & I & \dots & VG \\
+			. &	VG & VG & \dots & I & \dots & VG \\
+			i &	E & E & \dots & TbR & \dots & E \\
+			. &	VG & VG & \dots & I & \dots & VG \\
+			i_m &	VG & VG & \dots & I & \dots & VG \\
+		\end{array} \quad.
+		$
+	\end{center}
+	For $n\geq 3$ the median grade $f_{maj}(P_i)=$\textit{Excellent} and $f_{maj}(P_x)=$\textit{Very Good} $\forall x \in A \setminus \{i\}$. Thus, the set of winner $F_{maj}(P)=\{i\}$.
 	
+	Consider now any $k \in \intvl{1,m-1}$, and remove from $P$ as many judgments as necessary such that the following conditions are verified: each column only contains $k$ grades \textemdash meaning that each voter judges $k$ candidates \textemdash and the row corresponding to the alternative $i$ is only formed by two grades, one \textit{Excellent} and one \textit{To be Rejected} \textemdash we have only the best and worst opinion on $i$. We fill all the unknown judgments with \textit{Undefined} grades to obtain $\bar{P^k}$. Note that we only have two judgments for the alternative $i$ so $\bar{f}_{maj}(\bar{P^k}_i)=$\textit{To be Rejected} and, since $m\geq3$ and $1 \leq k \leq m-1$, $\bar{f}_{maj}(\bar{P^k}_x)$ is either \textit{Very Good} or \textit{Inadequate} $\forall x \in A \setminus \{i\}$. Therefore $\bar{f}_{maj}(\bar{P^k}_x) > \bar{f}_{maj}(\bar{P^k}_i)$ $\forall x \in A \setminus \{i\}$, this means that $i$ will not be selected for the second turn, when we ask the voters their complete preferences about the $k$ "best" alternatives. Thus $i \notin \bar{W}$ and, consequently, $F_{maj}(P) \nsubseteq \bar{W}$.
 \end{proof}
 
-\begin{proof} Consider $n=3, m=6, k=5$ and the following complete profile $P$:
-	\begin{center}
-		$
-		\begin{array}{cccc}
-			  & j_1 & j_2 & j_3 \\
-			a &	Excellent	& Excellent & Inadequate\\
-			b &	Mediocre	& Mediocre	& Mediocre\\
-			c &	Mediocre	& Mediocre & Inadequate\\
-			d &	Average	& Average	& Average\\
-			e &	Average	& Mediocre	& Inadequate \\
-			f &	Average	& Mediocre & Mediocre	  \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The vector of medians $f_{maj}(P)$ is:
-	\begin{center}
-		$
-		\begin{array}{cc}
-			a &	Excellent \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Mediocre \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The real winner is $F^P=a$. 
-	
-	Consider now the following incomplete profiles $\bar{P}$ and $\bar{P}'$ obtained after having asked each voter to judge $k=5$ random chosen alternatives: \commentOC{This mixes again the process and the maths. The proposition does not talk about randomness and it is confusing to refer to this here. The proposition holds whatever the way $P$ bar is chosen (including, deterministically).}\commentBN{I'm not sure I got this. With randomness I mean the one in the definition of $\bar{P}$.}
-	\begin{center}
-		$\bar{P}: \qquad
-		\begin{array}{cccc}
-			& j_1 & j_2 & j_3 \\
-			a &	Excellent	& {\color{red}Undefined} & Inadequate\\
-			b &	Mediocre	& Mediocre	& Mediocre\\
-			c &	Mediocre	& Mediocre & Inadequate\\
-			d &	Average	& Average	& {\color{red}Undefined} \\
-			e &	Average	& Mediocre	& Inadequate \\
-			f &	{\color{red}Undefined}	& Mediocre & Mediocre	  \\
-		\end{array} \quad,
-		$
-	\end{center}
-	\begin{center}
-		$\bar{P}': \qquad
-		\begin{array}{cccc}
-			& j_1 & j_2 & j_3 \\
-			a &	Excellent	& Excellent & Inadequate\\
-			b &	Mediocre	& {\color{red}Undefined}	& Mediocre\\
-			c &	Mediocre	& Mediocre & {\color{red}Undefined}\\
-			d &	Average	& Average	& Average \\
-			e &	{\color{red}Undefined}	& Mediocre	& Inadequate \\
-			f &	Average	& Mediocre & Mediocre	  \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The vector of medians are:
-	\begin{center}
-		$f_{maj}(\bar{P})= \quad
-		\begin{array}{cc}
-			a &	Inadequate \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Mediocre \\
-		\end{array} \quad,\quad%
-		f_{maj}(\bar{P}')= \quad
-		\begin{array}{cc}
-			a &	Excellent \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Inadequate \\
-			f & Mediocre \\
-		\end{array} \quad.
-		$
-	\end{center}
-
-	Consider the sets of $s=5$ alternatives with the highest median grades for the two profiles, $S'=\{b,c,d,e,f\}$ for $\bar{P}$, and $S^{\prime\prime}=\{a,b,c,d,f\}$ for $\bar{P}'$, and the two restrictions $P_{S'}$ and $P_{S^{\prime\prime}}$. In particular, $P_{S'}$ corresponds to the complete profile when eliminating the alternative $a$, and $P_{S^{\prime\prime}}$ to the complete profile without the alternative $e$.
-	The vector of medians are:
-	\begin{center}
-		$f_{maj}(P_S')= \quad
-		\begin{array}{cc}
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Mediocre \\
-		\end{array} \quad,\quad%
-		f_{maj}(P_S^{\prime\prime})= \quad
-		\begin{array}{cc}
-			a & Excellent \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			f & Mediocre \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The winner associated to the incomplete profile $\bar{P}$ is then $F^{P_{S'}} = d$ and the one associated to $\bar{P}'$ is $F^{P_{S^{\prime\prime}}} = a$, thus $F^{\bar{P}} \neq F^{\bar{P}'}$.
-\end{proof}
-\commentOC{Perhaps some part of this could be transformed to an example.}
-
-\begin{corollary}
-	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\bar{P}$, such that $F^{\bar{P}}$ is not the real winner.
-\end{corollary}
-\commentOC{“real winner” is inappropriate here. Is there an unreal winner? I realize that you mean “winner considering the complete profile” VS “winner considering some part of it”, but I don’t think that the term “real” is appropriate. I’d simply say “winners” for the winners of the complete election, and perhaps “approximate winners” for the winners given a partial profile, or something similar.}
 
 \section{Experiments}
 \commentOC{Failing to elect a winner, perhaps?}
@@ -489,6 +403,117 @@ Because of all these reasons, we may want to consider the possibility for the vo
 
 \newpage
 \bibliography{biblio}
+\newpage
+\appendix
+\section{Old material that can be transformed into examples}
+\begin{proof} Consider $n=3, m=6, k=5$ and the following complete profile $P$:
+	\begin{center}
+		$
+		\begin{array}{cccc}
+			& j_1 & j_2 & j_3 \\
+			a &	Excellent	& Excellent & Inadequate\\
+			b &	Mediocre	& Mediocre	& Mediocre\\
+			c &	Mediocre	& Mediocre & Inadequate\\
+			d &	Average	& Average	& Average\\
+			e &	Average	& Mediocre	& Inadequate \\
+			f &	Average	& Mediocre & Mediocre	  \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The vector of medians $f_{maj}(P)$ is:
+	\begin{center}
+		$
+		\begin{array}{cc}
+			a &	Excellent \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Mediocre \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The real winner is $F^P=a$. 
+	
+	Consider now the following incomplete profiles $\bar{P}$ and $\bar{P}'$ obtained after having asked each voter to judge $k=5$ random chosen alternatives: \commentOC{This mixes again the process and the maths. The proposition does not talk about randomness and it is confusing to refer to this here. The proposition holds whatever the way $P$ bar is chosen (including, deterministically).}\commentBN{I'm not sure I got this. With randomness I mean the one in the definition of $\bar{P}$.}
+	\begin{center}
+		$\bar{P}: \qquad
+		\begin{array}{cccc}
+			& j_1 & j_2 & j_3 \\
+			a &	Excellent	& {\color{red}Undefined} & Inadequate\\
+			b &	Mediocre	& Mediocre	& Mediocre\\
+			c &	Mediocre	& Mediocre & Inadequate\\
+			d &	Average	& Average	& {\color{red}Undefined} \\
+			e &	Average	& Mediocre	& Inadequate \\
+			f &	{\color{red}Undefined}	& Mediocre & Mediocre	  \\
+		\end{array} \quad,
+		$
+	\end{center}
+	\begin{center}
+		$\bar{P}': \qquad
+		\begin{array}{cccc}
+			& j_1 & j_2 & j_3 \\
+			a &	Excellent	& Excellent & Inadequate\\
+			b &	Mediocre	& {\color{red}Undefined}	& Mediocre\\
+			c &	Mediocre	& Mediocre & {\color{red}Undefined}\\
+			d &	Average	& Average	& Average \\
+			e &	{\color{red}Undefined}	& Mediocre	& Inadequate \\
+			f &	Average	& Mediocre & Mediocre	  \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The vector of medians are:
+	\begin{center}
+		$f_{maj}(\bar{P})= \quad
+		\begin{array}{cc}
+			a &	Inadequate \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Mediocre \\
+		\end{array} \quad,\quad%
+		f_{maj}(\bar{P}')= \quad
+		\begin{array}{cc}
+			a &	Excellent \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Inadequate \\
+			f & Mediocre \\
+		\end{array} \quad.
+		$
+	\end{center}
+	
+	Consider the sets of $s=5$ alternatives with the highest median grades for the two profiles, $S'=\{b,c,d,e,f\}$ for $\bar{P}$, and $S^{\prime\prime}=\{a,b,c,d,f\}$ for $\bar{P}'$, and the two restrictions $P_{S'}$ and $P_{S^{\prime\prime}}$. In particular, $P_{S'}$ corresponds to the complete profile when eliminating the alternative $a$, and $P_{S^{\prime\prime}}$ to the complete profile without the alternative $e$.
+	The vector of medians are:
+	\begin{center}
+		$f_{maj}(P_S')= \quad
+		\begin{array}{cc}
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			e &	Mediocre \\
+			f & Mediocre \\
+		\end{array} \quad,\quad%
+		f_{maj}(P_S^{\prime\prime})= \quad
+		\begin{array}{cc}
+			a & Excellent \\
+			b &	Mediocre \\
+			c &	Mediocre \\
+			d &	Average	\\
+			f & Mediocre \\
+		\end{array} \quad.
+		$
+	\end{center}
+	The winner associated to the incomplete profile $\bar{P}$ is then $F^{P_{S'}} = d$ and the one associated to $\bar{P}'$ is $F^{P_{S^{\prime\prime}}} = a$, thus $F^{\bar{P}} \neq F^{\bar{P}'}$.
+\end{proof}
+\commentOC{Perhaps some part of this could be transformed to an example.}
+
+\begin{corollary}
+	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\bar{P}$, such that $F^{\bar{P}}$ is not the real winner.
+\end{corollary}
+\commentOC{“real winner” is inappropriate here. Is there an unreal winner? I realize that you mean “winner considering the complete profile” VS “winner considering some part of it”, but I don’t think that the term “real” is appropriate. I’d simply say “winners” for the winners of the complete election, and perhaps “approximate winners” for the winners given a partial profile, or something similar.}
 
 \end{document}
 
