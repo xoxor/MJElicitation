@@ -75,20 +75,44 @@ Consider a finite set $N$ of voters (or judges) with $\#N=n$ and a finite set $A
 A \textit{common language} $\Delta = \{ \alpha, \beta, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\alpha \geq \beta$ indicates that $\alpha$ is a better or equivalent grade than $\beta$. A profile $P = P(A,N) = \Delta^{m \times n}$ is a $m$ by $n$ matrix of grades. The operator $\rho: \Delta^{n} \rightarrow \Delta^n$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
 
 Consider a set of alternatives $S\subseteq A$ where $|S|=s$ and $s \in \intvl{1,m}$ \textemdash the double brackets represent an interval in the integers. We denote by $P^S$ a restriction of the profile $P$ to only the alternatives in $S$. Note that when $S=A$ then $P^S=P$.
+\commentOC{Could also write $\restr{P}{S × N}$, which leads to more generality, if restricting the users is also sometimes convenient. For this definition you do not need $S ≠ \emptyset$, I’d remove this restriction. You could write $\emptyset ≠ S \subseteq A$ instead of restricting on the cardinal.}
 
-Given any $s \in \intvl{1,m}$, a grading function $f^s: \Delta^{s \times n} \rightarrow \Delta^s$ is a function that assigns to a profile $P^S$ a vector of final grades, one for each alternative. A social grading function (SGF) is a grading function that is neutral, anonymous, unanimous, monotonic, independent of irrelevant alternatives (IIA) and continuous. 
+Given any $s \in \intvl{1,m}$, a grading function $f^s: \Delta^{s \times n} \rightarrow \Delta^s$ is a function that assigns to a profile $P^S$ a vector of final grades, one for each alternative. 
+\commentOC{to any profile $P^S \in …$.}
+\commentOC{It seems you never use the identity of the alternatives (the content of $S$), just their number ($s$), thus you could probably simplify by using $s$ instead of $S$ in many places. Independently, the notation $P^S$ is a bit strange as it does not in fact in general represent an association of a profile and a set, but simply a matrix in $\Delta^{s × n}$ (which does not require a set $S$ to start with). I’d rather use always the letter $P$ to denote a profile of any size, and write $P \in \Delta^{s × n}$ to specify its size when required.}
+A social grading function (SGF) is a grading function that is neutral, anonymous, unanimous, monotonic, independent of irrelevant alternatives (IIA) and continuous.
+\commentOC{These properties should be defined briefly. Anonymity is built in the definition of a grading function, so I don’t think it can be defined meaningfully here.} 
 % the \emph{middlemost} aggregation function $f$, for each vector of grades $r_i= (r_1 , \dots, r_n )$ associated to the alternative $i \in \intvl{1,m}$, returns: 
 %\begin{align}
 %	f(r_i) &= r_{(n+1)/2} \text{ when n is odd,} \\
 %	r_{n/2} \geq f(r_i) &\geq r_{(n+2)/2} \text{ otherwise.}
 %\end{align}
-The \emph{majority-grade}, $f^s_{maj}$, is a SGF that associates to a profile $P^S$ a vector of median grade values, one for each alternative: $f^s_{maj}(P^S)_i = \rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$, $\forall i \in S$. In other words, the $i$-\emph{th} element of the resulting vector is the median of the ordered vector of grades associated to the alternative $i$. Observe that as $f^s_{maj}$ is IIA, $f^s_{maj}(P^S)_i$ must depend only on $P^S_i$ so we write $f^s_{maj}(P^S_i)$. Moreover, when we consider the complete profile (when $S=A$) we will write $f_{maj}(P_i)$ instead of $f^m_{maj}(P^A_i)$.
+The \emph{majority-grade}, $f^s_{maj}$, is a SGF
+\commentOC{… is the SGF, I suppose} 
+that associates to a profile $P^S$ a vector of median grade values, one for each alternative: $f^s_{maj}(P^S)_i = \rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$, $\forall i \in S$. 
+\commentOC{This requires $n ≠ 0$, which should probably be indicated from the start.}
+In other words, the $i$-\emph{th} element of the resulting vector is the median of the ordered vector of grades associated to the alternative $i$. Observe that as $f^s_{maj}$ is IIA, $f^s_{maj}(P^S)_i$ must depend only on $P^S_i$ so we write $f^s_{maj}(P^S_i)$. 
+\commentOC{This phrasing is a bit odd: you didn’t prove explicitly that it is IIA. (Though I agree it is more or less obvious so you do not have to prove it explicitly.) And the conclusion is more obvious than the justification: it is immediate from the definition that it depends only on $P^S_i$.}
+\commentOC{I’d find it slightly more natural to define first $f…: \Delta^n → \Delta$ and then $f'…$ using that first $f$. Then say that you abuse notation by using the letter $f$ in both cases. This would go from simple to complex rather than the converse.}
+Moreover, when we consider the complete profile (when $S=A$) we will write $f_{maj}(P_i)$ instead of $f^m_{maj}(P^A_i)$.
+\commentOC{I doubt that the $f$ notation is actually useful, it is perhaps short enough to write what it is in full (as you do just below).}
 %i.e. it corresponds to the lower middlemost.
 
-Given any $s \in \intvl{1,m}$, the winner function $F^s:\Delta^{s} \rightarrow W \subseteq A$ is a function that selects the alternatives with the highest median grades as winners: $F^s(P^S) = \argmax_{i\in S}\rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$.
-Let $h$ denote the highest median grade, $h=\max_{i\in S}\rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$, and consider the case where two, or more, alternatives are selected as winners \textemdash i.e. candidates with the same highest median grade $h$. We break ties by removing one $h$ grade from the vectors of grades of each tied alternative, recomputing the new median grade and repeating the process until one unique winner is found or there are no more grades to remove. Please note that in case two, or more, alternatives are associated with the same vector of grades the procedure does not define an unique winner. We denote by $F^s_{maj}$ the winner function after having applied the aforementioned tie-breaking procedure and, for brevity, we will write $F_{maj}$ when considering $S=A$.
+Given any $s \in \intvl{1,m}$, the winner function $F^s:\Delta^{s} \rightarrow W \subseteq A$ is a function that selects the alternatives with the highest median grades as winners: 
+\commentOC{The codomain is incorrect as $F^s$ selects a set of alternatives, not one alternative (if I understand correctly).}
+$F^s(P^S) = \argmax_{i\in S}\rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$.
+\commentOC{As $S$ is undefined here, you can’t use it when defining $F^s$.}
+\commentOC{It is arguable that this is the most natural definition, in case of even $n$, as there are two medians that could be used. I’d find it natural to average them (equivalently, use the other one in case of ties). Is this really the way the authors define it? If so, a short sentence about this would be welcome, to make it clear that this is not an oversight.}
+Let $h$ denote the highest median grade, $h=\max_{i\in S}\rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$, and consider the case where two, or more, alternatives are selected as winners \textemdash i.e. candidates with the same highest median grade $h$. We break ties 
+\commentOC{The phrasing “We break ties” lets the reader suspect that you choose to introduce this. Please specify whether this is the original definition, or rephrase.}
+by removing one $h$ grade from the vectors of grades of each tied alternative, recomputing the new median grade and repeating the process until one unique winner is found or there are no more grades to remove. 
+\commentOC{Isn’t this procedure equivalent to considering the next highest grade, and so on, lexicographically? I think this description is a better explanation of the spirit of the procedure. (And this probably cancels my previous remark about ties.)}
+Please note that in case two, or more, alternatives are associated with the same vector of grades the procedure does not define an unique winner. 
+\commentOC{Perhaps you could just define an ordering over the vector of grades. (This may not be a good suggestion, depending on what you want to do with it.)}
+We denote by $F^s_{maj}$ the winner function after having applied the aforementioned tie-breaking procedure and, for brevity, we will write $F_{maj}$ when considering $S=A$.
 
 Similarly to the winner function, given any $s,q \in \intvl{1,m}$, we can define a more general \emph{selection function} $F^s_q:\Delta^{s} \rightarrow Q \subseteq A$ that selects exactly $q$ alternatives with the $q$ highest median grades. Please note that, even using the tie-breaking procedure, we have no guarantee that $|Q|=q$. In order to enforce this condition we add a last step to the procedure: if ties cannot be broken the candidates are randomly chosen among the tied ones to complete the set of $q$. 
+\commentOC{Then $F$ is not a function any more, and should be treated as a random variable. I don’t think this is a good idea (depending on what you do with $F$ later). Please try to give up the guarantee on the size of $Q$. If you can’t, you might specify that you always favor “low numbered” alternatives, arbitrarily. But this makes $F$ no more anonymous, and makes sense only if also specifying an order on $M$ and that the alternatives are numbered conforming to that order; which introduces quite a bit of complexity, so might not be really better than the random variable path.}
 
 \subsection{Incomplete Knowledge}
 In order to analyse the elicitation procedure used by LaPrimaire.org, we need to adapt the notation just described to incomplete profiles. Let $\bar{P}$ be our knowledge about the profile $P$.
