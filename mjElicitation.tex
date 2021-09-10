@@ -173,9 +173,18 @@ If $h=v$, we have $\binom{(n+1)/2}{(x-1)/2}$ ways of picking $\frac{x-1}{2}$ gra
 %note to myself: find a better way please
 
 We define the probability of $w \notin \tilde{K}$ as the number of incomplete vectors $\bar{P^k}_w$ for which $\bar{f}_{maj}(\bar{P^k}_w) < v$, over the total number of possible incomplete vectors:
+\commentBN{prob of w to be demoted in worst case}
 \[ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n+1}{2} \\ {\frac{x-1}{2}-i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2} \\ {\frac{x+1}{2}+i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} } \]
 
-\commentBN{resume from here}
+\commentBN{prob of w to be demoted for $\beta$ going from $j=0$ to $(n-1)/2$}
+
+\[ P(\bar{h}<h)= \largemath{\sum}_{j=0}^{(n-1)/2}{ \ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n+1}{2}+j \\ {\frac{x-1}{2}-i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2}-j \\ {\frac{x+1}{2}+i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} }} \]
+
+\commentBN{prob of w to be promoted for $\alpha$ going from $j=0$ to $(n-1)/2$ where: the vector of grades $P_w$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha > h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta \leq h$.}
+
+\[ P(\bar{h}>h)= \largemath{\sum}_{j=0}^{(n-1)/2}{ \ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n-1}{2}-j \\ {\frac{x+1}{2}+i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n+1}{2}+j \\ {\frac{x-1}{2}-i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} }} \]
+
+\commentBN{$P(\bar{h}=h)= 1-P(\bar{h}>h)\cdot P(\bar{h}<h)$ : probability of being properly labeled}
 
 The size $x$ of an incomplete vector $\bar{P_i}$ for $i \in A$, depends on the number of questions $k$ asked to the voters, in fact, if we ask $n$ voters to judge $k$ random alternatives, ideally, each alternative $i$ will be judged $\frac{k\cdot n}{m}$ times. Consider the value $k$ as a function of the number of alternatives: $k=c \cdot m$ where $c \in \R$. If $m=10$ and $k=5$ then $k=1/2 m$, i.e. we ask the voters to judge half of the candidates. Thus, the value $x$ depends only on the number of voters $n$ $x=\frac{k\cdot n}{m}= c \cdot n$, $c\in \R$. Without loss of generality we consider both $x$ and $n$ odd values.
 
