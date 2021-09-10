@@ -204,6 +204,22 @@ Because the voters express their judgments on all the alternatives in $\tilde{K}
 and $P^{\tilde{K}}_{i} = P_i$ for any $i \in \tilde{K}$, then if $w \in W^*$ and $w \in \tilde{K}$ then $w \in \bar{W}_{\bar{P^k}}$.
 
 In order to compute the probability of a winning alternative $w$ to not be elected in case of incompleteness, we need to focus on the probability for $w$ not to reach the second round: probability of $w \notin \tilde{K}$.
+\commentBN{If I'm the winner here are three cases I'm not elected in incompleteness:
+\begin{itemize}
+	\item I'm demoted $\Rightarrow \bar{h}<h$
+	\begin{itemize}
+		\item others are promoted $\Rightarrow v>\bar{h}$
+		\item or not $\Rightarrow v>\bar{h}$
+	\end{itemize}
+	\item $\bar{h}=h$
+	\begin{itemize}
+		\item others are promoted $\Rightarrow v>\bar{h}$
+	\end{itemize}
+	\item I'm promoted $\Rightarrow \bar{h}>h$
+	\begin{itemize}
+		\item others are promoted $\Rightarrow v>\bar{h}$
+	\end{itemize}
+\end{itemize}}
 
 Consider the complete profile $P$ and the highest median grade $h=\max_{i\in A}\rho(P_i)_{\lfloor \frac{n}{2} \rfloor + 1}$. Since $w \in W^*$ then $f_{maj}(P_{w})\geq h$ and the vector of grades $P_w$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha \geq h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta < h$. Let us evaluate the worst case scenario.
 Without loss of generality consider $n$ an odd value, then the vector $P_{w}$ in the worst case contains exactly $\frac{n+1}{2}$ grades greater than or equal to $h$ and $\frac{n-1}{2}$ grades lower than $h$.
