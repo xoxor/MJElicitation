@@ -72,86 +72,80 @@ Several authors studied the strengths and the weakness of this method \citep{Fel
 \section{Notation}
 \label{sec:complete}
 Consider a finite set $N$ of voters (or judges) with $\#N=n$ and a finite set $A$ of alternatives (or competitors) with $\#A=m$. 
-A \textit{common language} $\Delta = \{ \delta_1, \delta_2, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\delta_1 \geq \delta_2$ indicates that $\delta_1$ is a better or equivalent grade than $\delta_2$. 
-\commentOC{I think that using a symbol different that the usual comparison relation on the natural numbers (perhaps, triangle, see my template) would be most welcome, to reduce possible confusions.}
-A profile $P : A\times N \rightarrow \Delta$ is a $m$ by $n$ matrix of grades $P \in \Delta^{A \times N}$. The operator $\rho: \Delta^{N} \rightarrow \Delta^n$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
+A \textit{common language} $\triangle = \{ \delta_1, \delta_2, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\delta_1 \geq \delta_2$ indicates that $\delta_1$ is a better or equivalent grade than $\delta_2$. 
+\commentOC{I think that using a symbol different that the usual comparison relation on the natural numbers (perhaps, triangle, see my template) would be most welcome, to reduce possible confusions.}\commentBN{Ok. Although now small $\delta$ makes less sense.}
+A profile $P : A\times N \rightarrow \triangle$ is a $m$ by $n$ matrix of grades $P \in \triangle^{A \times N}$. The operator $\rho: \triangle^{N} \rightarrow \triangle^n$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
 
 Consider a set of alternatives $S\subseteq A$,
 %where $|S|=s$ and $s \in \intvl{1,m}$ \textemdash the double brackets represent an interval in the integers. 
-we denote by $P^S \in \Delta^{S \times N}$ a restriction of the profile $P$ to only the alternatives in $S$, $P^S \subseteq P$. Note that when $S=A$ then $P^S=P$.
+we denote by $P^S \in \triangle^{S \times N}$ a restriction of the profile $P$ to only the alternatives in $S$, $P^S \subseteq P$. Note that when $S=A$ then $P^S=P$.
 %\commentOC{Could also write $\restr{P}{S × N}$, which leads to more generality, if restricting the users is also sometimes convenient.}
 
-We define $f: \Delta^{N} \rightarrow \Delta$ a function that assigns to any vector of grades a final grade. Given any $S\subseteq A$, a grading function $f^S: \Delta^{S \times N} \rightarrow \Delta^S$ returns a vector of final grades by applying $f$ to every alternative in $S$.
+We define $f: \triangle^{N} \rightarrow \triangle$ a function that assigns to any vector of grades a final grade. Given any $S\subseteq A$, a grading function $f^S: \triangle^{S \times N} \rightarrow \triangle^S$ returns a vector of final grades by applying $f$ to every alternative in $S$.
 A social grading function (SGF) is a grading function that is neutral, anonymous, unanimous, monotonic, independent of irrelevant alternatives (IIA) and continuous.
 \commentOC{These properties should be defined briefly. 
 Anonymity is built in the definition of a grading function, so I don’t think it can be defined meaningfully here.
 With the current presentation I think that even IIA is built into the definition, as you require that $f^S$ applies $f$ to every alternative.
 That seems too restrictive to define a meaningful class of functions (and I suppose is not what the authors mean as SGF). 
-Alternatively, you could give up this part, as your paper is not mainly about how MJ compares to similar rules.}
+Alternatively, you could give up this part, as your paper is not mainly about how MJ compares to similar rules.}\commentBN{I agree, do I define $f$ directly a SGF ? I just wanted to be consistent with B\&L.}
 % the \emph{middlemost} aggregation function $f$, for each vector of grades $r_i= (r_1 , \dots, r_n )$ associated to the alternative $i \in \intvl{1,m}$, returns: 
 %\begin{align}
 %	f(r_i) &= r_{(n+1)/2} \text{ when n is odd,} \\
 %	r_{n/2} \geq f(r_i) &\geq r_{(n+2)/2} \text{ otherwise.}
 %\end{align}
 
-The \emph{majority-grade}, $f_{maj}$, is the function that associates to a vector of grades $q \in \Delta^N$, with $|q|\neq 0$, 
-\commentOC{Very minor, but I’d write $\emptyset ≠ q \in \Delta^N$.}
-its median grade value: $f_{maj}(q) = \rho(q)_{\lfloor \frac{|q|}{2} \rfloor + 1}$. 
-\commentOC{$n$ would be clearer than $\card{q}$. But I suspect that you want to make this more general with $\emptyset ≠ q \in \Delta^N'$ for any $N' \subseteq N$. (And I think that my template has a better floor command.)}
-Given any $S\subseteq A$, by applying $f_{maj}$ to all vectors of grades associated to the alternatives in $S$ we obtain the corresponding SGF $f^S_{maj}$. 
-\commentOC{Formally, $f^S_\mathit{maj}(P^S)_i = f_\mathit{maj}(P^S_i)$.}
-The $i$-\emph{th} element of the resulting vector is the median of the ordered vector of grades associated to the $i$-\emph{th} alternative. Because $f^S_{maj}(P^S)_i$ must depend \commentOC{depends} only on $P^S_i$ we write $f^S_{maj}(P^S_i)$. 
-\commentOC{I am not sure I follow. You already have a notation for this, namely, $f_\mathit{maj}(P^S_i)$, isn’t it?}
+The \emph{majority-grade}, $f_{maj}$, is the function that associates to a vector of grades $q \in \triangle^{N'}, \emptyset \neq N' \subseteq N$ its median grade value: $f_{maj}(q) = \rho(q)_{\floor{\frac{|q|}{2}} + 1}$. \commentOC{Very minor, but I’d write $\emptyset ≠ q \in \Delta^N$.} \commentOC{$n$ would be clearer than $\card{q}$. But I suspect that you want to make this more general with $\emptyset \neq q \in \triangle^{N'}$ for any $N' \subseteq N$.}\commentBN{Is this better? Let's keep q until we know we don't need it.}
+Given any $S\subseteq A$, by applying $f_{maj}$ to all vectors of grades associated to the alternatives in $S$ we obtain the corresponding SGF $f^S_{maj}$. Formally, $f^S_\mathit{maj}(P^S)_i = f_\mathit{maj}(P^S_i)$. The $i$-\emph{th} element of the resulting vector is the median of the ordered vector of grades associated to the $i$-\emph{th} alternative. 
+%Because $f^S_{maj}(P^S)_i$ depends only on $P^S_i$ we write $f^S_{maj}(P^S_i)$. \commentOC{I am not sure I follow. You already have a notation for this, namely, $f_\mathit{maj}(P^S_i)$, isn’t it?}
 Moreover, when we consider the complete profile (when $S=A$) we will write $f_{maj}(P_i)$ instead of $f^A_{maj}(P^A_i)$.
-\commentOC{I doubt that the $f$ notation is actually useful, it is perhaps short enough to write what it is in full (as you do just below). At least, this mix-up between $f$ and $f^S$ should be clarified.}
+\commentOC{I doubt that the $f$ notation is actually useful, it is perhaps short enough to write what it is in full (as you do just below). At least, this mix-up between $f$ and $f^S$ should be clarified.}\commentBN{The mix-up you mean your comment just above that is now commented out?}
 %i.e. it corresponds to the lower middlemost.
 
-Given any $S\subseteq A$, the winner function $F^S_{maj}:\Delta^{S \times N} \rightarrow A$ %$F^S_{maj}:\Delta^{S \times N} \rightarrow 2^A \setminus \emptyset$
-is a function that selects the alternative with the highest median grade as winner: $F^S_{maj}(P^S) = \argmax_{i\in S}\rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$. 
-\commentOC{This defines in general a set of alternatives, you can’t just choose to ignore that. You must at least add “assuming it is a singleton”.}
+Given any $S\subseteq A$, the winner function $F^S_{maj}:\triangle^{S \times N} \rightarrow A$ %$F^S_{maj}:\triangle^{S \times N} \rightarrow 2^A \setminus \emptyset$
+is a function that selects the alternative with the highest median grade as winner: $F^S_{maj}(P^S) = \argmax_{i\in S}\rho(P^S_i)_{\floor{\frac{n}{2}}+ 1}$. 
+\commentOC{This defines in general a set of alternatives, you can’t just choose to ignore that. You must at least add “assuming it is a singleton”.}\commentBN{What if we remove this and define $F^S_{maj}$ using the ordering on the alternatives as below? }
 Note that in case $n$ is even two medians could be used for an alternative, but the lower grade is picked.
-\commentOC{Perhaps cite the authors again here, to emphasize that this is their choice, if this is true. This remark should come when you define the stuff that picks a median (rho, I believe).}
-Let $h$ denote the highest median grade associated to the alternatives in $S$, $h=\max_{i\in S}\rho(P^S_i)_{\lfloor \frac{n}{2} \rfloor + 1}$, and consider the case where two, or more, alternatives could be selected as winners \textemdash i.e. candidates with the same highest median grade $h$. 
+\commentOC{Perhaps cite the authors again here, to emphasize that this is their choice, if this is true. This remark should come when you define the stuff that picks a median (rho, I believe).}\commentBN{I don't really see the point to emphasize it. It's already implicit in the floor no?}
+Let $h$ denote the highest median grade associated to the alternatives in $S$, $h=\max_{i\in S}\rho(P^S_i)_{\floor{\frac{n}{2}} + 1}$, and consider the case where two, or more, alternatives could be selected as winners \textemdash i.e. candidates with the same highest median grade $h$. 
 \commentOC{Just write “if the set blah is not a singleton, …”}
-Ties are broken by removing one $h$ grade from the vectors of grades of each tied alternative, recomputing the new median grade and repeating the process until one unique winner is found or there are no more grades to remove. When $n$ is odd, this is equivalent to take the next element after the median, i.e. the one at index $(\lfloor \frac{n}{2} \rfloor + 1) +1$, if there is still a tie we then look at the previous element before the median, i.e. the one at index $(\lfloor \frac{n}{2} \rfloor + 1) -1$, and keep alternating until the tie is broken or there are no more elements in the vector. When $n$ is even the process is similar but we alternate starting from the element before the median, $\lfloor \frac{n}{2} \rfloor$, then the one after, $\lfloor \frac{n}{2} \rfloor + 2$, and so on.
+Ties are broken by removing one $h$ grade from the vectors of grades of each tied alternative, recomputing the new median grade and repeating the process until one unique winner is found or there are no more grades to remove. When $n$ is odd, this is equivalent to take the next element after the median, i.e. the one at index $(\floor{\frac{n}{2}} + 1) +1$, if there is still a tie we then look at the previous element before the median, i.e. the one at index $(\floor{\frac{n}{2}} + 1) -1$, and keep alternating until the tie is broken or there are no more elements in the vector. When $n$ is even the process is similar but we alternate starting from the element before the median, $\floor{\frac{n}{2}}$, then the one after, $\floor{\frac{n}{2}} + 2$, and so on.
 \commentOC{Written as it is, I am doubtful about the value of this remark.}
 \commentOC{Because of the paragraph break here, the reader may think she has missed something, as this is still not guaranteed to be a singleton and it is not immediately clear that you are still talking about the tie-breaking issue in the next paragraph.}
 
 We denote by $>$ an ordering over the alternatives, given any set $S\subseteq A$ and any pair of candidates $i,j \in S$ we say that $i > j$ iff $f^S_{maj}(P^S_i) > f^S_{maj}(P^S_j)$ applying the tie-breaking procedure when necessary. Please note that in case $P^S_i=P^S_j$ then $f^S_{maj}(P^S_i) = f^S_{maj}(P^S_j)$ even after having applied the tie-breaking procedure, in this case we follow the lexicographical order.
-\commentOC{This ordering depends on $P^S$, that’s a bit odd, it should at least be mentioned that it is used when $P^S$ is clear from the context, if this is what you mean. But do you really need this?}
+\commentOC{This ordering depends on $P^S$, that’s a bit odd, it should at least be mentioned that it is used when $P^S$ is clear from the context, if this is what you mean. But do you really need this?}\commentBN{I'm not sure what you mean, should I add "Given a profile $P^S$"}
 \commentOC{Lexicographical order may be unclear, it seems to me. Rather just write that an arbitrary ordering defined on all alternatives is used to break ties.}
 
 Thus $F^S_{maj}$ can also be defined as $F^S_{maj}=i\in S$ such that $i > j, \forall j \in S \setminus \{ i \}$. 
 \commentOC{I am very dubious that this makes anything clearer.}
 For brevity, we will write $F_{maj}$ when considering $S=A$.
 
-Similarly to the winner function, given any $q \in \intvl{1,m}$, we can define a more general \emph{selection function} $F^S_q:\Delta^{S\times N} \rightarrow 2^A \setminus \emptyset$ that selects exactly the $q$ alternatives with the $q$ highest median grades.
-Considering that $F^S_{1}=F^S_{maj}$ we define $F^S_{q}=F^S_{q-1} \cup \{i\in S \suchthat i > j, \forall j \in S \setminus F^S_{q-1} \}$.
+Similarly to the winner function, given any $x \in \intvl{1,m}$, we can define a more general \emph{selection function} $F^S_x:\triangle^{S\times N} \rightarrow 2^A \setminus \emptyset$ that selects exactly the $x$ alternatives with the $x$ highest median grades.
+Considering that $F^S_{1}=F^S_{maj}$ we define $F^S_{x}=F^S_{x-1} \cup \{i\in S \suchthat i > j, \forall j \in S \setminus F^S_{x-1} \}$.
 
 \subsection{Incomplete Knowledge}
 In order to analyse the elicitation procedure used by LaPrimaire.org, we need to adapt the notation just described to incomplete profiles. 
 \commentOC{Defining the right, full notations from the start would be more gentle for the reader.} Let $\overline{P}$ be our knowledge about the profile $P$.
 The voters have full knowledge of their own judgments but we ignore them; our goal is to elicit them by questioning the voters starting from zero knowledge.
-We introduce an additional \emph{Undefined} grade, $\overline{\Delta}=\Delta \cup \{\textit{Undefined}\}$. Voters cannot use this grade to express their judgment over an alternative and it does not count in the computation of the median grade as we will explain formally. We refer to the grades in $\Delta$, the ones used by voters, as "defined" grades.
+We introduce an additional \emph{Undefined} grade, $\overline{\triangle}=\triangle \cup \{\textit{Undefined}\}$. Voters cannot use this grade to express their judgment over an alternative and it does not count in the computation of the median grade as we will explain formally. We refer to the grades in $\triangle$, the ones used by voters, as "defined" grades.
 
 The starting knowledge is represented by a matrix $m\times n$ of \textit{Undefined} grades. We define with $K_j \subseteq A$ a set of $k$ alternatives that we ask the voter $j\in N$ to judge. 
-After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\overline{P}\in \overline{\Delta}^{A \times N}$, that is a matrix $m \times n$ of grades of which $k \times n$ are "defined". 
-\commentOC{Minor, but I’d write $kn$ instead of $k × n$ to avoid a possible confusion in the mind of the reader that this would be a $k × n$ sub-matrix.}
-Note that when $k=n$ the resulting profile $\overline{P}$ corresponds to the complete profile $P$. Let $C(\overline{P}) = \{P' \in \Delta^{m \times n} \suchthat \overline{P} \subseteq P'\}$ be the set of all completions of $\overline{P}$ obtained by substituting all \emph{Undefined} grades with "defined" ones, note that $P \in C(\overline{P})$.
+After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\overline{P}\in \overline{\triangle}^{A \times N}$, that is a matrix $m \times n$ of grades of which $kn$ are "defined".
+Note that when $k=n$ the resulting profile $\overline{P}$ corresponds to the complete profile $P$. Let $C(\overline{P}) = \{P' \in \triangle^{m \times n} \suchthat \overline{P} \subseteq P'\}$ be the set of all completions of $\overline{P}$ obtained by substituting all \emph{Undefined} grades with "defined" ones, note that $P \in C(\overline{P})$.
 \commentOC{Technically that’s not correct as $P$bar may contain some “undefined”, in which case $P$ can’t be a superset of it. (Can be left as is for now.)}
  
 If $K_j=K_l, \forall j,l\in N$, i.e. \commentOC{I think that ie requires a comma afterwards, and the spacing could be improved.}\commentBN{In British English, “i.e.” and “e.g.” are not followed by a comma. Virtually all American style guides recommend to follow both “i.e.” and “e.g.” with a comma(just like if “that is” and “for example” were used instead)}
-\commentOC{That some people that are not British choose to write in British English has always puzzled me. That’s a bit like choosing to count in French from France instead of French from Switzerland when one has a choice. Anyway.}
+\commentOC{That some people that are not British choose to write in British English has always puzzled me. That’s a bit like choosing to count in French from France instead of French from Switzerland when one has a choice. Anyway.}\commentBN{I'm not American either. It's matter of choosing a standard and be consistent. BTW I don't have a preference for any of them.}
 if we ask all voters to judge the same $k$ alternatives, then we have complete knowledge restricted to this set of candidates. As defined in \Cref{sec:complete}, we call $P^{K_j}$ the restriction of the complete profile $P$ to only the alternatives in $K_j$.
 \commentOC{I wonder if this notation will be useful.}
 
-Let $g:\overline{\Delta}^N\rightarrow \bigcup_{x \in \intvl{1,n}}\Delta^{x}$, where $x \in \intvl{1,n}$, be a function that given an incomplete vector of grades returns the vector composed only of the $x$ "defined" grades. 
+Let $g:\overline{\triangle}^N\rightarrow \bigcup_{N' \subseteq N}\triangle^{N'}$ be a function that given an incomplete vector of grades returns the vector composed only of the "defined" grades. 
 \commentOC{… for some $x \in …$. But it would be nicer to not lose the identity of the voters here as this is unrelated to the removal of the Undefined grades, the real goal of the $g$ operation. Using all possible subsets $N'$ of $N$ instead of all $x$ would achieve this.
-Also, specify that given $q \in …$, thus, $q \subseteq N × \Delta bar$, $g(q) = \restr{q}{N × \Delta}$.}
+Also, specify that given $q \in …$, thus, $q \subseteq N × \triangle bar$, $g(q) = \restr{q}{N × \triangle}$.}\commentBN{I'm not sure I get this.}
 
 %The operator $\overline{\rho}$ defines a restricting ordering function that given $\overline{P_i}$, an incomplete vector of $n$ grades, returns the correspondent complete vector restricted to its $x$ "defined" grades decreasingly ordered: $\overline{\rho}(\overline{P_i})=\rho(d(\overline{P_i}))$. \commentBN{Not sure this is necessary.}
 
-Given any $S \subseteq A$, the \emph{majority-grade} for incomplete profile $\overline{f}^S_{maj}: (\bigcup_{x \in \intvl{1,n}}\Delta^{x})^S \rightarrow \Delta^S$ corresponds to $f^S_{maj}$ that only considers the "defined" grades in the computation of the median. Denote by $P'=g(\overline{P}^S_i)$, then $\overline{f}^S_{maj}(P')_i = \rho(P')_{\lfloor \frac{\card{P'}}{2} \rfloor + 1}$, $\forall i \in S$. 
+Given any $S \subseteq A$, the \emph{majority-grade} for incomplete profile $\overline{f}^S_{maj}: (\bigcup_{x \in \intvl{1,n}}\triangle^{x})^S \rightarrow \triangle^S$ corresponds to $f^S_{maj}$ that only considers the "defined" grades in the computation of the median. Denote by $P'=g(\overline{P}^S_i)$, then $\overline{f}^S_{maj}(P')_i = \rho(P')_{\floor{\frac{\card{P'}}{2}} + 1}$, $\forall i \in S$. 
 \commentOC{$P^S_i$ bar is undefined. And $P'$ doesn’t seem to have the right type.}
 
 To summarize, starting with zero knowledge, we ask the voters to judge $k$ candidates. Given the partial information at our disposal, we are able to define the "known" median grade for each alternative. We can now use the \emph{selection function} $F^S_k$, defined in \Cref{sec:complete}, to select the $k$ alternatives with the highest "known" median grades.
@@ -159,11 +153,11 @@ To summarize, starting with zero knowledge, we ask the voters to judge $k$ candi
 Given the set $\tilde{K}=F^S_k(g(\overline{P}^S_i))$ of the best $k$ alternatives, every voter is then asked to judge all the candidates in $\tilde{K}$. 
 This process results in a restriction $P^{\tilde{K}}$ of the complete profile $P$. It is important to mention that when we ask the voters to judge an alternative $i\in \tilde{K}$ we assume that they report their preference as they would have stated it when asked about $P$. In other words, $P^{\tilde{K}}_{i} = P_i$ for any $i \in \tilde{K}$.
 
-Please note that $P^{\tilde{K}}$ is a complete matrix of $k \times n$ grades and that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f^{\tilde{K}}_{maj}$, function to $P^{\tilde{K}}$ to determine the median grades and then the winner function $F^{\tilde{K}}_{maj}$ to select the winner. 
+Please note that $P^{\tilde{K}}$ is a complete matrix of $kn$ grades and that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f^{\tilde{K}}_{maj}$, function to $P^{\tilde{K}}$ to determine the median grades and then the winner function $F^{\tilde{K}}_{maj}$ to select the winner. 
 %For simplicity we denote by $\overline{W}_{\overline{P^k}} \subseteq A$ the results of this process.
 
 \begin{remark}
-	Because we are interested into investigating \acs{MJ}, we are going to use an alphabet with the same size of the one proposed by \citet{Balinski2011} which is composed of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be Rejected. For brevity we are gonna rename those adjectives respectively from $\delta_7$, corresponding to Excellent, to$\delta_1$, corresponding to To be Rejected. Therefore, $\Delta=\{\delta_1,\delta_2, \delta_3,\delta_4,\delta_5,\delta_6,\delta_7\}$ 
+	Because we are interested into investigating \acs{MJ}, we are going to use an alphabet with the same size of the one proposed by \citet{Balinski2011} which is composed of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be Rejected. For brevity we are gonna rename those adjectives respectively from $\delta_7$, corresponding to Excellent, to$\delta_1$, corresponding to To be Rejected. Therefore, $\triangle=\{\delta_1,\delta_2, \delta_3,\delta_4,\delta_5,\delta_6,\delta_7\}$ 
 \end{remark}
 
 Once having defined the notation, the first question that comes to mind is about the risks of incomplete knowledge. Given a profile which we only partially know, would we always select the same set of alternatives as winners in case of complete and incomplete knowledge?
@@ -233,7 +227,7 @@ In order to compute the probability of a winning alternative $w$ to not be elect
 	\end{itemize}
 \end{itemize}}
 
-Consider the complete profile $P$ and the highest median grade $h=\max_{i\in A}\rho(P_i)_{\lfloor \frac{n}{2} \rfloor + 1}$. Since $w \in W^*$ then $f_{maj}(P_{w})\geq h$ and the vector of grades $P_w$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha \geq h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta < h$. Let us evaluate the worst case scenario.
+Consider the complete profile $P$ and the highest median grade $h=\max_{i\in A}\rho(P_i)_{\floor{\frac{n}{2}} + 1}$. Since $w \in W^*$ then $f_{maj}(P_{w})\geq h$ and the vector of grades $P_w$ must be composed of at least $\floor{\frac{n}{2}}+1$ grades $\alpha \geq h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta < h$. Let us evaluate the worst case scenario.
 Without loss of generality consider $n$ an odd value, then the vector $P_{w}$ in the worst case contains exactly $\frac{n+1}{2}$ grades greater than or equal to $h$ and $\frac{n-1}{2}$ grades lower than $h$.
 \[P_w : \qquad [ \alpha_1, \dots , \alpha_{\frac{n+1}{2}}, \beta_1, \dots , \beta_{\frac{n-1}{2}} ] \]
 Consider now the incomplete profile $\overline{P^k} \subset P$ and the highest "known" median $v$ described above. For $w \notin \tilde{K}$ then $\overline{f}_{maj}(\overline{P^k}_w) < v$ and the partial vector $\overline{P^k}_w$ of $x\in \intvl{1,n-1}$ defined grades must be composed of at least $\frac{x+1}{2}$ grades $\beta'<v$ and at most $\frac{x-1}{2}$ grades $\alpha' \geq v$. 
@@ -254,7 +248,7 @@ We define the probability of $w \notin \tilde{K}$ as the number of incomplete ve
 
 \[ P(\overline{h}<h)= \largemath{\sum}_{j=0}^{(n-1)/2}{ \ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n+1}{2}+j \\ {\frac{x-1}{2}-i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2}-j \\ {\frac{x+1}{2}+i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} }} \]
 
-\commentBN{prob of w to be promoted for $\alpha$ going from $j=0$ to $(n-1)/2$ where: the vector of grades $P_w$ must be composed of at least $\lfloor \frac{n}{2}\rfloor+1$ grades $\alpha > h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta \leq h$.}
+\commentBN{prob of w to be promoted for $\alpha$ going from $j=0$ to $(n-1)/2$ where: the vector of grades $P_w$ must be composed of at least $\floor{\frac{n}{2}}+1$ grades $\alpha > h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta \leq h$.}
 
 \[ P(\overline{h}>h)= \largemath{\sum}_{j=0}^{(n-1)/2}{ \ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n-1}{2}-j \\ {\frac{x+1}{2}+i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n+1}{2}+j \\ {\frac{x-1}{2}-i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} }} \]
 
