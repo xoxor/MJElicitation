@@ -72,7 +72,7 @@ Several authors studied the strengths and the weakness of this method \citep{Fel
 \section{Notation}
 \label{sec:complete}
 Consider a finite set $N$ of voters (or judges) with $\#N=n$ and a finite set $A$ of alternatives (or competitors) with $\#A=m$. 
-A \textit{common language} $\triangle = \{ \delta_1, \delta_2, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\delta_1 \geq \delta_2$ indicates that $\delta_1$ is a better or equivalent grade than $\delta_2$. A profile $P : A\times N \rightarrow \triangle$ is a $m$ by $n$ matrix of grades $P \in \triangle^{A \times N}$. The operator $\rho: \triangle^{N} \rightarrow \triangle^n$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
+A \textit{common language} $\triangle = \{ \delta_1, \delta_2, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\delta_1 \geq \delta_2$ indicates that $\delta_1$ is a better or equivalent grade than $\delta_2$. A profile $P : A\times N \rightarrow \triangle$ is a $m$ by $n$ matrix of grades $P \in \triangle^{A \times N}$. Given any $N'\subseteq N$, the operator $\rho: \triangle^{N'} \rightarrow \triangle^{\card{N'}}$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
 
 Consider a set of alternatives $S\subseteq A$,
 %where $|S|=s$ and $s \in \intvl{1,m}$ \textemdash the double brackets represent an interval in the integers. 
