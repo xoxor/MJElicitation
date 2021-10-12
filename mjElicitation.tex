@@ -107,7 +107,7 @@ We introduce an additional grade $\dbar$, and, given a language $\Delta$, $\dbar
 The starting knowledge is represented by a matrix $m\times n$ of $\dbar$ grades. \commentOC{Given $k \in \N$, …} We define with $K_j \subseteq A$ a set of $k$ alternatives that we ask the voter $j\in N$ to judge. 
 After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\overline{P}\in \overline{\triangle}^{A \times N}$, that is a matrix $m \times n$ of grades of which $kn$ are "defined".
 Note that when $k=n$ the resulting profile $\overline{P}$ corresponds to the complete profile $P$. Let $C(\overline{P}) = \{P' \in \triangle^{m \times n} \suchthat \overline{P} \subseteq P'\}$ be the set of all completions of $\overline{P}$ obtained by substituting all $\dbar$ grades with "defined" ones, note that $P \in C(\overline{P})$.
-\commentOC{Technically this is incorrect as $P$bar may contain some “undefined”, in which case $P$ can’t be a superset of it. (Can be left as is for now.) Also, I suppose that $P$ should keep the identities of the alternatives and voters.}
+\commentOC{Technically that’s not correct as $P$bar may contain some “undefined”, in which case $P$ can’t be a superset of it. (Can be left as is for now.) Also, I suppose that $P$ should keep the identities of the alternatives and voters.}
  
 If $K_j=K_l, \forall j,l\in N$, i.e. if we ask all voters to judge the same $k$ alternatives, then we have complete knowledge restricted to this set of candidates. As defined in \Cref{sec:complete}, we call $P^{K_j}$ the restriction of the complete profile $P$ to only the alternatives in $K_j$.
 \commentOC{I wonder if this notation will be useful.}
@@ -170,9 +170,9 @@ Assume that the complete profile $P$ exists but it \commentOC{I suggest removing
 Consider $A=\{a,b,c\}$ the set of alternatives, $N=\{v_1,v_2, \dots\}$ the set of voters and $\Delta=\{\delta_1, \dots, \delta_{10}\}$ the common language. We assume that we ask $k=m-1=2$ independently \commentOC{and equiprobably} drawn questions to each voter. We denote by $\mathcal{P}(e)$ the probability of the event $e$ to happen.
 
 \commentOC{Please specify that you assume no tie in the highest median grade in these computations.}
+\commentOC{Please write your results as theorems, and the reasoning as a proof. Please specify that the profiles you display are only illustrative, not the general case.}
 
 \paragraph{One voter}
-\commentOC{Please write your result as a theorem, and the reasoning as a proof. Please specify that the profiles you display are only illustrative, not the general case.}
 Consider the following complete profile $P$, because we only have one voter the median of each alternative simply corresponds to the grade assigned from $v_1$.
 \begin{center}
 	$P:
@@ -210,7 +210,9 @@ Consider now the following profile $P$ with two voters.
 	\end{array} \quad, \qquad
 	$
 \end{center}
-The median is the lowest between the two possible value thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile there are two possibilities, either we do not know anything about $a$, then $b$ and $c$ are automatically selected for the next phase whatever their medians are (case $1$: $\overline{P}'$), or the new medians of $b$ and $c$ computed with missing information are higher than the current median of $a$ (case $2$: $\overline{P}^{\second}$). For the case $2$ to happen there are two conditions to be satisfied: the minimum grades of $b$ and $c$ must be missing in the incomplete profile \underline{and} both the maximum grade of $b$ and the maximum grade of $c$ must be greater than the minimum grade of $a$. Note that, because each voter gives her opinion about $k=2$ alternatives, for the former condition to be possible then the minimum grades of $b$ and $c$ must not be assigned by the same voter. 
+The median is the lowest between the two possible value thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile there are two possibilities, either we do not know anything about $a$, then $b$ and $c$ are automatically selected for the next phase whatever their medians are 
+\commentOC{I don’t think that this has been specified before.}
+(case $1$: $\overline{P}'$), or the new medians of $b$ and $c$ \commentOC{“new” (and old) is confusing here; I’d write “approximate” (and real)} computed with missing information are higher than the current median of $a$ (case $2$: $\overline{P}^{\second}$). For the case $2$ to happen there are two conditions to be satisfied: the minimum grades of $b$ and $c$ must be missing in the incomplete profile \underline{and} both the maximum grade of $b$ and the maximum grade of $c$ must be greater than the minimum grade of $a$. Note that, because each voter gives her opinion about $k=2$ alternatives, for the former condition to be possible then the minimum grades of $b$ and $c$ must not be assigned by the same voter. 
 
 \begin{center}
 	$\overline{P}':
@@ -715,4 +717,3 @@ By crossing these results we note that we could have asked the voters far less t
 
 
 \end{document}
-
