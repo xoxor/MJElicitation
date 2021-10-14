@@ -99,13 +99,13 @@ Similarly to the winner function, given any $x \in \intvl{1,m}$, we can define a
 
 \subsection{Incomplete Knowledge}
 In order to analyze the elicitation procedure used by LaPrimaire.org, we need to adapt the notation just described to incomplete profiles. 
-\commentOC{Defining the right, full notations from the start would be more gentle for the reader.} Let $\overline{P}$ be our knowledge about the profile $P$.
+\commentOC{Defining the right, full notations from the start would be more gentle for the reader.} Let $\Pbar$ be our knowledge about the profile $P$.
 The voters have full knowledge of their own judgments but we ignore them; our goal is to elicit them by questioning the voters starting from zero knowledge.
 We introduce an additional grade $\dbar$, and, given a language $\Delta$, $\dbar< \delta, \forall \delta \in \Delta$. \commentBN{I think we should avoid to say this but rather add in $\bar{F}$ that the $\dbar$ are excluded.} The common language in the incomplete knowledge setting is then $\overline{\triangle}=\triangle \cup \dbar$. Voters cannot use this grade to express their judgment over an alternative and it does not count in the computation of the median grade as we will explain formally. We refer to the grades in $\triangle$, the ones used by voters, as "defined" grades.
 
 The starting knowledge is represented by a matrix $m\times n$ of $\dbar$ grades. We define with $K_j \subseteq A$ a set of $k$ alternatives that we ask the voter $j\in N$ to judge. 
-After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\overline{P}\in \overline{\triangle}^{A \times N}$, that is a matrix $m \times n$ of grades of which $kn$ are "defined".
-Note that when $k=n$ the resulting profile $\overline{P}$ corresponds to the complete profile $P$. Let $C(\overline{P}) = \{P' \in \triangle^{m \times n} \suchthat \overline{P} \subseteq P'\}$ be the set of all completions of $\overline{P}$ obtained by substituting all $\dbar$ grades with "defined" ones, note that $P \in C(\overline{P})$.
+After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\Pbar\in \overline{\triangle}^{A \times N}$, that is a matrix $m \times n$ of grades of which $kn$ are "defined".
+Note that when $k=n$ the resulting profile $\Pbar$ corresponds to the complete profile $P$. Let $C(\Pbar) = \{P' \in \triangle^{m \times n} \suchthat \Pbar \subseteq P'\}$ be the set of all completions of $\Pbar$ obtained by substituting all $\dbar$ grades with "defined" ones, note that $P \in C(\Pbar)$.
 \commentOC{Technically that’s not correct as $P$bar may contain some “undefined”, in which case $P$ can’t be a superset of it. (Can be left as is for now.)}
  
 If $K_j=K_l, \forall j,l\in N$, i.e. if we ask all voters to judge the same $k$ alternatives, then we have complete knowledge restricted to this set of candidates. As defined in \Cref{sec:complete}, we call $P^{K_j}$ the restriction of the complete profile $P$ to only the alternatives in $K_j$.
@@ -115,11 +115,11 @@ Let $g:\overline{\triangle}^N\rightarrow \bigcup_{N' \subseteq N}\triangle^{N'}$
 
 %The operator $\overline{\rho}$ defines a restricting ordering function that given $\overline{P_i}$, an incomplete vector of $n$ grades, returns the correspondent complete vector restricted to its $x$ "defined" grades decreasingly ordered: $\overline{\rho}(\overline{P_i})=\rho(d(\overline{P_i}))$. \commentBN{Not sure this is necessary.}
 
-Given any $S \subseteq A$, the \emph{majority-grade} for incomplete profile $\overline{f}^S_{maj}: (\bigcup_{x \in \intvl{1,n}}\triangle^{x})^S \rightarrow \triangle^S$ corresponds to $f^S_{maj}$ that only considers the "defined" grades in the computation of the median. Indeed, consider an incomplete profile $\overline{P^S}$ and denote by $P'_i=g(\overline{P}^S_i)$, then ${f}_{maj}(P'_i) = \rho(P')_{\floor{\frac{\card{P'}}{2}} + 1}$, $\forall i \in S$.
+Given any $S \subseteq A$, the \emph{majority-grade} for incomplete profile $\overline{f}^S_{maj}: (\bigcup_{x \in \intvl{1,n}}\triangle^{x})^S \rightarrow \triangle^S$ corresponds to $f^S_{maj}$ that only considers the "defined" grades in the computation of the median. Indeed, consider an incomplete profile $\overline{P^S}$ and denote by $P'_i=g(\Pbar^S_i)$, then ${f}_{maj}(P'_i) = \rho(P')_{\floor{\frac{\card{P'}}{2}} + 1}$, $\forall i \in S$.
 
 To summarize, starting with zero knowledge, we ask the voters to judge $k$ candidates. Given the partial information at our disposal, we are able to define the "known" median grade for each alternative. We can now use the \emph{selection function} $F^S_k$, defined in \Cref{sec:complete}, to select the $k$ alternatives with the highest "known" median grades.
 
-Given the set $\tilde{K}=F^S_k(g(\overline{P}^S_i))$ of the best $k$ alternatives, every voter is then asked to judge all the candidates in $\tilde{K}$. 
+Given the set $\tilde{K}=F^S_k(g(\Pbar^S_i))$ of the best $k$ alternatives, every voter is then asked to judge all the candidates in $\tilde{K}$. 
 This process results in a restriction $P^{\tilde{K}}$ of the complete profile $P$. It is important to mention that when we ask the voters to judge an alternative $i\in \tilde{K}$ we assume that they report their preference as they would have stated it when asked about $P$. In other words, $P^{\tilde{K}}_{i} = P_i$ for any $i \in \tilde{K}$.
 
 Please note that $P^{\tilde{K}}$ is a complete matrix of $kn$ grades and that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f^{\tilde{K}}_{maj}$, function to $P^{\tilde{K}}$ to determine the median grades and then the winner function $F^{\tilde{K}}_{maj}$ to select the winner. 
@@ -134,7 +134,7 @@ Once having defined the notation, the first question that comes to mind is about
 
 \begin{proposition}
 	\label{prop:notsamewinner}
-	Given $A$ a set of $m\geq 3$ alternatives and $N$ a set of $n\geq3$ voters, there exist a complete profile $P$ and an incomplete profile $\overline{P} \subset P$, such that $F_{maj}(P) \nsubseteq F^{\tilde{K}}_{maj}(P^{\tilde{K}})$ \textemdash where $\tilde{K}=F^S_k(g(\overline{P}^S_i))$.
+	Given $A$ a set of $m\geq 3$ alternatives and $N$ a set of $n\geq3$ voters, there exist a complete profile $P$ and an incomplete profile $\Pbar \subset P$, such that $F_{maj}(P) \nsubseteq F^{\tilde{K}}_{maj}(P^{\tilde{K}})$ \textemdash where $\tilde{K}=F^S_k(g(\Pbar^S_i))$.
 	\commentOC{As proof I’d suggest: assume we never ask about some alternative $i$ which is judged excellent by everybody; and all the other ones are judged the worst.}
 \end{proposition}
 \begin{proof}
@@ -154,13 +154,13 @@ Once having defined the notation, the first question that comes to mind is about
 	\end{center}
 	For $n\geq 3$ the median grade $f_{maj}(P_i)=\delta_7$ and $f_{maj}(P_x)=\delta_6, \forall x \in A \setminus \{i\}$. Thus, the winner $F_{maj}(P)=\{i\}$.
 	
-	Consider now any $k \in \intvl{1,m-1}$, and remove from $P$ as many judgments as necessary such that the following conditions are verified: each column only contains $k$ grades \textemdash meaning that each voter judges $k$ candidates \textemdash and the row corresponding to the alternative $i$ is only formed by two grades, one $\delta_7$ and one $\delta_1$ \textemdash we have only the best and worst opinion on $i$. We fill all the unknown judgments with $\dbar$ grades to obtain $\overline{P}$. Note that we only have two judgments for the alternative $i$ so $\overline{f}_{maj}(\overline{P}_i)=\delta_1$ and, since $m\geq3$ and $1 \leq k \leq m-1$, $\overline{f}_{maj}(\overline{P}_x)$ is either $\delta_6$ or $\delta_2$ $\forall x \in A \setminus \{i\}$. Therefore $\overline{f}_{maj}(\overline{P}_x) > \overline{f}_{maj}(\overline{P}_i)$ $\forall x \in A \setminus \{i\}$, this means that $i$ will not be selected for the second turn, when we ask the voters their complete preferences about the $k$ "best" alternatives. Thus $i \notin \tilde{K}$ and, consequently, $F_{maj}(P) \nsubseteq F^{\tilde{K}}_{maj}(P^{\tilde{K}})$.
+	Consider now any $k \in \intvl{1,m-1}$, and remove from $P$ as many judgments as necessary such that the following conditions are verified: each column only contains $k$ grades \textemdash meaning that each voter judges $k$ candidates \textemdash and the row corresponding to the alternative $i$ is only formed by two grades, one $\delta_7$ and one $\delta_1$ \textemdash we have only the best and worst opinion on $i$. We fill all the unknown judgments with $\dbar$ grades to obtain $\Pbar$. Note that we only have two judgments for the alternative $i$ so $\overline{f}_{maj}(\Pbar_i)=\delta_1$ and, since $m\geq3$ and $1 \leq k \leq m-1$, $\overline{f}_{maj}(\Pbar_x)$ is either $\delta_6$ or $\delta_2$ $\forall x \in A \setminus \{i\}$. Therefore $\overline{f}_{maj}(\Pbar_x) > \overline{f}_{maj}(\Pbar_i)$ $\forall x \in A \setminus \{i\}$, this means that $i$ will not be selected for the second turn, when we ask the voters their complete preferences about the $k$ "best" alternatives. Thus $i \notin \tilde{K}$ and, consequently, $F_{maj}(P) \nsubseteq F^{\tilde{K}}_{maj}(P^{\tilde{K}})$.
 \end{proof}
 
 
 \section{Reasoning on incompleteness}
 
-Assume that the complete profile $P$ exists but it is unknown to us and the knowledge we have is represented by $\overline{P}$. As we observed in \Cref{prop:notsamewinner}, it is possible to elect a candidate as a winner for $\overline{P}$ that would not be selected when considering the complete profile $P$. In this section we want to investigate how likely it is to happen.
+Assume that the complete profile $P$ exists but it is unknown to us and the knowledge we have is represented by $\Pbar$. As we observed in \Cref{prop:notsamewinner}, it is possible to elect a candidate as a winner for $\Pbar$ that would not be selected when considering the complete profile $P$. In this section we want to investigate how likely it is to happen.
 
 Consider $A=\{a,b,c\}$ the set of alternatives, $N=\{v_1,v_2, \dots\}$ the set of voters and $\Delta=\{\delta_1, \dots, \delta_{10}\}$ the common language. We assume that we ask $k=m-1=2$ independently drawn questions to each voter. We denote by $\mathcal{P}(e)$ the probability of the event $e$ to happen.
 
@@ -175,7 +175,7 @@ Consider the following complete profile $P$, because we only have one voter the 
 		c &	\delta_1  &\quad& \delta_1 \\
 	\end{array} \quad, \qquad
 	$
-	$\overline{P}:
+	$\Pbar:
 	\begin{array}{cccc}
 		& v_1 & \quad & \overline{f}_{maj} \\
 		a &	\reddbar &\quad& \dbar \\
@@ -185,8 +185,8 @@ Consider the following complete profile $P$, because we only have one voter the 
 	$
 \end{center}
 
-The alternative $a$ has the highest median thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile the only possibility is if we ignore the grade of $a$, thus $\overline{P}$ is the only incomplete profile for which $a\neq F_{maj}(\overline{P})$.
-\[\mathcal{P}(a\neq F_{maj}(\overline{P}))=1-\frac{k}{m}=\frac{1}{3}.\]
+The alternative $a$ has the highest median thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile the only possibility is if we ignore the grade of $a$, thus $\Pbar$ is the only incomplete profile for which $a\neq F_{maj}(\Pbar)$.
+\[\mathcal{P}(a\neq F_{maj}(\Pbar))=1-\frac{k}{m}=\frac{1}{3}.\]
 This means that with one voter we have $\approx 33\%$ of probability to miss the winner selected with complete information.
 
 \paragraph{Two voters}
@@ -201,10 +201,10 @@ Consider now the following profile $P$ with two voters.
 	\end{array} \quad, \qquad
 	$
 \end{center}
-The median is the lowest between the two possible value thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile there are two possibilities, either we do not know anything about $a$, then $b$ and $c$ are automatically selected for the next phase whatever their medians are (case $1$: $\overline{P}'$), or the new medians of $b$ and $c$ computed with missing information are higher than the current median of $a$ (case $2$: $\overline{P}^{\second}$). For the case $2$ to happen there are two conditions to be satisfied: the minimum grades of $b$ and $c$ must be missing in the incomplete profile \underline{and} both the maximum grade of $b$ and the maximum grade of $c$ must be greater than the minimum grade of $a$. Note that, because each voter gives her opinion about $k=2$ alternatives, for the former condition to be possible then the minimum grades of $b$ and $c$ must not be assigned by the same voter. 
+The median is the lowest between the two possible values thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile there are two possibilities, either we do not know anything about $a$, then $b$ and $c$ are automatically selected for the next phase whatever their medians are (case $1$: $\Pbar'$), or the new medians of $b$ and $c$ computed with missing information are higher than the current median of $a$ (case $2$: $\Pbar^{\second}$). For the case $2$ to happen there are two conditions to be satisfied: the minimum grades of $b$ and $c$ must be missing in the incomplete profile \underline{and} both the maximum grade of $b$ and the maximum grade of $c$ must be greater than the minimum grade of $a$. Note that, because each voter gives her opinion about $k=2$ alternatives, for the former condition to be possible then the minimum grades of $b$ and $c$ must not be assigned by the same voter. 
 
 \begin{center}
-	$\overline{P}':
+	$\Pbar':
 	\begin{array}{ccccc}
 		& v_1 & v_2 & \quad & \overline{f}_{maj} \\
 		a &	\reddbar & \reddbar & \quad& \dbar \\
@@ -212,7 +212,7 @@ The median is the lowest between the two possible value thus $a=F_{maj}(P)$. For
 		c &	\delta_1 & \delta_7 &\quad& \delta_1 \\
 	\end{array} \quad,
 	$
-	$\overline{P}^{\second}:
+	$\Pbar^{\second}:
 	\begin{array}{ccccc}
 		& v_1 & v_2 & \quad & \overline{f}_{maj} \\
 		a &	\delta_{10} & \delta_3 & \quad& \delta_3 \\
@@ -222,11 +222,11 @@ The median is the lowest between the two possible value thus $a=F_{maj}(P)$. For
 	$
 \end{center}
 
-The probability of case $1$, i.e. that $\overline{P}_a=\{\dbar,\dbar\}$, is equal to the probability that both voters do not grade $a$, thus $\frac{1}{m}\cdot\frac{1}{m}$. This is necessary and sufficient condition for $a\neq F_{maj}(\overline{P})$. We can decompose the probability of not selecting $a$ in the following way:
+The probability of case $1$, i.e. that $\Pbar_a=\{\dbar,\dbar\}$, is equal to the probability that both voters do not grade $a$, thus $\frac{1}{m}\cdot\frac{1}{m}$. This is necessary and sufficient condition for $a\neq F_{maj}(\Pbar)$. We can decompose the probability of not selecting $a$ in the following way:
 
 \begin{align}
-	\mathcal{P}(a\neq F_{maj}(\overline{P})) &=\overbrace{\mathcal{P}(\overline{P}_a=\{\dbar,\dbar\})}^{1/m^2} \overbrace{\mathcal{P}(a\neq F_{maj}(\overline{P})|\overline{P}_a=\{\dbar,\dbar\})}^{1}\\
-	&+\underbrace{\mathcal{P}(\overline{P}_a\neq\{\dbar,\dbar\})}_{1-1/m^2} \underbrace{\mathcal{P}(a\neq F_{maj}(\overline{P})|\overline{P}_a\neq\{\dbar,\dbar\})}_{\color{red}*1}
+	\mathcal{P}(a\neq F_{maj}(\Pbar)) &=\overbrace{\mathcal{P}(\Pbar_a=\{\dbar,\dbar\})}^{1/m^2} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a=\{\dbar,\dbar\})}^{1}\\
+	&+\underbrace{\mathcal{P}(\Pbar_a\neq\{\dbar,\dbar\})}_{1-1/m^2} \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar\})}_{\color{red}*1}
 \end{align}
 The element denoted by ${\color{red}*1}$ is what we described earlier in case $2$, the probability of both the two following events happening:
 \begin{align}
@@ -235,8 +235,8 @@ The element denoted by ${\color{red}*1}$ is what we described earlier in case $2
 \end{align}	
 With this in mind we can again decompose this probability:
 \begin{align}
-	{\color{red}*1} &=\overbrace{\mathcal{P}(e_1 \wedge e_2 |\overline{P}_a\neq\{\dbar,\dbar\}) }^{{\color{red}*2}} \overbrace{\mathcal{P}(a\neq F_{maj}(\overline{P})|\overline{P}_a\neq\{\dbar,\dbar\}\wedge e_1 \wedge e_2)}^{1}\\
-	&+\mathcal{P}(\lnot(e_1 \wedge e_2) |\overline{P}_a\neq\{\dbar,\dbar\}) \underbrace{\mathcal{P}(a\neq F_{maj}(\overline{P})|\overline{P}_a\neq\{\dbar,\dbar\}\wedge \lnot (e_1 \wedge e_2))}_{0}
+	{\color{red}*1} &=\overbrace{\mathcal{P}(e_1 \wedge e_2 |\Pbar_a\neq\{\dbar,\dbar\}) }^{{\color{red}*2}} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar\}\wedge e_1 \wedge e_2)}^{1}\\
+	&+\mathcal{P}(\lnot(e_1 \wedge e_2) |\Pbar_a\neq\{\dbar,\dbar\}) \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar\}\wedge \lnot (e_1 \wedge e_2))}_{0}
 \end{align}
 As we said earlier for $e_1$ and $e_2$ to happen it must be that:
 \begin{align}
@@ -244,12 +244,12 @@ As we said earlier for $e_1$ and $e_2$ to happen it must be that:
 \end{align}	
 
 \begin{align}
-	{\color{red}*2} &=\overbrace{\mathcal{P}(e_3 |\overline{P}_a\neq\{\dbar,\dbar\}) }^{1/2} \overbrace{\mathcal{P}(e_1 \wedge e_2|\overline{P}_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*3}}\\
-	&+\mathcal{P}(\lnot e_3 |\overline{P}_a\neq\{\dbar,\dbar\}) \underbrace{\mathcal{P}(e_1 \wedge e_2|\overline{P}_a\neq\{\dbar,\dbar\}\wedge \lnot e_3)}_{0}
+	{\color{red}*2} &=\overbrace{\mathcal{P}(e_3 |\Pbar_a\neq\{\dbar,\dbar\}) }^{1/2} \overbrace{\mathcal{P}(e_1 \wedge e_2|\Pbar_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*3}}\\
+	&+\mathcal{P}(\lnot e_3 |\Pbar_a\neq\{\dbar,\dbar\}) \underbrace{\mathcal{P}(e_1 \wedge e_2|\Pbar_a\neq\{\dbar,\dbar\}\wedge \lnot e_3)}_{0}
 \end{align}
 Because $e_1$ and $e_2$ are two independent events:
 \begin{align}
-	{\color{red}*3} &=\overbrace{\mathcal{P}(e_1 |\overline{P}_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*4}} \cdot \overbrace{\mathcal{P}(e_2 |\overline{P}_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*5}}
+	{\color{red}*3} &=\overbrace{\mathcal{P}(e_1 |\Pbar_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*4}} \cdot \overbrace{\mathcal{P}(e_2 |\Pbar_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*5}}
 \end{align}
 
 ${\color{red}*4}$ is the probability of picking exactly the alternatives $a$ and $b$ when questioning the voter who assigns $\max{P_{b}}$ and of picking $a$ and $c$ for the other one, thus ${\color{red}*4}=1/m^2$. \commentBN{On the board we wrote $\frac{1}{m^2-1}$ but I don't recall why...I think it's $1/m^2$ no?}
@@ -260,18 +260,20 @@ To compute ${\color{red}*5}$ we need to enumerate all the grades orderings such 
 \end{align}
 Chosen a grade $a$ ($a_i$ or $a_j$) and a grade $b$ ($b_i$ or $b_j$) as the respective maximums, there are $3!$ way to arrange the maximum grade of each alternative $a, b, c$. Therefore there are $3! \cdot 2 \cdot 2$ combination of grades ordering for this triplet. Note that once we choose $b$ then $c$ is automatic the one given by the other voter because of $e_3$. The position of $\min{P_{a}}$ is fixed for the reason above, and we have already counted the possible exchange $a_i, a_j$ in the previous computation. Last but not least, $\min{P_{b}}$ and $\min{P_{c}}$ can exchange positions, so for each ordering created so far there are two additional way to add the minimums of $b$ and $c$. The total number of orderings of six elements is $6!$, therefore ${\color{red}*5}= \frac{3!\cdot 2\cdot 2\cdot2}{6!}=\frac{1}{15}$.
 
-We have now all pieces to compute $\mathcal{P}(a\neq F_{maj}(\overline{P}))$. \begin{align}
+We have now all pieces to compute $\mathcal{P}(a\neq F_{maj}(\Pbar))$. 
+\begin{align}
 	&{\color{red}*3} = \frac{1}{9} \cdot \frac{1}{15} \\
 	&{\color{red}*2} =\frac{1}{2} \cdot \frac{1}{135} \\
 	&{\color{red}*1} =\frac{1}{270} \cdot 1 \\
-	&\mathcal{P}(a\neq F_{maj}(\overline{P})) = \frac{1}{9} \cdot 1 + \frac{8}{9} \cdot \frac{1}{270} \approx 0.11
+	&\mathcal{P}(a\neq F_{maj}(\Pbar)) = \frac{1}{9} \cdot 1 + \frac{8}{9} \cdot \frac{1}{270} \approx 0.11
 \end{align}
 
 This means that with two voters we have $\approx 11\%$ of probability to miss the winner selected with complete information.
 
 \paragraph{Three voters}
+Consider now the following profile $P$ with three voters.
 \begin{center}
-	$P_3:
+	$P:
 	\begin{array}{cccccc}
 		& v_1 & v_2 &v_3 & \quad & f_{maj} \\
 		a &	\delta_{10} & \delta_5 & \delta_1 & \quad& \delta_5 \\
@@ -280,24 +282,56 @@ This means that with two voters we have $\approx 11\%$ of probability to miss th
 	\end{array} \quad, \qquad
 	$
 \end{center}
-\begin{center}
-	$\overline{P_3}:
-	\begin{array}{cccccc}
-		& v_1 & v_2 &v_3 & \quad & f_{maj} \\
-		a &	\reddbar & \reddbar & \reddbar & \quad& \dbar \\
-		b &	\delta_{10} & \delta_4 & \delta_2 &\quad& \delta_4 \\
-		c &	\delta_{10} & \delta_3 & \delta_3 &\quad& \delta_3 \\
-	\end{array} \quad,
-	$
-	$\overline{P_3}':
-	\begin{array}{cccccc}
-		& v_1 & v_2 &v_3 & \quad & f_{maj} \\
-		a &	\reddbar & \delta_5 & \delta_1 & \quad& \delta_1 \\
-		b &	\delta_{10} & \delta_4 & \delta_2 &\quad& \{\delta_4, \delta_2 \}\\
-		c &	\delta_{10} & \delta_3 & \delta_3 &\quad& \delta_3 \\
-	\end{array} \quad.
-	$
-\end{center}
+The alternative with the highest median is $a$ thus $a=\Fmaj(P)$. In a similar vein as the two voters case, for $a$ not to be the winner of the incomplete profile either we do not know any grades of $a$, then $b$ and $c$ are automatically selected for the next phase (case $1$: $\Pbar'$), or, again, the new medians of $b$ and $c$ computed with missing information are higher than the current median of $a$ (case $2$). 
+To understand the conditions necessary for the second case, let us consider the possible new medians of $a$:
+\begin{itemize}
+	\item $\fmajbar(a)= \max{P_a}$: this can happen only if the incomplete vector of $a$ is $\Pbar_a=(\max{P_a},\dbar,\dbar)$, because each voter grades $m-1$ alternatives, this means that we are missing only another grade of the profile. This is not enough to improve the medians of $b$ or $c$, so $a$ will still have the highest median.
+	\item $\fmajbar(a)= \med{P_a}$: this means that either $\Pbar_a=(\max{P_a},\med{P_a},\dbar)$ or $\Pbar_a=(\med{P_a},\dbar,\dbar)$. In the latter, again, one missing grade is not enough to improve the median of other alternatives. Consider the first case and assume that the other two missing grades are $\min{P_b}$ and $\med{P_b}$, assume also that $\max{P_b}>\med{P_a}$. In this case $b$ has a better median than $a$, but $a$ still has a better median than $c$, thus $a$ and $b$ will be selected for the second phase and $a$ will win when discovering the complete information.
+	\item $\fmajbar(a)= \min{P_a}$: this case is the most relevant, and it can happen if $\Pbar_a=(\max{P_a},\dbar,\min{P_a})$, or if $\Pbar_a=(\dbar,\med{P_a},\min{P_a})$ or $\Pbar_a=(\dbar,\dbar,\min{P_a})$. In all of these cases, in order for $a$ not to be selected as winner it must be that $\fmajbar(b)>\min{P_a}$ and  $\fmajbar(c)>\min{P_a}$. However, in the latter case, the value of $\fmajbar(b)$ (respectively $\fmajbar(c)$) can either be $\min{P_b}$ or $\med{P_b}$ ($\min{P_c}$ and $\med{P_c}$) depending on the last grade missing. In the other two cases, we are only missing one grade from $P_a$ thus we could either miss one grade from $P_b$ and one from $P_c$ or both grades from one of those two vectors.
+\end{itemize}
+
+\begin{align}
+	\mathcal{P}(a\neq F_{maj}(\Pbar)) &=\overbrace{\mathcal{P}(\Pbar_a=\{\dbar,\dbar,\dbar\})}^{1/m^3} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a=\{\dbar,\dbar,\dbar\})}^{1}\\
+	&+\underbrace{\mathcal{P}(\Pbar_a\neq\{\dbar,\dbar,\dbar\})}_{1-1/m^3} \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar,\dbar\})}_{\color{red}*1}
+\end{align}
+ 
+The element denoted by ${\color{red}*1}$ is what we described earlier in the case $\fmajbar(a)= \min{P_a}$, we can decompose it as:
+\begin{align}
+	{\color{red}*1} &=\overbrace{\mathcal{P}(\fmajbar(a)= \min{P_a}|\Pbar_a\neq\{\dbar,\dbar,\dbar\})}^{\frac{3}{m^3-1}} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar,\dbar\} \wedge \fmajbar(a)= \min{P_a})}^{{\color{red}*2}}\\
+	&+\mathcal{P}(\fmajbar(a)\neq \min{P_a})) |\Pbar_a\neq\{\dbar,\dbar,\dbar\}) \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar,\dbar\} \wedge \fmajbar(a)\neq \min{P_a})}_{0}
+\end{align}
+${\color{red}*2}$ is the probability that $\fmajbar(b)$ and $\fmajbar(c)$ are greater than $\min{P_a}$, thus, that one of these events are true:
+\begin{align}
+	e_1 &= \med{P_{b}}>\min{P_{a}} \wedge \med{P_{c}}>\min{P_{a}}\\
+	e_2 &= \med{P_{b}}>\min{P_{a}} \wedge \min{P_{c}}>\min{P_{a}}\\
+	e_3 &= \min{P_{b}}>\min{P_{a}} \wedge \med{P_{c}}>\min{P_{a}}\\
+	e_4 &= \min{P_{b}}>\min{P_{a}} \wedge \min{P_{c}}>\min{P_{a}}.
+\end{align}	
+Because they are mutually exclusive then:
+	\[{\color{red}*2} =\mathcal{P}(e_1 \vee e_2 \vee e_3 \vee e_4)=\mathcal{P}(e_1)+\mathcal{P}(e_2)+\mathcal{P}(e_3)+\mathcal{P}(e_4)\]
+ To compute the probability of these events we need to enumerate all the grades orderings such that the respective events are satisfied. Let us consider $e_1$, and use the same approach used in the two voters case:
+ \begin{align}
+ 	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2^3}>\underbrace{\delta_{a_k}>\delta_{b_k}>\delta_{c_k}}_{3!}
+ \end{align}
+ For $e_2$:
+ \begin{align}
+ 	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2^3}>\underbrace{\delta_{c_k}>\delta_{a_k}>\delta_{b_k}}_{3}
+ \end{align}
+ For $e_3$:
+\begin{align}
+	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2^3}>\underbrace{\delta_{b_k}>\delta_{a_k}>\delta_{c_k}}_{3}
+\end{align}
+ For $e_4$:
+ \begin{align}
+ 	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}>\delta_{b_k}>\delta_{c_k}}_{4!}>\delta_{a_k}
+ \end{align}
+
+\begin{align}
+	&{\color{red}*2} =\frac{3^6\cdot2^6+3^6\cdot2^5+3^6\cdot2^5+3^6\cdot2^5}{9!} = \frac{9}{28} \\
+	&{\color{red}*1} =\frac{3}{8} \cdot \frac{9}{28} = \frac{27}{224} \\
+	&\mathcal{P}(a\neq F_{maj}(\Pbar)) = \frac{1}{9} \cdot 1 + \frac{8}{9} \cdot \frac{27}{224} \approx 0.22
+\end{align}
+This means that with three voters we have $\approx 22\%$ of probability to miss the winner selected with complete information.
 
 \newpage
 \commentBN{Stopped here.}
@@ -419,9 +453,9 @@ Because of all these reasons, we may want to consider the possibility for the vo
 	\end{center}
 	The real winner is $F^P=a$. 
 	
-	Consider now the following incomplete profiles $\overline{P}$ and $\overline{P}'$ obtained after having asked each voter to judge $k=5$ random chosen alternatives: \commentOC{This mixes again the process and the maths. The proposition does not talk about randomness and it is confusing to refer to this here. The proposition holds whatever the way $P$ bar is chosen (including, deterministically).}\commentBN{I'm not sure I got this. With randomness I mean the one in the definition of $\overline{P}$.}
+	Consider now the following incomplete profiles $\Pbar$ and $\Pbar'$ obtained after having asked each voter to judge $k=5$ random chosen alternatives: \commentOC{This mixes again the process and the maths. The proposition does not talk about randomness and it is confusing to refer to this here. The proposition holds whatever the way $P$ bar is chosen (including, deterministically).}\commentBN{I'm not sure I got this. With randomness I mean the one in the definition of $\Pbar$.}
 	\begin{center}
-		$\overline{P}: \qquad
+		$\Pbar: \qquad
 		\begin{array}{cccc}
 			& j_1 & j_2 & j_3 \\
 			a &	Excellent	& {\color{red}Undefined} & Inadequate\\
@@ -434,7 +468,7 @@ Because of all these reasons, we may want to consider the possibility for the vo
 		$
 	\end{center}
 	\begin{center}
-		$\overline{P}': \qquad
+		$\Pbar': \qquad
 		\begin{array}{cccc}
 			& j_1 & j_2 & j_3 \\
 			a &	Excellent	& Excellent & Inadequate\\
@@ -448,7 +482,7 @@ Because of all these reasons, we may want to consider the possibility for the vo
 	\end{center}
 	The vector of medians are:
 	\begin{center}
-		$f_{maj}(\overline{P})= \quad
+		$f_{maj}(\Pbar)= \quad
 		\begin{array}{cc}
 			a &	Inadequate \\
 			b &	Mediocre \\
@@ -457,7 +491,7 @@ Because of all these reasons, we may want to consider the possibility for the vo
 			e &	Mediocre \\
 			f & Mediocre \\
 		\end{array} \quad,\quad%
-		f_{maj}(\overline{P}')= \quad
+		f_{maj}(\Pbar')= \quad
 		\begin{array}{cc}
 			a &	Excellent \\
 			b &	Mediocre \\
@@ -469,7 +503,7 @@ Because of all these reasons, we may want to consider the possibility for the vo
 		$
 	\end{center}
 	
-	Consider the sets of $s=5$ alternatives with the highest median grades for the two profiles, $S'=\{b,c,d,e,f\}$ for $\overline{P}$, and $S^{\prime\prime}=\{a,b,c,d,f\}$ for $\overline{P}'$, and the two restrictions $P_{S'}$ and $P_{S^{\prime\prime}}$. In particular, $P_{S'}$ corresponds to the complete profile when eliminating the alternative $a$, and $P_{S^{\prime\prime}}$ to the complete profile without the alternative $e$.
+	Consider the sets of $s=5$ alternatives with the highest median grades for the two profiles, $S'=\{b,c,d,e,f\}$ for $\Pbar$, and $S^{\prime\prime}=\{a,b,c,d,f\}$ for $\Pbar'$, and the two restrictions $P_{S'}$ and $P_{S^{\prime\prime}}$. In particular, $P_{S'}$ corresponds to the complete profile when eliminating the alternative $a$, and $P_{S^{\prime\prime}}$ to the complete profile without the alternative $e$.
 	The vector of medians are:
 	\begin{center}
 		$f_{maj}(P_S')= \quad
@@ -490,12 +524,12 @@ Because of all these reasons, we may want to consider the possibility for the vo
 		\end{array} \quad.
 		$
 	\end{center}
-	The winner associated to the incomplete profile $\overline{P}$ is then $F^{P_{S'}} = d$ and the one associated to $\overline{P}'$ is $F^{P_{S^{\prime\prime}}} = a$, thus $F^{\overline{P}} \neq F^{\overline{P}'}$.
+	The winner associated to the incomplete profile $\Pbar$ is then $F^{P_{S'}} = d$ and the one associated to $\Pbar'$ is $F^{P_{S^{\prime\prime}}} = a$, thus $F^{\Pbar} \neq F^{\Pbar'}$.
 \end{proof}
 \commentOC{Perhaps some part of this could be transformed to an example.}
 
 \begin{corollary}
-	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\overline{P}$, such that $F^{\overline{P}}$ is not the real winner.
+	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\Pbar$, such that $F^{\Pbar}$ is not the real winner.
 \end{corollary}
 \commentOC{“real winner” is inappropriate here. Is there an unreal winner? I realize that you mean “winner considering the complete profile” VS “winner considering some part of it”, but I don’t think that the term “real” is appropriate. I’d simply say “winners” for the winners of the complete election, and perhaps “approximate winners” for the winners given a partial profile, or something similar.}
 
@@ -503,7 +537,7 @@ Because of all these reasons, we may want to consider the possibility for the vo
 Consider an alternative $w\in A$ and observe that for $w$ to be in $W^*$ we need $f_{maj}(P_w)\geq f_{maj}(P_i), \ \forall i \in A$. 
 Consider now the incomplete profile $\overline{P^k}$ and the set of the $k$ alternatives with the highest "known" median grades $\tilde{K}$. 
 \commentOC{Do you mean, the set $\tilde{K}$ of the $k$ alternatives…?}
-Let $v$ be the $k$-th highest median, i.e. $v=\min_{i\in \tilde{K}} \overline{f}_{maj}(\overline{P_i})$ the lowest grade of an alternative in $\tilde{K}$. If $\overline{f}_{maj}(\overline{P}_w) \geq v$ then $w \in \tilde{K}$. 
+Let $v$ be the $k$-th highest median, i.e. $v=\min_{i\in \tilde{K}} \overline{f}_{maj}(\overline{P_i})$ the lowest grade of an alternative in $\tilde{K}$. If $\overline{f}_{maj}(\Pbar_w) \geq v$ then $w \in \tilde{K}$. 
 \commentOC{A notation for the $x$th median grade or $x$th best alternative would be useful.}\commentBN{ok}
 
 Because the voters express their judgments on all the alternatives in $\tilde{K}$ 
