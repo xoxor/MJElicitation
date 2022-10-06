@@ -39,8 +39,16 @@
 \NewDocumentCommand{\reddbar}{}{{\color{red}\overline{\delta}}}
 \NewDocumentCommand{\second}{}{\prime\prime}
 \NewDocumentCommand{\Pbar}{}{\overline{P}}
-\NewDocumentCommand{\fmaj}{}{f_{maj}}
-\NewDocumentCommand{\Fmaj}{}{F_{maj}}
-\NewDocumentCommand{\fmajbar}{}{\overline{f_{maj}}}
-\NewDocumentCommand{\Fmajbar}{}{\overline{F_{maj}}}
+\NewDocumentCommand{\fmaj}{o}{
+	\IfNoValueTF {#1}{f_\mathit{maj}}{f^{#1}_\mathit{maj}}
+}
+\NewDocumentCommand{\Fmaj}{o}{
+	\IfNoValueTF {#1}{F_\mathit{maj}}{F^{#1}_\mathit{maj}}
+}
+\NewDocumentCommand{\fmajbar}{o}{
+	\IfNoValueTF {#1}{\overline{f}_\mathit{maj}}{\overline{f}^{#1}_\mathit{maj}}
+}
+\NewDocumentCommand{\Fmajbar}{o}{
+	\IfNoValueTF {#1}{\overline{F}_\mathit{maj}}{\overline{F}^{#1}_\mathit{maj}}
+}
 \NewDocumentCommand{\med}{}{\text{med}}

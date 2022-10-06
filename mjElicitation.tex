@@ -39,737 +39,464 @@
 \begin{document}
 \maketitle
 
+
 \begin{abstract}
-\acl{MJ} (\acs{MJ}) is a voting system where voters assign grades to candidates using an ordinal scale. The winner is the candidate with the highest majority-grade \textemdash which is the median of the grades received. This method has attracted increasing attention of french associations and political parties which have started to use \acs{MJ} for internal decisions or local elections. In particular LaPrimaire.org is a french association that uses \acs{MJ} to choose its candidate for the french presidential election. The vote is conducted in two rounds: in the first one the voters judge five candidates randomly picked; the five candidates with the highest medians pass at the second round as finalists and the voters are asked to judge them. Is the random selection of candidates a good elicitation technique? In this paper we explore the consequences of profile incompleteness and we question the elicitation of voters preferences.
+	\ac{MJ} is a voting system where voters assign grades to candidates using an ordinal scale. The winner is the candidate with the highest majority-grade \textemdash which is the median of the grades received. This method has attracted increasing attention of french associations and political parties which have started to use \ac{MJ} for internal decisions or local elections. In particular LaPrimaire.org is a french association that uses \ac{MJ} to choose its candidate for the french presidential election. The vote is conducted in two rounds: in the first one the voters judge five candidates randomly picked; the five candidates with the highest medians pass at the second round as finalists and the voters are asked to judge them. Is the random selection of candidates a good elicitation technique? In this paper we explore the consequences of profile incompleteness and prove that this method can fail to elect the winning candidate of the complete profile. Furthermore, we perform experiments on randomly generated profiles and profiles following the grade distribution of a real voting scenario. We find that the probability of not selecting the winner of the full profile greatly decreases as the number of voters increases and we investigate how much of the grade vector we should know in order for this probability to be low. 
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
-\acl{MJ} (\acs{MJ}) is a voting method proposed by \citet{Balinski2007,Balinski2011} to elect one out of $m$ candidates based on the judgments of $n$ voters. The latter express their preferences by assigning to each candidate one of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be rejected. Those adjectives represent a common language whose semantic is assumed to be a shared knowledge among the voters carrying thus an absolute meaning. For each candidate the median of the grades she received is computed, this is called \textit{majority-grade}. The candidate with the highest majority-grade is elected. Ties are broken by considering the majority-grade of first order: one vote associated with the majority-grade of each tied candidates is removed and their medians are recomputed. The candidate with the highest new median is elected. If there is still a tie the process is repeated until a unique winner is found. 
+\ac{MJ} is a voting method proposed by \citet{Balinski2007,Balinski2011} to elect one out of $m$ candidates based on the judgments of $n$ voters. The latter express their preferences by assigning to each candidate one of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be rejected. Those adjectives represent a common language whose semantic is assumed to be a shared knowledge among the voters carrying thus an absolute meaning. For each candidate the median of the grades she received is computed, this is called \textit{majority-grade}. The candidate with the highest majority-grade is elected. Ties are broken by considering the majority-grade of first order: one vote associated with the majority-grade of each tied candidates is removed and their medians are recomputed. The candidate with the highest new median is elected. If there is still a tie the process is repeated until a unique winner is found. 
 
-In the last few years \acs{MJ} has being adopted by a progressively larger number of french political parties including: Le Parti Pirate, Génération(s), LaPrimaire.org, France Insoumise and La République en Marche.
+In the last few years \ac{MJ} has being adopted by a progressively larger number of french political parties including: Le Parti Pirate, Génération(s), LaPrimaire.org, France Insoumise and La République en Marche.
 %https://www.lopinion.fr/edition/politique/en-marche-teste-elections-jugement-majoritaire-mode-scrutin-tres-201884
-"Mieux Voter" \citep{MV} is a french association that promotes the use of \acs{MJ} as voting method whenever a collective choice has to be selected: public administration, associations, companies. On their website it is possible to find all the citizens lists \textendash party lists that are not affiliated to any national political party \textemdash that used \acs{MJ} to rank their candidates during the local elections of 2020. In two cases, Bordeaux et Annecy, the candidate selected using \acs{MJ} was then elected as a mayor. 
+"Mieux Voter" \citep{MV} is a french association that promotes the use of \ac{MJ} as voting method whenever a collective choice has to be selected: public administration, associations, companies. On their website it is possible to find all the citizens lists \textendash party lists that are not affiliated to any national political party \textemdash that used \ac{MJ} to rank their candidates during the local elections of 2020. In two cases, Bordeaux et Annecy, the candidate selected using \ac{MJ} was then elected as a mayor. 
 
-In particular, LaPrimaire.org \citep{LaPrimaire} is a french political initiative whose goal is to select an independent candidate for the french presidential election using \acs{MJ} as voting rule. The association Democratech implemented the platform for the first time in 2016 in view of the 2017 presidential elections. The number of voters who participated in the election was $10676$ during the first round (with $53383$ votes) and $32685$ during the second round (with $163425$ votes). Between May and October 2021 the process will be repeated to select the candidate who will run for the 2022 presidential elections \citep{LaPrimaire2022}.
+In particular, LaPrimaire.org \citep{LaPrimaire} is a french political initiative whose goal is to select an independent candidate for the french presidential election using \ac{MJ} as voting rule. The association Democratech implemented the platform for the first time in 2016 in view of the 2017 presidential elections. The number of voters who participated in the election was $10676$ during the first round, and $32685$ during the second round.
 
-The procedure that they adopted consists of two rounds. In the first round each voter is asked to express her judgment, using \acs{MJ}, on five random candidates. At the end of this phase the five candidates with the highest medians are considered the finalists who qualify for the second round. In the second round each voter is asked to express her judgment, using \acs{MJ}, on all the five finalists. The candidate with the best median at the end of this phase is selected as representative for the presidential election.
+The procedure that they adopted consists of two rounds. In the first round each voter is asked to express her judgment, using \ac{MJ}, on five random candidates. At the end of this phase the five candidates with the highest medians are considered the finalists who qualify for the second round. In the second round each voter is asked to express her judgment, using \ac{MJ}, on all the five finalists. The candidate with the best median at the end of this phase is selected as representative for the presidential election.
 
 In this paper we analyse this elicitation process of voters preferences. In particular, we investigate the consequences of randomness when asking the voters to judge candidates. We then search for more efficient techniques both in terms of communication cost \textemdash which can be quantified as number of questions per voter \textemdash and of fairness for candidates \textemdash which reflects the idea that a potential winner should not loose for lack of information.
 
 
 \subsection{Related work}
 
-To the best of our knowledge there are no works on elicitation of voter preferences under \acs{MJ}.
+One of the earliest uses of the median as an aggregator in voting theory can be identified in the \textit{middlemost} method proposed by \citet{Galton1907a,Galton1907b}. In particular, in situations where a group of people had to assess a damage, he suggested the median as the only method that does not suffer from over- or under-exaggerations.
 
-Several authors studied the strengths and the weakness of this method \citep{Felsenthal2008,Laslier2018} and Balinski replied to most of the critics in an article written in french published on the Revue économique \citep{Balinski2019}.
+We can consider the median grade as the highest level at which a candidate obtains the support of the majority of the voters. Starting for the highest grade $\delta$ we check if the majority of the voters assigned at least $\delta$ to some alternative. If this is not the case, we descend in the grading scale until such level $\delta^*$ is found. The grade $\delta^*$ is the median of grades associated to some alternative, and, since it is the first level we stopped at, it corresponds to the best possible median. This method was rediscovered several times and proposed under the name of Bucklin's rule \citep{Hoag1926}, Majoritarian Compromise \citep{Sertel1986,Sertel1999} and q-approval fallback bargaining \citep{Brams2001}. Moreover, when the number of grades is equal to two (approve, disapprove) then it is reduced to Approval Voting.
 
-\commentBN{Add elicitation literature}
+More recently \citet{Bassett1999} proposed the use of the median as voting rule for elections advocating for its robustness.
+Several studies on the use of the median have been conducted. In particular, \citet{Bassett1994} and \citet{Gehrlein2003} study its manipulation. \citet{Barthelemy1981} survey mathematical problems and properties related to the notion of median in the context of cluster analysis and social choice theory. \cite{Nehring2022} analyze the median rule in judgment aggregation and they define a weighted median rule that is equivalent to \acs{MJ} except for the treatment of ties.
 
-%The idea of using the median in voting is not new, the first use can be traced back to Galton's 'middlemost' \citep{Galton1907a,Galton1907b}. More recently \citet{Bassett1999} proposed the median as a substitute for Borda's mean, advocating for its statistical robustness \textemdash which measures the sensitivity to departures from the hypothesized model. An equivalent method was proposed by James W. Bucklin in the early twentieth century \citep{Hoag1926} and it was rediscovered several times in literature for example under the names of \textit{Majoritarian Compromise} \citep{Sertel1986,Sertel1999} and \textit{Fallback Bargaining} \citep{Brams2001}. Note, also, that when the number of grades is equal to two (approve, disapprove) then \acs{MJ} is reduced to Approval Voting. 
+However, there is a significant concern that has never been analyzed when considering \ac{MJ}. Asking voters to provide a grade for each of the candidates can have a high cognitive and communicative cost. In situations where the set of alternatives is very large, voters may not be able to assign a significant and informed grades. \citet{Conitzer2005} studied the complexity of communication of some of the most common voting rules.
+In these cases, elicitation strategies exist to retrieve the most relevant information. \citet{Konczak05} introduced the notion of possible and necessary winners. This paved the way for procedures that attempted to find necessary winners by asking voters the fewest questions possible \citep{Kalech2011}.
+Considering scoring rules, \citet{Lu2011} suggested the use of minimax regret as a guide to the elicitation procedure. \citet{Bachrach2010} proposed a probabilistic approach. Several authors studied the complexity of determining when to stop the elicitation process for some of the most common voting rules \citep{Conitzer2002, Walsh2009}.
+However, to the best of our knowledge, there are no works on preferences elicitation considering \ac{MJ}.
+
+Very recently, \citet{Varloot2022} considered a version of \ac{MJ} under uncertainties in order to study its strategyproof properties. Their premise, however, is based on the fact that voters who are uncertain about the degree to assign to an alternative would instead assign to it a probability distribution. In other words, if a voter does not know whether to assign good or excellent to a certain alternative, then she may assign to it, for example, good with $\frac{1}{3}$ of the probability and excellent with $\frac{2}{3}$ of the probability. 
+This approach requires the submission of even more information and is very far from our idea of incomplete knowledge.
 
 
 \section{Notation}
 \label{sec:complete}
-Consider a finite set $N$ of voters (or judges) with $\#N=n$ and a finite set $A$ of alternatives (or competitors) with $\#A=m$. 
-A \textit{common language} $\triangle = \{ \delta_1, \delta_2, \dots \}$ is a set of strictly ordered grades. It may, or may not, be finite and the notation $\delta_1 \geq \delta_2$ indicates that $\delta_1$ is a better or equivalent grade than $\delta_2$. A profile $P : A\times N \rightarrow \triangle$ is a $m$ by $n$ matrix of grades $P \in \triangle^{A \times N}$. Given any $N'\subseteq N$, the operator $\rho: \triangle^{N'} \rightarrow \triangle^{\card{N'}}$ defines an ordering function that given a vector of grades $P_i$ returns the vector ordered by decreasing grades.
+Consider a finite set $N=\{i_1, \dots, i_n\}$ of voters (or judges) and a finite set $A=\{j_1, \dots, j_m\}$ of alternatives (or competitors). 
+A \textit{common language} $\triangle = \{ \delta_1, \delta_2, \dots \}$ is a set of strictly ordered grades, and the notation $\delta_1 \geq \delta_2$ indicates that $\delta_1$ is a better or equivalent grade than $\delta_2$. A profile $P : A\times N \rightarrow \triangle$ is a $m$ by $n$ matrix of grades. Given any $N'\subseteq N$, the operator $\rho: \triangle^{N'} \rightarrow \triangle^{\card{N'}}$ defines an ordering function that given a vector of grades $P_j$ returns the vector ordered by decreasing grades.
 
 Consider a set of alternatives $S\subseteq A$,
 %where $|S|=s$ and $s \in \intvl{1,m}$ \textemdash the double brackets represent an interval in the integers. 
 we denote by $P^S \in \triangle^{S \times N}$ a restriction of the profile $P$ to only the alternatives in $S$, $P^S \subseteq P$. Note that when $S=A$ then $P^S=P$.
 %\commentOC{Could also write $\restr{P}{S × N}$, which leads to more generality, if restricting the users is also sometimes convenient.}
 
-We define $f: \triangle^{N} \rightarrow \triangle$ a function that assigns to any vector of grades a final grade. Given any $S\subseteq A$, a grading function $f^S: \triangle^{S \times N} \rightarrow \triangle^S$ returns a vector of final grades by applying $f$ to every alternative in $S$.
+%We let $f: \triangle^{N} \rightarrow \triangle$ denote a function that assigns to any vector of grades a final grade. Given any $S\subseteq A$, a grading function $f^S: \triangle^{S \times N} \rightarrow \triangle^S$ returns a vector of final grades by applying $f$ to every alternative in $S$.
 % the \emph{middlemost} aggregation function $f$, for each vector of grades $r_i= (r_1 , \dots, r_n )$ associated to the alternative $i \in \intvl{1,m}$, returns: 
 %\begin{align}
 %	f(r_i) &= r_{(n+1)/2} \text{ when n is odd,} \\
 %	r_{n/2} \geq f(r_i) &\geq r_{(n+2)/2} \text{ otherwise.}
 %\end{align}
 
-The \emph{majority-grade}, $f_{maj}$, is the function that associates to a vector of grades $\emptyset \neq q \in \triangle^{N'}, N' \subseteq N$ its median grade value: $f_{maj}(q) = \rho(q)_{\floor{\frac{\card{q}}{2}} + 1}$. Note that in case $\card{q}$ is even two medians could be used, but, as in \citet{Balinski2011} definition, the lower grade is picked. Given any $S\subseteq A$, by applying $f_{maj}$ to all vectors of grades associated to the alternatives in $S$ we obtain the corresponding grading function $f^S_{maj}$. Formally, $f^S_\mathit{maj}(P^S)_i = f_\mathit{maj}(P^S_i)$. The $i$-\emph{th} element of the resulting vector is the median of the ordered vector of grades associated to the $i$-\emph{th} alternative. 
-%Because $f^S_{maj}(P^S)_i$ depends only on $P^S_i$ we write $f^S_{maj}(P^S_i)$. \commentOC{I am not sure I follow. You already have a notation for this, namely, $f_\mathit{maj}(P^S_i)$, isn’t it?}
-Moreover, when we consider the complete profile (when $S=A$) we will write $f_{maj}(P_i)$ instead of $f^A_{maj}(P^A_i)$.
-\commentOC{I doubt that the general $f$ is actually useful, you only seem to use $f$ maj.}
+We let $\fmaj:\triangle^{N} \rightarrow \triangle$, denote the \emph{majority-grade} function that associates to a vector of grades $\emptyset \neq v \in \triangle^{N'}, N' \subseteq N$ its median grade value: $\fmaj(v) = \rho(v)_{\floor{\frac{\card{v}}{2}} + 1}$. Note that in case $\card{v}$ is even, two medians could be used, but, as in \citet{Balinski2011} definition, the lower grade is picked. 
+
+%Given any $S\subseteq A$, by applying $\fmaj$ to all vectors of grades associated to the alternatives in $S$ we obtain the corresponding grading function $\fmaj[S]$. Formally, $\fmaj[S](P^S)_j = \fmaj[S](P^S_j)$. The $j$-\emph{th} element of the resulting vector is the median of the ordered vector of grades associated to the $j$-\emph{th} alternative. 
+%%Because $f^S_{maj}(P^S)_i$ depends only on $P^S_i$ we write $f^S_{maj}(P^S_i)$. \commentOC{I am not sure I follow. You already have a notation for this, namely, $\fmaj(P^S_i)$, isn’t it?}
+%Moreover, when we consider the complete profile (when $S=A$) we will write $\fmaj(P_j)$ instead of $\fmaj[A](P^A_j)$.
+%\commentOC{I doubt that the general $f$ is actually useful, you only seem to use $f$ maj.}
+%\commentOC{The argument doesn’t seem correct to me, in $\fmaj[A](P^A_j)$.}
+%\commentOC{I find it confusing to use the same symbol ($\fmaj$) for two quite related but distinct functions.}
 %i.e. it corresponds to the lower middlemost.
 
-Given any $S\subseteq A$, the winner function $F^S_{maj}:\triangle^{S \times N} \rightarrow A$ %$F^S_{maj}:\triangle^{S \times N} \rightarrow 2^A \setminus \emptyset$
-is a function that selects the alternative with the highest median grade as winner. We can define it as $F^S_{maj}(P^S) = \argmax_{i\in S}\rho(P^S_i)_{\floor{\frac{n}{2}}+ 1}$ assuming it is a singleton. For brevity, we will write $F_{maj}$ when considering $S=A$. Consider the case when it is not a singleton, this means that two or more alternatives are associated with the same highest median grade $h=\max_{i\in S}\rho(P^S_i)_{\floor{\frac{n}{2}} + 1}$. In this case ties are broken by removing one $h$ grade from the vectors of grades of each tied alternative, recomputing the new median grade and repeating the process until one unique winner is found or there are no more grades to remove. When $n$ is odd, this is equivalent to take the next element after the median, i.e. the one at index $(\floor{\frac{n}{2}} + 1) +1$, if there is still a tie we then look at the previous element before the median, i.e. the one at index $(\floor{\frac{n}{2}} + 1) -1$, and keep alternating until the tie is broken or there are no more elements in the vector. When $n$ is even the process is similar but we alternate starting from the element before the median, $\floor{\frac{n}{2}}$, then the one after, $\floor{\frac{n}{2}} + 2$, and so on. \commentOC{Written as it is, I am doubtful about the value of this remark.} If after applying the mechanism there are still ties we break them using an arbitrary ordering defined on all alternatives, e.g. lexicographical order.
+Given any $S\subseteq A$, the winner function $\Fmaj[S]:\triangle^{S \times N} \rightarrow A$ %$F^S_{maj}:\triangle^{S \times N} \rightarrow 2^A \setminus \emptyset$
+is a function that given $|S|$ alternatives and their median grade, selects the alternative with the highest median grade as winner. We can define it as  $\Fmaj[S](P^S) = \argmax_{j\in S}\fmaj(P^S_j)$ assuming it is a singleton. 
+For brevity, we will write $\Fmaj$ when considering $S=A$.
+To avoid adding further complexity to the notation, we describe only informally what happens in case multiple alternatives are tied for the highest median grade $h$, thus, when $\argmax_{j\in S}\fmaj(P^S_j)$ is not a singleton.
+In this case, ties are broken by removing one $h$ grade from the vectors of grades of each tied alternative, recomputing the new median grade and repeating the process until one unique winner is found or there are no more grades to remove. When $n$ is odd, this is equivalent to take the next element after the median, i.e. the one at index $(\floor{\frac{n}{2}} + 1) +1$. If there is still a tie we then look at the previous element before the median, i.e. the one at index $(\floor{\frac{n}{2}} + 1) -1$, and keep alternating until the tie is broken or there are no more elements in the vector. When $n$ is even the element before the median, i.e. the one at index $\floor{\frac{n}{2}}$, is taken first and, if there is still a tie, then the element after the median is considered, i.e. the one at index $\floor{\frac{n}{2}} + 2$, and so on. If after applying the mechanism there are still ties we break them using an arbitrary ordering defined on all alternatives, e.g. lexicographical order.
 
-Similarly to the winner function, given any $x \in \intvl{1,m}$, we can define a more general \emph{selection function} $F^S_x:\triangle^{S\times N} \rightarrow 2^A \setminus \emptyset$ that selects exactly the $x$ alternatives with the $x$ highest median grades.
-\commentOC{$F^S_x(P^S) = f^S_\mathit{maj}(P^S) \cup f^{S'}_\mathit{maj}(P^{S'}) …$.}
+Similarly to the winner function, given any $x \in \intvl{1,m}$, we can define a more general \emph{selection function} $F^S_x:\triangle^{S\times N} \rightarrow \powersetz{A}$, where $\powersetz{A}$ is the powerset of $A$ excluding the empty set, that selects exactly the $x$ alternatives with the $x$ highest median grades. Thus, $F^S_x(P^S) = \Fmaj[S](P^S) \cup \Fmaj[S'](P^{S'}) \cup \dots \cup \Fmaj[S^{k-1}](P^{S^{k-1}})$ where $S'= S \setminus \Fmaj[S](P^{S})$, $S{'}{'}= S \setminus \Fmaj[S](P^S) \setminus \Fmaj[S'](P^{S'})$ etc.
 
-\subsection{Incomplete Knowledge}
+
+\subsection{Incomplete knowledge}
 In order to analyze the elicitation procedure used by LaPrimaire.org, we need to adapt the notation just described to incomplete profiles. 
-\commentOC{Defining the right, full notations from the start would be more gentle for the reader.} Let $\Pbar$ be our knowledge about the profile $P$.
+Let $\Pbar$ be our knowledge about the profile $P$.
 The voters have full knowledge of their own judgments but we ignore them; our goal is to elicit them by questioning the voters starting from zero knowledge.
-We introduce an additional grade $\dbar$, and, given a language $\Delta$, $\dbar< \delta, \forall \delta \in \Delta$. \commentBN{I think we should avoid to say this but rather add in $\bar{F}$ that the $\dbar$ are excluded.} The common language in the incomplete knowledge setting is then $\overline{\triangle}=\triangle \cup \dbar$. Voters cannot use this grade to express their judgment over an alternative and it does not count in the computation of the median grade as we will explain formally. We refer to the grades in $\triangle$, the ones used by voters, as "defined" grades.
+We introduce an additional grade $\dbar$, and, given a language $\Delta$, $\dbar< \delta, \forall \delta \in \Delta$.
+%\commentBN{I think we should avoid to say this but rather add in $\bar{F}$ that the $\dbar$ are excluded.}
+The common language in the incomplete knowledge setting is then $\overline{\triangle}=\triangle \cup \dbar$. Voters cannot use this grade to express their judgment over an alternative and it does not count in the computation of the median grade as we will explain formally. We refer to the grades in $\triangle$, the ones used by voters, as "defined" grades.
 
-<<<<<<< HEAD
-The starting knowledge is represented by a matrix $m\times n$ of $\dbar$ grades. We define with $K_j \subseteq A$ a set of $k$ alternatives that we ask the voter $j\in N$ to judge. 
+The starting knowledge is represented by a matrix $m\times n$ of $\dbar$ grades. Given $k \in \N$, we define with $K_i \subseteq A$ a set of $k$ alternatives that we ask the voter $i\in N$ to evaluate. 
 After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\Pbar\in \overline{\triangle}^{A \times N}$, that is a matrix $m \times n$ of grades of which $kn$ are "defined".
-Note that when $k=n$ the resulting profile $\Pbar$ corresponds to the complete profile $P$. Let $C(\Pbar) = \{P' \in \triangle^{m \times n} \suchthat \Pbar \subseteq P'\}$ be the set of all completions of $\Pbar$ obtained by substituting all $\dbar$ grades with "defined" ones, note that $P \in C(\Pbar)$.
-\commentOC{Technically that’s not correct as $P$bar may contain some “undefined”, in which case $P$ can’t be a superset of it. (Can be left as is for now.)}
-=======
-The starting knowledge is represented by a matrix $m\times n$ of $\dbar$ grades. \commentOC{Given $k \in \N$, …} We define with $K_j \subseteq A$ a set of $k$ alternatives that we ask the voter $j\in N$ to judge. 
-After having asked every voter in $N$ to judge $k$ candidates, we obtain an \emph{incomplete profile} $\overline{P}\in \overline{\triangle}^{A \times N}$, that is a matrix $m \times n$ of grades of which $kn$ are "defined".
-Note that when $k=n$ the resulting profile $\overline{P}$ corresponds to the complete profile $P$. Let $C(\overline{P}) = \{P' \in \triangle^{m \times n} \suchthat \overline{P} \subseteq P'\}$ be the set of all completions of $\overline{P}$ obtained by substituting all $\dbar$ grades with "defined" ones, note that $P \in C(\overline{P})$.
-\commentOC{Technically that’s not correct as $P$bar may contain some “undefined”, in which case $P$ can’t be a superset of it. (Can be left as is for now.) Also, I suppose that $P$ should keep the identities of the alternatives and voters.}
->>>>>>> 9dcd8d607d3ee4fb8826abf38f618ca69eeb90b2
- 
-If $K_j=K_l, \forall j,l\in N$, i.e. if we ask all voters to judge the same $k$ alternatives, then we have complete knowledge restricted to this set of candidates. As defined in \Cref{sec:complete}, we call $P^{K_j}$ the restriction of the complete profile $P$ to only the alternatives in $K_j$.
-\commentOC{I wonder if this notation will be useful.}
+Note that when $k=m$, the resulting profile $\Pbar$ corresponds to the complete profile $P$. Let $C(\Pbar)$ be the set of all completions of $\Pbar$ obtained by substituting all $\dbar$ grades with "defined" ones, note that $P \in C(\Pbar)$.
+%if we want to define $C(\Pbar) = \{P' \in \triangle^{m \times n} \suchthat \restr{\Pbar}{\triangle} \subseteq P'\}$ then we introduce $\restr{\Pbar}{\triangle} = \Pbar \cap (A \times N \times \triangle)$
 
-Let $g:\overline{\triangle}^N\rightarrow \bigcup_{N' \subseteq N}\triangle^{N'}$ be a function that given an incomplete vector of grades $q \in \overline{\triangle}^N$, thus $q \subseteq N × \bar{\triangle}$, returns the vector composed only of the "defined" grades $g(q) = \restr{q}{N × \triangle}$.
+%If $K_i=K_l, \forall i,l\in N$, i.e. if we ask all voters to judge the same $k$ alternatives, then we have complete knowledge restricted to this set of candidates. We denote with $P^{K_i}$ the restriction of the complete profile $P$ to only the alternatives in $K_i$.
+%\commentOC{I wonder if this notation will be useful.}
+
+Let $g:\overline{\triangle}^N\rightarrow \bigcup_{N' \subseteq N}\triangle^{N'}$ be the function that given an incomplete vector of grades $q \in \overline{\triangle}^N$, thus $q \subseteq N × \bar{\triangle}$, returns the vector composed only of the "defined" grades. 
+%$g(q) = \restr{q}{N × \triangle}$ \commentOC{This should be $q \cap (N × \triangle)$, but anyway as above this may be more complexity that what we do with this afterwards justifies, so perhaps omitting what $g$ is formally (especially considering that this union is not straightforward to understand) may be beneficial to the reader.}.
 
 %The operator $\overline{\rho}$ defines a restricting ordering function that given $\overline{P_i}$, an incomplete vector of $n$ grades, returns the correspondent complete vector restricted to its $x$ "defined" grades decreasingly ordered: $\overline{\rho}(\overline{P_i})=\rho(d(\overline{P_i}))$. \commentBN{Not sure this is necessary.}
 
-<<<<<<< HEAD
-Given any $S \subseteq A$, the \emph{majority-grade} for incomplete profile $\overline{f}^S_{maj}: (\bigcup_{x \in \intvl{1,n}}\triangle^{x})^S \rightarrow \triangle^S$ corresponds to $f^S_{maj}$ that only considers the "defined" grades in the computation of the median. Indeed, consider an incomplete profile $\overline{P^S}$ and denote by $P'_i=g(\Pbar^S_i)$, then ${f}_{maj}(P'_i) = \rho(P')_{\floor{\frac{\card{P'}}{2}} + 1}$, $\forall i \in S$.
+The \emph{majority-grade} for incomplete profile $\fmajbar: \overline{\triangle}^N \rightarrow \triangle$ corresponds to $\fmaj$ that only considers the "defined" grades in the computation of the median. Consider an incomplete grade vector $\overline{P}_j$ and let $P'_j=g(\Pbar_j)$ be the partial vector of $\overline{P}_j$ of only "defined" grades, then \[\fmajbar(\Pbar_j)= \left\{ \begin{array}{cl}
+	\fmaj(P'_j) =  \rho(P'_j)_{\floor{\frac{\card{P'_j}}{2}} + 1} & \mbox{for } \
+	P'_j \neq \emptyset  \\  \dbar & \mbox{otherwise}
+\end{array}\right.
+\]
+\commentOC{Aren’t you willing to define $\fmajbar$ here? You’re actually defining $\fmaj$. Also, the argument of $\fmajbar$ should be an incomplete vector. And, it is not said what happens if $P'_j = \emptyset$, i.e., when the argument contains only undefined grades.}\commentBN{I see the problem... and now?}
+In a similar fashion, we can define $\Fmajbar[S](\Pbar)=\argmax_{j\in S}\fmajbar(\Pbar^S_j)$ and, given a value $x\in \intvl{1,m}$, the selection function of the $x$ best alternatives is $\overline{F}^S_x(\Pbar^S) = \Fmajbar[S](\Pbar^S) \cup \Fmajbar[S'](\Pbar^{S'}) \cup \dots \cup \Fmajbar[S^{x-1}](\Pbar^{S^{x-1}})$ where $S'= S \setminus \Fmajbar[S](\Pbar^{S})$, $S{'}{'}= S \setminus \Fmajbar[S](\Pbar^S) \setminus \Fmajbar[S'](\Pbar^{S'})$ etc.
 
-To summarize, starting with zero knowledge, we ask the voters to judge $k$ candidates. Given the partial information at our disposal, we are able to define the "known" median grade for each alternative. We can now use the \emph{selection function} $F^S_k$, defined in \Cref{sec:complete}, to select the $k$ alternatives with the highest "known" median grades.
+To summarize the elicitation process we want to investigate, starting with zero knowledge, each voter is asked to evaluate $k$ candidates. Given the partial information at our disposal, we are able to define the "known" median grade for each alternative by applying $\fmajbar(\Pbar_{j}), \forall j\in A$. We can then use the \emph{selection function} $\overline{F}_k$ to select the $k$ alternatives with the highest "known" median grades. We denote this set of alternatives with $K=\overline{F}_k\subseteq A$. The alternatives in $K$ will be presented to all voters, who must provide a grade for each of them, thus obtaining a restriction of the complete profile to this subset of $k$ alternatives. From here, we can use $\Fmaj[K](P^K)$ to select the winning alternative of the restricted profile $P^K$.
 
-Given the set $\tilde{K}=F^S_k(g(\Pbar^S_i))$ of the best $k$ alternatives, every voter is then asked to judge all the candidates in $\tilde{K}$. 
-=======
-Given any $S \subseteq A$, the \emph{majority-grade} for incomplete profile $\overline{f}^S_{maj}: (\bigcup_{x \in \intvl{1,n}}\triangle^{x})^S \rightarrow \triangle^S$ corresponds to $f^S_{maj}$ that only considers the "defined" grades in the computation of the median. Indeed, consider an incomplete profile $\overline{P^S}$ and denote by $P'_i=g(\overline{P}^S_i)$, then ${f}_{maj}(P'_i) = \rho(P')_{\floor{\frac{\card{P'}}{2}} + 1}$, $\forall i \in S$.
-\commentOC{I suppose you mean to apply $\rho$ on $P'_i$. Also, your definition makes sense more generally for any $P'_i$ of the right type, not just when $P'_i = g(…)$. In fact, this $f$ is already defined!}
-
-To summarize, starting with zero knowledge, we ask the voters to judge $k$ candidates. Given the partial information at our disposal, we are able to define the "known" median grade for each alternative. We can now use the \emph{selection function} $F^S_k$, defined in \Cref{sec:complete}, to select the $k$ alternatives with the highest "known" median grades.
-
-Given the set $\tilde{K}=F^S_k(g(\overline{P}^S_i))$ of the best $k$ alternatives, every voter is then asked to judge all the candidates in $\tilde{K}$. 
-\commentOC{$i$ is not defined; and there may be a type incompatibility between the result of $g$ and the domain of $F^S_k$.}
->>>>>>> 9dcd8d607d3ee4fb8826abf38f618ca69eeb90b2
-This process results in a restriction $P^{\tilde{K}}$ of the complete profile $P$. It is important to mention that when we ask the voters to judge an alternative $i\in \tilde{K}$ we assume that they report their preference as they would have stated it when asked about $P$. In other words, $P^{\tilde{K}}_{i} = P_i$ for any $i \in \tilde{K}$.
-\commentOC{The formal part of this does not look like your informal hypothesis.}
-
-Please note that $P^{\tilde{K}}$ is a complete matrix of $kn$ grades and that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $f^{\tilde{K}}_{maj}$, function to $P^{\tilde{K}}$ to determine the median grades and then the winner function $F^{\tilde{K}}_{maj}$ to select the winner. 
+%I'm not sure the following is relevant
+%
+%Given the set $\tilde{K}=F^S_k(g(\Pbar^S_j))$ of the best $k$ alternatives, every voter is then asked to judge all the candidates in $\tilde{K}$. 
+%\commentOC{$i$ is not defined; and there may be a type incompatibility between the result of $g$ and the domain of $F^S_k$.}
+%
+%This process results in a restriction $P^{\tilde{K}}$ of the complete profile $P$. It is important to mention that when we ask the voters to judge an alternative $i\in \tilde{K}$ we assume that they report their preference as they would have stated it when asked about $P$. In other words, $P^{\tilde{K}}_{i} = P_j$ for any $i \in \tilde{K}$.
+%\commentOC{The formal part of this does not look like your informal hypothesis.}
+%
+%Please note that $P^{\tilde{K}}$ is a complete matrix of $kn$ grades and that we fall back to the complete profile case, thus, we apply the \emph{majority-grade}, $\fmaj[\tilde{K}]$, function to $P^{\tilde{K}}$ to determine the median grades and then the winner function $\Fmaj[\tilde{K}]$ to select the winner. 
 %For simplicity we denote by $\overline{W}_{\overline{P^k}} \subseteq A$ the results of this process.
 
 \begin{remark}
-	Because we are interested into investigating \acs{MJ}, we are going to use an alphabet with the same size of the one proposed by \citet{Balinski2011} which is composed of the following adjectives: Excellent, Very good, Good, Average, Mediocre, Inadequate, To be Rejected. For brevity we are gonna rename those adjectives respectively from $\delta_7$, corresponding to Excellent, to$\delta_1$, corresponding to To be Rejected. Therefore, $\triangle=\{\delta_1,\delta_2, \delta_3,\delta_4,\delta_5,\delta_6,\delta_7\}$ 
-	\commentOC{(Very minor) Please list them starting with $\delta_1$.}
+	Because we are interested into investigating \acs{MJ}, we are going to use an alphabet with the same size of the one proposed by \citet{Balinski2011} which is composed of the following adjectives: To be Rejected, Inadequate, Mediocre, Average, Good, Very Good, Excellent. For brevity we are gonna rename those adjectives respectively from $\delta_1$, corresponding to To be Rejected, to $\delta_7$, corresponding to Excellent. Therefore, $\triangle=\{\delta_1,\delta_2, \delta_3,\delta_4,\delta_5,\delta_6,\delta_7\}$ 
 \end{remark}
 
-Once having defined the notation, the first question that comes to mind is about the risks of incomplete knowledge. Given a profile which we only partially know, would we always select the same set of alternatives as winners in case of complete and incomplete knowledge?
-\commentOC{The phrasing of this question could be improved: as stated, the answer is, I suppose, obviously negative. With low knowledge, there is not much hope that the right alternatives would be selected.}
-
-\begin{proposition}
-	\label{prop:notsamewinner}
-	Given $A$ a set of $m\geq 3$ alternatives and $N$ a set of $n\geq3$ voters, there exist a complete profile $P$ and an incomplete profile $\Pbar \subset P$, such that $F_{maj}(P) \nsubseteq F^{\tilde{K}}_{maj}(P^{\tilde{K}})$ \textemdash where $\tilde{K}=F^S_k(g(\Pbar^S_i))$.
-	\commentOC{As proof I’d suggest: assume we never ask about some alternative $i$ which is judged excellent by everybody; and all the other ones are judged the worst.}
-\end{proposition}
-\begin{proof}
-	Pick an alternative $i\in A$ and a voter $j \in N$, let us build a profile $P$ in the following way: the voter $j$ judges $\delta_1$ the alternative $i$ and she judges $\delta_2$ all the other alternatives $x \in A \setminus \{i\}$; every other voter $y\in N \setminus \{j\}$ judges $\delta_7$ the alternative $i$ and $\delta_6$ all the other alternatives $x \in A \setminus \{i\}$. The resulting profile $P$ will have the form:
-	\begin{center}
-		$
-		\begin{array}{ccccccc}
-			& j_1 & j_2 & \dots & j & \dots & j_n \\
-			i_1 &	\delta_6 & \delta_6 & \dots & \delta_2 & \dots & \delta_6 \\
-			i_2 &	\delta_6 & \delta_6 & \dots & \delta_2 & \dots & \delta_6 \\
-			. &	\delta_6 & \delta_6 & \dots & \delta_2 & \dots & \delta_6 \\
-			i &	\delta_7 & \delta_7 & \dots & \delta_1 & \dots & \delta_7 \\
-			. &	\delta_6 & \delta_6 & \dots & \delta_2 & \dots & \delta_6 \\
-			i_m &	\delta_6 & \delta_6 & \dots & \delta_2 & \dots & \delta_6 \\
-		\end{array} \quad.
-		$
-	\end{center}
-	For $n\geq 3$ the median grade $f_{maj}(P_i)=\delta_7$ and $f_{maj}(P_x)=\delta_6, \forall x \in A \setminus \{i\}$. Thus, the winner $F_{maj}(P)=\{i\}$.
-	
-	Consider now any $k \in \intvl{1,m-1}$, and remove from $P$ as many judgments as necessary such that the following conditions are verified: each column only contains $k$ grades \textemdash meaning that each voter judges $k$ candidates \textemdash and the row corresponding to the alternative $i$ is only formed by two grades, one $\delta_7$ and one $\delta_1$ \textemdash we have only the best and worst opinion on $i$. We fill all the unknown judgments with $\dbar$ grades to obtain $\Pbar$. Note that we only have two judgments for the alternative $i$ so $\overline{f}_{maj}(\Pbar_i)=\delta_1$ and, since $m\geq3$ and $1 \leq k \leq m-1$, $\overline{f}_{maj}(\Pbar_x)$ is either $\delta_6$ or $\delta_2$ $\forall x \in A \setminus \{i\}$. Therefore $\overline{f}_{maj}(\Pbar_x) > \overline{f}_{maj}(\Pbar_i)$ $\forall x \in A \setminus \{i\}$, this means that $i$ will not be selected for the second turn, when we ask the voters their complete preferences about the $k$ "best" alternatives. Thus $i \notin \tilde{K}$ and, consequently, $F_{maj}(P) \nsubseteq F^{\tilde{K}}_{maj}(P^{\tilde{K}})$.
-\end{proof}
-
-
 \section{Reasoning on incompleteness}
+Let us now consider the effects of incomplete knowledge on the selection of a winner. In particular, we want to prove that if we consider an incomplete profile and take the $k$ alternatives with the highest median grade, with any $k$ being between $1$ and $m-1$, it is possible to miss the winner of one of its completion. 
+This is important because in the elicitation process implemented by LaPrimaire.org, only the full grade vectors of the $k$ alternatives with the highest median grade are considered. Clearly, if the winning alternative in the complete profile is in this set $K \subset A$, then she will also be the winner of the incomplete profile. This is because the voters will be asked to provide a grade for all those $k$ alternatives, providing thus a restriction of the complete profile to only the alternatives in $K$, i.e. $P^K$. If a candidate is a winner for a complete profile, then she is also a winner for any of its restrictions that include her.
+Note that this is not true in case of multiple winners where ties that cannot be broken by tie-breaking procedures and for which arbitrary ordering is, therefore, necessary. In what follows we assume the absence of such ties.
+We want to show that it is possible for the winning alternative of the complete profile not to be included in this subset $K$ of alternatives.
 
-<<<<<<< HEAD
-Assume that the complete profile $P$ exists but it is unknown to us and the knowledge we have is represented by $\Pbar$. As we observed in \Cref{prop:notsamewinner}, it is possible to elect a candidate as a winner for $\Pbar$ that would not be selected when considering the complete profile $P$. In this section we want to investigate how likely it is to happen.
-=======
-Assume that the complete profile $P$ exists but it \commentOC{I suggest removing “it” (very minor).} is unknown to us and the knowledge we have is represented by $\overline{P}$. As we observed in \Cref{prop:notsamewinner}, it is possible to elect a candidate as a winner for $\overline{P}$ that would not be selected when considering the complete profile $P$. In this section we want to investigate how likely it is to happen.
->>>>>>> 9dcd8d607d3ee4fb8826abf38f618ca69eeb90b2
-
-Consider $A=\{a,b,c\}$ the set of alternatives, $N=\{v_1,v_2, \dots\}$ the set of voters and $\Delta=\{\delta_1, \dots, \delta_{10}\}$ the common language. We assume that we ask $k=m-1=2$ independently \commentOC{and equiprobably} drawn questions to each voter. We denote by $\mathcal{P}(e)$ the probability of the event $e$ to happen.
-
-\commentOC{Please specify that you assume no tie in the highest median grade in these computations.}
-\commentOC{Please write your results as theorems, and the reasoning as a proof. Please specify that the profiles you display are only illustrative, not the general case.}
-
-\paragraph{One voter}
-Consider the following complete profile $P$, because we only have one voter the median of each alternative simply corresponds to the grade assigned from $v_1$.
-\begin{center}
-	$P:
-	\begin{array}{cccc}
-		& v_1 & \quad & f_{maj} \\
-		a &	\delta_{10} &\quad& \delta_{10} \\
-		b &	\delta_5  &\quad& \delta_5 \\
-		c &	\delta_1  &\quad& \delta_1 \\
-	\end{array} \quad, \qquad
-	$
-	$\Pbar:
-	\begin{array}{cccc}
-		& v_1 & \quad & \overline{f}_{maj} \\
-		a &	\reddbar &\quad& \dbar \\
-		b &	\delta_5  &\quad& \delta_5 \\
-		c &	\delta_1  &\quad& \delta_1 \\
-	\end{array} \quad.
-	$
-\end{center}
-
-The alternative $a$ has the highest median thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile the only possibility is if we ignore the grade of $a$, thus $\Pbar$ is the only incomplete profile for which $a\neq F_{maj}(\Pbar)$.
-\[\mathcal{P}(a\neq F_{maj}(\Pbar))=1-\frac{k}{m}=\frac{1}{3}.\]
-This means that with one voter we have $\approx 33\%$ of probability to miss the winner selected with complete information.
-\commentOC{Very minor, but I’d write it as a fraction rather than an approximate percentage to make it a precise result.}
-
-\paragraph{Two voters}
-Consider now the following profile $P$ with two voters.
-\begin{center}
-	$P:
-	\begin{array}{ccccc}
-		& v_1 & v_2 & \quad & f_{maj} \\
-		a &	\delta_{10} & \delta_3 & \quad& \delta_3 \\
-		b &	\delta_5 & \delta_2 &\quad& \delta_2 \\
-		c &	\delta_1 & \delta_7 &\quad& \delta_1 \\
-	\end{array} \quad, \qquad
-	$
-\end{center}
-<<<<<<< HEAD
-The median is the lowest between the two possible values thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile there are two possibilities, either we do not know anything about $a$, then $b$ and $c$ are automatically selected for the next phase whatever their medians are (case $1$: $\Pbar'$), or the new medians of $b$ and $c$ computed with missing information are higher than the current median of $a$ (case $2$: $\Pbar^{\second}$). For the case $2$ to happen there are two conditions to be satisfied: the minimum grades of $b$ and $c$ must be missing in the incomplete profile \underline{and} both the maximum grade of $b$ and the maximum grade of $c$ must be greater than the minimum grade of $a$. Note that, because each voter gives her opinion about $k=2$ alternatives, for the former condition to be possible then the minimum grades of $b$ and $c$ must not be assigned by the same voter. 
-=======
-The median is the lowest between the two possible value thus $a=F_{maj}(P)$. For $a$ not to be the winner of the incomplete profile there are two possibilities, either we do not know anything about $a$, then $b$ and $c$ are automatically selected for the next phase whatever their medians are 
-\commentOC{I don’t think that this has been specified before.}
-(case $1$: $\overline{P}'$), or the new medians of $b$ and $c$ \commentOC{“new” (and old) is confusing here; I’d write “approximate” (and real)} computed with missing information are higher than the current median of $a$ (case $2$: $\overline{P}^{\second}$). For the case $2$ to happen there are two conditions to be satisfied: the minimum grades of $b$ and $c$ must be missing in the incomplete profile \underline{and} both the maximum grade of $b$ and the maximum grade of $c$ must be greater than the minimum grade of $a$. Note that, because each voter gives her opinion about $k=2$ alternatives, for the former condition to be possible then the minimum grades of $b$ and $c$ must not be assigned by the same voter. 
-
-\begin{center}
-	$\Pbar':
-	\begin{array}{ccccc}
-		& v_1 & v_2 & \quad & \overline{f}_{maj} \\
-		a &	\reddbar & \reddbar & \quad& \dbar \\
-		b &	\delta_5 & \delta_2 &\quad& \delta_2 \\
-		c &	\delta_1 & \delta_7 &\quad& \delta_1 \\
-	\end{array} \quad,
-	$
-	$\Pbar^{\second}:
-	\begin{array}{ccccc}
-		& v_1 & v_2 & \quad & \overline{f}_{maj} \\
-		a &	\delta_{10} & \delta_3 & \quad& \delta_3 \\
-		b &	\delta_5 & \reddbar &\quad& \delta_5 \\
-		c &	\reddbar & \delta_7 &\quad& \delta_7 \\
-	\end{array} \quad.
-	$
-\end{center}
-
-The probability of case $1$, i.e. that $\Pbar_a=\{\dbar,\dbar\}$, is equal to the probability that both voters do not grade $a$, thus $\frac{1}{m}\cdot\frac{1}{m}$. This is necessary and sufficient condition for $a\neq F_{maj}(\Pbar)$. We can decompose the probability of not selecting $a$ in the following way:
-\commentOC{This doesn’t look true.}
-We can decompose the probability of not selecting $a$ in the following way:
-
-\begin{align}
-	\mathcal{P}(a\neq F_{maj}(\Pbar)) &=\overbrace{\mathcal{P}(\Pbar_a=\{\dbar,\dbar\})}^{1/m^2} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a=\{\dbar,\dbar\})}^{1}\\
-	&+\underbrace{\mathcal{P}(\Pbar_a\neq\{\dbar,\dbar\})}_{1-1/m^2} \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar\})}_{\color{red}*1}
-\end{align}
-The element denoted by ${\color{red}*1}$ is what we described earlier in case $2$, the probability of both the two following events happening \commentOC{“both events” or “the two following events” (better here), not both the two together}:
-\begin{align}
-	e_1 &= \overline{f}_{maj}(b)=\max{P_{b}} \wedge \overline{f}_{maj}(c)=\max{P_{c}}\\
-	e_2 &= \max{P_{b}}>\min{P_{a}} \wedge \max{P_{c}}>\min{P_{a}}.
-\end{align}	
-\commentOC{For this to make sense we need to assume some distribution over the assignment of grades, so you need to indicate your hypothesis on that (similar to the one over the questions).}
-With this in mind we can again decompose this probability:
-\begin{align}
-	{\color{red}*1} &=\overbrace{\mathcal{P}(e_1 \wedge e_2 |\Pbar_a\neq\{\dbar,\dbar\}) }^{{\color{red}*2}} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar\}\wedge e_1 \wedge e_2)}^{1}\\
-	&+\mathcal{P}(\lnot(e_1 \wedge e_2) |\Pbar_a\neq\{\dbar,\dbar\}) \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar\}\wedge \lnot (e_1 \wedge e_2))}_{0}
-\end{align}
-As we said earlier for $e_1$ and $e_2$ to happen \commentOC{Do you mean just $e_1$?} it must be that:
-\begin{align}
-	e_3 = &(P_{b,1} = \max{P_{b}} \wedge P_{c,2} = \max{P_{c}}) \vee (P_{b,2} = \max{P_{b}} \wedge P_{c,1} = \max{P_{c}}) .
-\end{align}
-
-\begin{align}
-	{\color{red}*2} &=\overbrace{\mathcal{P}(e_3 |\Pbar_a\neq\{\dbar,\dbar\}) }^{1/2} \overbrace{\mathcal{P}(e_1 \wedge e_2|\Pbar_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*3}}\\
-	&+\mathcal{P}(\lnot e_3 |\Pbar_a\neq\{\dbar,\dbar\}) \underbrace{\mathcal{P}(e_1 \wedge e_2|\Pbar_a\neq\{\dbar,\dbar\}\wedge \lnot e_3)}_{0}
-\end{align}
-\commentOC{This seems not sure to me when considering that two grades can be tied.}
-Because $e_1$ and $e_2$ are two independent events:
-\begin{align}
-	{\color{red}*3} &=\overbrace{\mathcal{P}(e_1 |\Pbar_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*4}} \cdot \overbrace{\mathcal{P}(e_2 |\Pbar_a\neq\{\dbar,\dbar\}\wedge e_3)}^{{\color{red}*5}}
-\end{align}
-
-${\color{red}*4}$ is the probability of picking exactly the alternatives $a$ and $b$ when questioning the voter who assigns $\max{P_{b}}$ and of picking $a$ and $c$ for the other one, thus ${\color{red}*4}=1/m^2$. \commentBN{On the board we wrote $\frac{1}{m^2-1}$ but I don't recall why...I think it's $1/m^2$ no?}
-\commentOC{I believe that $1/m^2$ is $\mathcal{P}(e_1 knowing e_3)$.}
-
-To compute ${\color{red}*5}$ we need to enumerate all the grades orderings such that $\min{P_{a}}>\min{P_{b}}\wedge \min{P_{c}}$, otherwise $a$ would not win in the complete profile \commentOC{You need to specify from the start that $P$ denotes the probability conditioned on $a$ winning.}, and $\max{P_{b}}>\min{P_{a}}\wedge \max{P_{c}}>\min{P_{a}}$. Let us denote the grades given to the alternative $a$ by $\delta_{a_i}$ and $\delta_{a_j}$, and similarly for $b$ and $c$.
-\commentOC{Please specify what $a_i$ and $a_j$ stand for: voters? Considering that $i$ usually designates an alternative, I’d prefer $j$ and $h$, for example, if you need such notation. But aren’t the already known $P^a_1$, $P^a_2$ (or $P_{a, 1}$?) and $\max P_a$ etc. sufficient?}
-\begin{align}
-	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 2\cdot 2}>\delta_{a_j}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2}
-\end{align}
-Chosen a grade $a$ ($a_i$ or $a_j$) and a grade $b$ ($b_i$ or $b_j$) as the respective maximums, there are $3!$ way to arrange the maximum grade of each alternative $a, b, c$. Therefore there are $3! \cdot 2 \cdot 2$ combination of grades ordering for this triplet. Note that once we choose $b$ then $c$ is automatic the one given by the other voter because of $e_3$. The position of $\min{P_{a}}$ is fixed for the reason above, and we have already counted the possible exchange $a_i, a_j$ in the previous computation. Last but not least, $\min{P_{b}}$ and $\min{P_{c}}$ can exchange positions, so for each ordering created so far there are two additional way to add the minimums of $b$ and $c$. The total number of orderings of six elements is $6!$, therefore ${\color{red}*5}= \frac{3!\cdot 2\cdot 2\cdot2}{6!}=\frac{1}{15}$.
-\commentOC{This looks quite nice, but I do not understand everything because of the previous point.}
-
-We have now all pieces to compute $\mathcal{P}(a\neq F_{maj}(\Pbar))$. 
-\begin{align}
-	&{\color{red}*3} = \frac{1}{9} \cdot \frac{1}{15} \\
-	&{\color{red}*2} =\frac{1}{2} \cdot \frac{1}{135} \\
-	&{\color{red}*1} =\frac{1}{270} \cdot 1 \\
-	&\mathcal{P}(a\neq F_{maj}(\Pbar)) = \frac{1}{9} \cdot 1 + \frac{8}{9} \cdot \frac{1}{270} \approx 0.11
-\end{align}
-
-This means that with two voters we have $\approx 11\%$ of probability to miss the winner selected with complete information.
-
-\paragraph{Three voters}
-Consider now the following profile $P$ with three voters.
-\begin{center}
-	$P:
-	\begin{array}{cccccc}
-		& v_1 & v_2 &v_3 & \quad & f_{maj} \\
-		a &	\delta_{10} & \delta_5 & \delta_1 & \quad& \delta_5 \\
-		b &	\delta_{10} & \delta_4 & \delta_2 &\quad& \delta_4 \\
-		c &	\delta_{10} & \delta_3 & \delta_3 &\quad& \delta_3 \\
-	\end{array} \quad, \qquad
-	$
-\end{center}
-The alternative with the highest median is $a$ thus $a=\Fmaj(P)$. In a similar vein as the two voters case, for $a$ not to be the winner of the incomplete profile either we do not know any grades of $a$, then $b$ and $c$ are automatically selected for the next phase (case $1$: $\Pbar'$), or, again, the new medians of $b$ and $c$ computed with missing information are higher than the current median of $a$ (case $2$). 
-To understand the conditions necessary for the second case, let us consider the possible new medians of $a$:
-\begin{itemize}
-	\item $\fmajbar(a)= \max{P_a}$: this can happen only if the incomplete vector of $a$ is $\Pbar_a=(\max{P_a},\dbar,\dbar)$, because each voter grades $m-1$ alternatives, this means that we are missing only another grade of the profile. This is not enough to improve the medians of $b$ or $c$, so $a$ will still have the highest median.
-	\item $\fmajbar(a)= \med{P_a}$: this means that either $\Pbar_a=(\max{P_a},\med{P_a},\dbar)$ or $\Pbar_a=(\med{P_a},\dbar,\dbar)$. In the latter, again, one missing grade is not enough to improve the median of other alternatives. Consider the first case and assume that the other two missing grades are $\min{P_b}$ and $\med{P_b}$, assume also that $\max{P_b}>\med{P_a}$. In this case $b$ has a better median than $a$, but $a$ still has a better median than $c$, thus $a$ and $b$ will be selected for the second phase and $a$ will win when discovering the complete information.
-	\item $\fmajbar(a)= \min{P_a}$: this case is the most relevant, and it can happen if $\Pbar_a=(\max{P_a},\dbar,\min{P_a})$, or if $\Pbar_a=(\dbar,\med{P_a},\min{P_a})$ or $\Pbar_a=(\dbar,\dbar,\min{P_a})$. In all of these cases, in order for $a$ not to be selected as winner it must be that $\fmajbar(b)>\min{P_a}$ and  $\fmajbar(c)>\min{P_a}$. However, in the latter case, the value of $\fmajbar(b)$ (respectively $\fmajbar(c)$) can either be $\min{P_b}$ or $\med{P_b}$ ($\min{P_c}$ and $\med{P_c}$) depending on the last grade missing. In the other two cases, we are only missing one grade from $P_a$ thus we could either miss one grade from $P_b$ and one from $P_c$ or both grades from one of those two vectors.
-\end{itemize}
-
-\begin{align}
-	\mathcal{P}(a\neq F_{maj}(\Pbar)) &=\overbrace{\mathcal{P}(\Pbar_a=\{\dbar,\dbar,\dbar\})}^{1/m^3} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a=\{\dbar,\dbar,\dbar\})}^{1}\\
-	&+\underbrace{\mathcal{P}(\Pbar_a\neq\{\dbar,\dbar,\dbar\})}_{1-1/m^3} \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar,\dbar\})}_{\color{red}*1}
-\end{align}
- 
-The element denoted by ${\color{red}*1}$ is what we described earlier in the case $\fmajbar(a)= \min{P_a}$, we can decompose it as:
-\begin{align}
-	{\color{red}*1} &=\overbrace{\mathcal{P}(\fmajbar(a)= \min{P_a}|\Pbar_a\neq\{\dbar,\dbar,\dbar\})}^{\frac{3}{m^3-1}} \overbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar,\dbar\} \wedge \fmajbar(a)= \min{P_a})}^{{\color{red}*2}}\\
-	&+\mathcal{P}(\fmajbar(a)\neq \min{P_a})) |\Pbar_a\neq\{\dbar,\dbar,\dbar\}) \underbrace{\mathcal{P}(a\neq F_{maj}(\Pbar)|\Pbar_a\neq\{\dbar,\dbar,\dbar\} \wedge \fmajbar(a)\neq \min{P_a})}_{0}
-\end{align}
-${\color{red}*2}$ is the probability that $\fmajbar(b)$ and $\fmajbar(c)$ are greater than $\min{P_a}$, thus, that one of these events are true:
-\begin{align}
-	e_1 &= \med{P_{b}}>\min{P_{a}} \wedge \med{P_{c}}>\min{P_{a}}\\
-	e_2 &= \med{P_{b}}>\min{P_{a}} \wedge \min{P_{c}}>\min{P_{a}}\\
-	e_3 &= \min{P_{b}}>\min{P_{a}} \wedge \med{P_{c}}>\min{P_{a}}\\
-	e_4 &= \min{P_{b}}>\min{P_{a}} \wedge \min{P_{c}}>\min{P_{a}}.
-\end{align}	
-Because they are mutually exclusive then:
-	\[{\color{red}*2} =\mathcal{P}(e_1 \vee e_2 \vee e_3 \vee e_4)=\mathcal{P}(e_1)+\mathcal{P}(e_2)+\mathcal{P}(e_3)+\mathcal{P}(e_4)\]
- To compute the probability of these events we need to enumerate all the grades orderings such that the respective events are satisfied. Let us consider $e_1$, and use the same approach used in the two voters case:
- \begin{align}
- 	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2^3}>\underbrace{\delta_{a_k}>\delta_{b_k}>\delta_{c_k}}_{3!}
- \end{align}
- For $e_2$:
- \begin{align}
- 	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2^3}>\underbrace{\delta_{c_k}>\delta_{a_k}>\delta_{b_k}}_{3}
- \end{align}
- For $e_3$:
-\begin{align}
-	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}}_{2^3}>\underbrace{\delta_{b_k}>\delta_{a_k}>\delta_{c_k}}_{3}
-\end{align}
- For $e_4$:
- \begin{align}
- 	\underbrace{\delta_{a_i}>\delta_{b_i}>\delta_{c_i}}_{3!\cdot 3^3}>\underbrace{\delta_{a_j}}_{2 \cdot 3}>\underbrace{\delta_{b_j}>\delta_{c_j}>\delta_{b_k}>\delta_{c_k}}_{4!}>\delta_{a_k}
- \end{align}
-
-\begin{align}
-	&{\color{red}*2} =\frac{3^6\cdot2^6+3^6\cdot2^5+3^6\cdot2^5+3^6\cdot2^5}{9!} = \frac{9}{28} \\
-	&{\color{red}*1} =\frac{3}{8} \cdot \frac{9}{28} = \frac{27}{224} \\
-	&\mathcal{P}(a\neq F_{maj}(\Pbar)) = \frac{1}{9} \cdot 1 + \frac{8}{9} \cdot \frac{27}{224} \approx 0.22
-\end{align}
-This means that with three voters we have $\approx 22\%$ of probability to miss the winner selected with complete information.
-
-\newpage
-\commentBN{Stopped here.}
-\subsection{Unfixed k}
-A natural question that comes to mind when considering the process of asking the voters to judge random alternatives is: how feasible is it? Especially when applying it to political elections, it is safe to say that voters have strong opinions. There are always some candidates that we would never want to see in office, while we would really like to support our favorite candidate. By applying the random selection of questions there is a chance we do not get to express our opinions on those particular candidates. In the worst case, we may be asked to judge only candidates of whom we do not have a strong opinion, or worse, that we do not even know. Is our judgment relevant in this case? How willing are we to take the risk to go and vote without the certainty of being able to express the judgments we consider important?
-
-Because of all these reasons, we may want to consider the possibility for the voters to choose the candidates to judge. One extreme situation that may occur is that each voter judges only its best and worst choice. 
-
-\begin{proposition}
-	Given two integers $k=5$ and $s=5$, $m$ alternatives and $n$ voters who only judge their best and worst candidates, there exist a complete profile $P'$ and an incomplete profile $\overline{P'}$ such that $P'\in C(\overline{P'})$ and $F(P')\neq F(\overline{P'})$.
-\end{proposition}	
-
-\begin{proof} Consider the following complete profile $P$:
-	
-	\begin{center}
-		\begin{tabular}{cccccccc}
-			& j$_1$ & j$_2$ & j$_3$ \\
-			a	&	Average	&	Average	&	Excellent	\\
-			b	&	To be rejected	&	Good	&	Good	\\
-			c	&	Mediocre	&	Excellent	&	Mediocre	\\
-			d	&	Average	&	Average	&	To be rejected	\\
-			e	&	Mediocre	&	To be rejected	&	Mediocre	\\
-			f	&	Excellent	&	Inadequate	&	Inadequate \\
-		\end{tabular}
-	\end{center}
-	
-	
-	for the sake of the example the rows are not ordered vectors because the identity of the voters is considered.
-	
-	The vector of medians $f_{maj}(P)$ is:
+\begin{theorem}
+	\label{th:notinK}
+	Given a set $A$ of alternatives $m\geq 2$, a set of voters $N$ and a value $k\in \intvl{1,m-1}$, there exist a complete profile $P$ and an incomplete profile $\Pbar$ such that $P \in C(\Pbar)$ and $\Fmaj(P) \nsubseteq \overline{F}_k(\Pbar)$.
+\end{theorem}
+\begin{proof}
+	Consider the following complete profile $P$
 	\begin{center}
 		$
-		\begin{array}{cc}
-			a &	Average \\
-			b &	Good \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Inadequate \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The real winner is $F^P=b$. 
-	
-	Assume that each voter only express its best and worst judgments and construct the complete profile $P'$ from $P$ in the following way: for each alternative $i$ that is not the real winner $w^*$ add as many voters as needed such that its known median grade ($f_{maj}(\overline{P'_i})$) is better than the known median grade of the real winner ($f_{maj}(\overline{P'_{w^*}})$); then add an additional alternative that is rejected by all these new voters. Since the voters only express the best and the worst grades, we are not interested in how they judge the rest of the alternatives, to construct a complete profile we can assume that they judge them according to the current known median. The resulting complete profile $P'$ is the following, but our information $\overline{P'}$ is only restricted to the green values: 
-	
-	\scalebox{0.75}{
-		\begin{tabular}{cccccccc}
-			& j$_1$ & j$_2$ & j$_3$ & j$_4$ & j$_5$ & j$_6$ & j$_7$ \\
-			a	&	Average	&	Average	&	{\color{teal}Excellent}	&	Average	&	Average	&	Average	&	Average	\\
-			b	&	{\color{teal}To be rejected}	&	Good	&	Good	&	Good	&	Good	&	Good	&	Good	\\
-			c	&	Mediocre	&	{\color{teal}Excellent}	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	&	Mediocre	\\
-			d	&	Average	&	Average	&	{\color{teal}To be rejected}	&	{\color{teal}Excellent}	&	{\color{teal}Excellent}	&	Average	&	Average	\\
-			e	&	Mediocre	&	{\color{teal}To be rejected}	&	Mediocre	&	Mediocre	&	Mediocre	&	{\color{teal}Excellent}	&	{\color{teal}Excellent}	\\
-			f	&	{\color{teal}Excellent}	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	&	Inadequate	\\
-			g	&	{\color{teal}To be rejected}	&	{\color{teal}To be rejected} & {\color{teal}To be rejected}& {\color{teal}To be rejected} & {\color{teal}To be rejected} & {\color{teal}To be rejected} & {\color{teal}To be rejected}	\\
-		\end{tabular}
-	}
-	
-	The vector of medians $f_{maj}(\overline{P'})$ is:
-	\begin{center}
-		$
-		\begin{array}{cc}
-			a &	\text{Excellent} \\
-			b &	\text{To be rejected} \\
-			c &	\text{Excellent} \\
-			d &	\text{Excellent}	\\
-			e &	\text{Excellent} \\
-			f & \text{Excellent} \\
-			g & \text{To be rejected} \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The real winner $b$ does not appear in the set of candidates for the second round $S=\{a,c,d,e,f\}$, so it will not be elected from the incomplete profile $\overline{P'}$.
-\end{proof}
-
-\newpage
-\bibliography{biblio}
-\newpage
-\appendix
-\section{Questions}
-\begin{itemize}
-	\item Does expressing judgment on randomly selected candidates influence the result? (If we change the questions does the result change?)
-	\item Does the number of questions influence the result? (If we change the number of questions does the result change?)
-	\item If yes, do these effects are mitigated by a second round?
-	\item Which is the right number of questions? (Best trade-off between communication cost and optimal result.)
-	\item Can we select the next question with minimax regret instead of randomly selecting a candidate?
-	\item Can we say anything about the "fairness" of proposing the candidates to judge? Suppose I have strong opinions about only two candidates: one I extremely like and one I extremely dislike. There is a chance I will not be asked about those two candidates, in this case I cannot say much about the other candidates and I am also frustrated because I did not get to express my opinions.
-	\item Consider $n$ voters and $m$ candidates and assume that a voter $i \in N$ judges only a fraction of the $m$ candidates. What is the resulting voting rule? What are its properties? Can a voter manipulate the result by judging only some candidates? 
-\end{itemize}
-
-\section{Old material that can be transformed into examples}
-\begin{proof} Consider $n=3, m=6, k=5$ and the following complete profile $P$:
-	\begin{center}
-		$
-		\begin{array}{cccc}
-			& j_1 & j_2 & j_3 \\
-			a &	Excellent	& Excellent & Inadequate\\
-			b &	Mediocre	& Mediocre	& Mediocre\\
-			c &	Mediocre	& Mediocre & Inadequate\\
-			d &	Average	& Average	& Average\\
-			e &	Average	& Mediocre	& Inadequate \\
-			f &	Average	& Mediocre & Mediocre	  \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The vector of medians $f_{maj}(P)$ is:
-	\begin{center}
-		$
-		\begin{array}{cc}
-			a &	Excellent \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Mediocre \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The real winner is $F^P=a$. 
-	
-	Consider now the following incomplete profiles $\Pbar$ and $\Pbar'$ obtained after having asked each voter to judge $k=5$ random chosen alternatives: \commentOC{This mixes again the process and the maths. The proposition does not talk about randomness and it is confusing to refer to this here. The proposition holds whatever the way $P$ bar is chosen (including, deterministically).}\commentBN{I'm not sure I got this. With randomness I mean the one in the definition of $\Pbar$.}
-	\begin{center}
-		$\Pbar: \qquad
-		\begin{array}{cccc}
-			& j_1 & j_2 & j_3 \\
-			a &	Excellent	& {\color{red}Undefined} & Inadequate\\
-			b &	Mediocre	& Mediocre	& Mediocre\\
-			c &	Mediocre	& Mediocre & Inadequate\\
-			d &	Average	& Average	& {\color{red}Undefined} \\
-			e &	Average	& Mediocre	& Inadequate \\
-			f &	{\color{red}Undefined}	& Mediocre & Mediocre	  \\
+		\begin{array}{ccccc}
+			& i_1 & i_2 & \dots & i_n \\
+			j_1 &	\delta_7 & \delta_7 & \dots & \delta_7 \\
+			j_2 &	\delta_6 & \delta_6 & \dots & \delta_6 \\
+			. &	\delta_6 & \delta_6 & \dots & \delta_6 \\
+			j_m &	\delta_6 & \delta_6 & \dots & \delta_6 \\
 		\end{array} \quad,
 		$
 	\end{center}
+	where all voters judge all alternatives $\delta_6$ except for the alternative $j_1$ which is judged $\delta_7$ by everyone.
+	The median grade of the alternative $j_1$ is $\fmaj(P_{j_1})=\delta_7$ and the one of all the other alternatives is $\fmaj(P_x)=\delta_6, \forall x \in A \setminus \{j_1\}$. Thus, the winner in the profile $P$ is $\Fmaj(P)=\{j_1\}$.
+	Consider now the following incomplete profile $\Pbar$:
 	\begin{center}
-		$\Pbar': \qquad
-		\begin{array}{cccc}
-			& j_1 & j_2 & j_3 \\
-			a &	Excellent	& Excellent & Inadequate\\
-			b &	Mediocre	& {\color{red}Undefined}	& Mediocre\\
-			c &	Mediocre	& Mediocre & {\color{red}Undefined}\\
-			d &	Average	& Average	& Average \\
-			e &	{\color{red}Undefined}	& Mediocre	& Inadequate \\
-			f &	Average	& Mediocre & Mediocre	  \\
+		$
+		\begin{array}{ccccc}
+			& i_1 & i_2 & \dots & i_n \\
+			j_1 & \dbar & \dbar & \dots & \dbar \\
+			j_2 &	\delta_6 & \delta_6 & \dots & \delta_6 \\
+			. &	\delta_6 & \delta_6 & \dots & \delta_6 \\
+			j_m &	\delta_6 & \delta_6 & \dots & \delta_6 \\
 		\end{array} \quad.
 		$
 	\end{center}
-	The vector of medians are:
-	\begin{center}
-		$f_{maj}(\Pbar)= \quad
-		\begin{array}{cc}
-			a &	Inadequate \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Mediocre \\
-		\end{array} \quad,\quad%
-		f_{maj}(\Pbar')= \quad
-		\begin{array}{cc}
-			a &	Excellent \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Inadequate \\
-			f & Mediocre \\
-		\end{array} \quad.
-		$
-	\end{center}
-	
-	Consider the sets of $s=5$ alternatives with the highest median grades for the two profiles, $S'=\{b,c,d,e,f\}$ for $\Pbar$, and $S^{\prime\prime}=\{a,b,c,d,f\}$ for $\Pbar'$, and the two restrictions $P_{S'}$ and $P_{S^{\prime\prime}}$. In particular, $P_{S'}$ corresponds to the complete profile when eliminating the alternative $a$, and $P_{S^{\prime\prime}}$ to the complete profile without the alternative $e$.
-	The vector of medians are:
-	\begin{center}
-		$f_{maj}(P_S')= \quad
-		\begin{array}{cc}
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			e &	Mediocre \\
-			f & Mediocre \\
-		\end{array} \quad,\quad%
-		f_{maj}(P_S^{\prime\prime})= \quad
-		\begin{array}{cc}
-			a & Excellent \\
-			b &	Mediocre \\
-			c &	Mediocre \\
-			d &	Average	\\
-			f & Mediocre \\
-		\end{array} \quad.
-		$
-	\end{center}
-	The winner associated to the incomplete profile $\Pbar$ is then $F^{P_{S'}} = d$ and the one associated to $\Pbar'$ is $F^{P_{S^{\prime\prime}}} = a$, thus $F^{\Pbar} \neq F^{\Pbar'}$.
+	The median grade of $j_1$ under the profile $\Pbar$ is $\fmaj(\Pbar_{j_1})=\dbar$ and the one of all the other alternatives is $\fmaj(\Pbar_x)=\delta_6, \forall x \in A \setminus \{j_1\}$. Because $\dbar < \delta_6$, $\overline{F}_k(\Pbar)$ will be any subset of $k$ elements of $\{j_2,j_3,\dots,j_m\}$, for any $k\in \intvl{1,m-1}$. Since all those alternatives have the same grade vectors, some orderings can be used to define the members of $\overline{F}_k(\Pbar)$.	
+	Thus, $j_1 \notin \overline{F}_k(\Pbar)$, and $\Fmaj(P) \subsetneq \overline{F}_k(\Pbar)$, for any $k\in \intvl{1,m-1}$.
 \end{proof}
-\commentOC{Perhaps some part of this could be transformed to an example.}
 
-\begin{corollary}
-	Given $m$ alternatives, $n$ voters and an integer $k \in \intvl{1,m}$, there exist a profile $P$ and an incomplete profile of $P$, $\Pbar$, such that $F^{\Pbar}$ is not the real winner.
-\end{corollary}
-\commentOC{“real winner” is inappropriate here. Is there an unreal winner? I realize that you mean “winner considering the complete profile” VS “winner considering some part of it”, but I don’t think that the term “real” is appropriate. I’d simply say “winners” for the winners of the complete election, and perhaps “approximate winners” for the winners given a partial profile, or something similar.}
+From \Cref{th:notinK}, considering $k=1$ and recalling that $\overline{F}_{k=1}(\Pbar) = \Fmajbar(\Pbar)$ we can conclude that there exist an incomplete profile and one of its completion that do not have the same winner.
+\begin{remark}
+	Given a set of alternatives $A$ and a set of voters $N$, there exist a complete profile $P$ and an incomplete profile $\Pbar$ such that $P \in C(\Pbar)$ and $\Fmaj(P) \neq \Fmajbar(\Pbar)$.
+\end{remark}
 
-\section{Old computations and plots}
-Consider an alternative $w\in A$ and observe that for $w$ to be in $W^*$ we need $f_{maj}(P_w)\geq f_{maj}(P_i), \ \forall i \in A$. 
-Consider now the incomplete profile $\overline{P^k}$ and the set of the $k$ alternatives with the highest "known" median grades $\tilde{K}$. 
-\commentOC{Do you mean, the set $\tilde{K}$ of the $k$ alternatives…?}
-Let $v$ be the $k$-th highest median, i.e. $v=\min_{i\in \tilde{K}} \overline{f}_{maj}(\overline{P_i})$ the lowest grade of an alternative in $\tilde{K}$. If $\overline{f}_{maj}(\Pbar_w) \geq v$ then $w \in \tilde{K}$. 
-\commentOC{A notation for the $x$th median grade or $x$th best alternative would be useful.}\commentBN{ok}
 
-Because the voters express their judgments on all the alternatives in $\tilde{K}$ 
-\commentOC{The reason for this claim is unclear to me. Is this a deduction, or an hypothesis?}\commentBN{Need more clarity, this should be clear.}
-and $P^{\tilde{K}}_{i} = P_i$ for any $i \in \tilde{K}$, then if $w \in W^*$ and $w \in \tilde{K}$ then $w \in \overline{W}_{\overline{P^k}}$.
+We have shown that it is possible to find a complete profile $P$ whose winner is not in the set $K$ of alternatives with the highest medians for an incomplete profile $\Pbar$, with $P \in C(\Pbar)$.
+If we look at the procedure used by LaPrimaire.org, however, the situation is slightly more complex. We are not considering just any incomplete profile, but a $k$ value is set from the beginning and the incomplete profile is formed by asking each voter to rate $k$ random chosen candidates. They set $k=5$.
+The $k$ alternatives with the highest medians on this incomplete profile form $K$.
 
-In order to compute the probability of a winning alternative $w$ to not be elected in case of incompleteness, we need to focus on the probability for $w$ not to reach the second round: probability of $w \notin \tilde{K}$.
-\commentBN{If I'm the winner here are three cases I'm not elected in incompleteness:
-	\begin{itemize}
-		\item I'm demoted $\Rightarrow \overline{h}<h$
-		\begin{itemize}
-			\item others are promoted $\Rightarrow v>\overline{h}$
-			\item or not $\Rightarrow v>\overline{h}$
-		\end{itemize}
-		\item $\overline{h}=h$
-		\begin{itemize}
-			\item others are promoted $\Rightarrow v>\overline{h}$
-		\end{itemize}
-		\item I'm promoted $\Rightarrow \overline{h}>h$
-		\begin{itemize}
-			\item others are promoted $\Rightarrow v>\overline{h}$
-		\end{itemize}
-\end{itemize}}
+Note that, the example profile $\Pbar$ considered in the proof of \Cref{th:notinK} could be the result of a random process of questioning the voters about $k=m-1$ alternatives, and they never got the chance to grade the alternative $j_1$.
 
-Consider the complete profile $P$ and the highest median grade $h=\max_{i\in A}\rho(P_i)_{\floor{\frac{n}{2}} + 1}$. Since $w \in W^*$ then $f_{maj}(P_{w})\geq h$ and the vector of grades $P_w$ must be composed of at least $\floor{\frac{n}{2}}+1$ grades $\alpha \geq h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta < h$. Let us evaluate the worst case scenario.
-Without loss of generality consider $n$ an odd value, then the vector $P_{w}$ in the worst case contains exactly $\frac{n+1}{2}$ grades greater than or equal to $h$ and $\frac{n-1}{2}$ grades lower than $h$.
-\[P_w : \qquad [ \alpha_1, \dots , \alpha_{\frac{n+1}{2}}, \beta_1, \dots , \beta_{\frac{n-1}{2}} ] \]
-Consider now the incomplete profile $\overline{P^k} \subset P$ and the highest "known" median $v$ described above. For $w \notin \tilde{K}$ then $\overline{f}_{maj}(\overline{P^k}_w) < v$ and the partial vector $\overline{P^k}_w$ of $x\in \intvl{1,n-1}$ defined grades must be composed of at least $\frac{x+1}{2}$ grades $\beta'<v$ and at most $\frac{x-1}{2}$ grades $\alpha' \geq v$. 
+We recall that $\Pbar$ is an incomplete profile where every voter judges $k\in \intvl{1,m-1}$ alternatives. If we consider the matrix $m \times n$ of grades, then the columns, i.e. the vectors of grades expressed by each voter, are composed of only $k$ "defined" grades.
 
-If $h=v$, we have $\binom{(n+1)/2}{(x-1)/2}$ ways of picking $\frac{x-1}{2}$ grades greater than or equal to $v$ out of the $\frac{n+1}{2}$ of the original vector; and $\binom{(n-1)/2}{(x+1)/2}$ ways of picking $\frac{x+1}{2}$ grades lower than $v$.
-\begin{align}
-	P_{w}: \qquad [ \underbrace{\alpha_1, \dots , \alpha_{\frac{n+1}{2}}}_{\begin{pmatrix}\frac{n+1}{2} \\ \frac{x-1}{2}\end{pmatrix}}, \underbrace{\beta_1, \dots , \beta_{\frac{n-1}{2}}}_{\begin{pmatrix}\frac{n-1}{2} \\ {\frac{x+1}{2}}\end{pmatrix}} ] \\
-	\overline{P^k}_w:\qquad [ \overbrace{\alpha'_1, \dots , \alpha'_{\frac{x-1}{2}}}, \overbrace{\beta'_1, \dots , \beta'_{\frac{x+1}{2}}}]
-\end{align} 
-\newcommand{\largemath}[1]{{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger#1}}}}}}
-%note to myself: find a better way please
+\begin{theorem}
+	\label{th:uncompleteK}
+	Given a set $A$ of alternatives $m\geq 2$, a set of voters $N$ and a value $k\in \intvl{1,m-1}$, there exist a complete profile $P$ and an incomplete profile $\Pbar$ such that $P \in C(\Pbar)$ and $\Fmaj(P) \nsubseteq \overline{F}_k(\Pbar)$.
+\end{theorem}
+\begin{proof}
+	Consider the complete profile $P$ defined in the proof of \Cref{th:notinK}, we will show how to construct an incomplete profile for any value of $k\in \intvl{1,m-1}$ such that the statement is true. Let us call $K=\overline{F}_k(\Pbar)$.
+	Note that we can select any complete profile where there is one alternative $j$ graded the highest by everyone, and all the other alternatives are considered worst by everyone.
+	
+	When $k=m-1$, the proof follows from the proof of \Cref{th:notinK}. The set of the $m-1$ alternatives with the highest medians is $K=\{j_2,j_3,\dots,j_m\}$. Thus, $\Fmaj(P)=j_1 \notin K$.
+	
+	For any other $k<m-1$ we can follow the same reasoning by building $\Pbar$ making sure that we never ask anyone the grade of $j_1$. 
+	The grade vector of $j_1$ is $\Pbar_{j_1}=(\dbar, \dots, \dbar)$ and $\fmajbar(\Pbar_{j_1})=\dbar$ \commentOC{$\fmajbar(\Pbar_{j_1})$ is undefined, it seems to me}\commentBN{I think it's the $P^k$ that is confusing, it's just a name not a restriction. I wanted to make explicit the relation between $\Pbar$ and $k$. I removed that}.
+	Two situations are now possible, either all voters grade the same $k$ alternatives and their associated grade vectors are complete; or each voter evaluates a set of $k$ different alternatives from $A\setminus j_1$. In the first case we have exactly $k$ alternatives whose majority grade is defined and they would form the set $K$. In the second case there are at least $k$ alternatives with at least one "defined" grade and, thus, with a defined majority grade.  Therefore $\fmajbar(\Pbar_{j_1})=\dbar$ will be lower than at least $k$ others and it will not be selected in $K$.
+\end{proof}	
 
-We define the probability of $w \notin \tilde{K}$ as the number of incomplete vectors $\overline{P^k}_w$ for which $\overline{f}_{maj}(\overline{P^k}_w) < v$, over the total number of possible incomplete vectors:
-\commentBN{prob of w to be demoted in worst case}
-\[ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n+1}{2} \\ {\frac{x-1}{2}-i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2} \\ {\frac{x+1}{2}+i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} } \]
+From \Cref{th:uncompleteK}, considering $k=1$ we have that:
+\begin{remark}
+	Given a set $A$ of alternatives $m\geq 2$, a set of voters $N$ and a value $k\in \intvl{1,m-1}$, there exist a complete profile $P$ and an incomplete profile $\Pbar$ such that $P \in C(\Pbar)$ and $\Fmaj(P) \neq \Fmajbar(\Pbar)$.
+\end{remark}
 
-\commentBN{prob of w to be demoted for $\beta$ going from $j=0$ to $(n-1)/2$}
+In the proofs of \Cref{th:notinK,th:uncompleteK} we showed the existence of an incomplete profile whose $k \in \intvl{1,m-1}$ best alternatives did not include the winner of one of its completions. To do so, we assumed that no questions were asked about an alternative $j$ winner in the complete profile $P$. Although the theoretical result remains, how likely is this to happen in practice?
 
-\[ P(\overline{h}<h)= \largemath{\sum}_{j=0}^{(n-1)/2}{ \ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n+1}{2}+j \\ {\frac{x-1}{2}-i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n-1}{2}-j \\ {\frac{x+1}{2}+i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} }} \]
+\begin{proposition}
+	\label{pr:probabilityJ}
+	Given a set $A$ of $m$ alternatives, a set $N$ of $n$ voters, a value $k\in\intvl{1,m-1}$ and considering an elicitation strategy in which each voter is asked independently to evaluate $k$ alternatives picked equiprobably, the probability that an alternative $j\in A$ is never asked about is $(1-\frac{k}{m})^n$.
+\end{proposition}
+\begin{proof}
+	To prove this let us first consider $e_i$ the event of asking a voter $i\in N$ to grade the alternative $j$ in $k$ questions, and let us compute the probability $\mathcal{P}$ of this event to happen.
+	There are $\binom{m-1}{k-1}$ ways to select $k$ alternatives among $m$ that include the alternative $j$. This is because once we select the alternative $j$ we can still pick $k-1$ alternatives to ask the voter among the remaining $m-1$.
+	Moreover, there are $\binom{m}{k}$ ways to select $k$ alternatives among $m$ with no constraints. Thus, the probability of asking a voter to grade the alternative $j$ in $k$ questions is:
+	\[\mathcal{P}(e_i)= \frac{\binom{m-1}{k-1}}{\binom{m}{k}}=\frac{\frac{(m-1)!}{(k-1)!(m-1-k+1)!}}{\frac{m!}{k!(m-k)!}}=\frac{(m-1)!}{(k-1)!(m-k)!}\cdot\frac{k(k-1)!(m-k)!}{m(m-1)!}=\frac{k}{m}.\]
+	The probability that one voter is never questioned about an alternative is then:
+	\[\mathcal{P}(\overline{e_i})=1-\mathcal{P}(e_i)=1-\frac{k}{m}.\]
+	Because questionings different voters are independent events, we can express the probability that no voter is asked to grade an alternative $j$ as the product of the individual probabilities. Denoting this event with $e_j$ we have that:
+	\[\mathcal{P}(e_j)=\mathcal{P}(e_i)^n=\left(1-\frac{k}{m}\right)^n.\]
+\end{proof}
 
-\commentBN{prob of w to be promoted for $\alpha$ going from $j=0$ to $(n-1)/2$ where: the vector of grades $P_w$ must be composed of at least $\floor{\frac{n}{2}}+1$ grades $\alpha > h$ and at most $\lceil \frac{n}{2}\rceil-1$ of grades $\beta \leq h$.}
+\begin{remark}
+	\label{rm:sizeGV}
+	After asking each of the $n$ voters to grade $k\in \intvl{1,m-1}$ of the $m$ alternatives, the average size of the grade vectors is $q = n \cdot \frac{k}{m}$.
+\end{remark}
+This observation comes from the proof of \Cref{pr:probabilityJ}. Given an alternative $j\in A$ and a voter $i\in N$ the probability that $i$ is asked about $j$, thus that $\Pbar_{j}(i)$ is defined, is $\frac{k}{m}$. This gives us an approximation on the number of elements of the grade vector, because for each of the $n$ elements, we have $\frac{k}{m}$ probability that the element is defined.
 
-\[ P(\overline{h}>h)= \largemath{\sum}_{j=0}^{(n-1)/2}{ \ \largemath{\sum}_{x=1}^{n-1}{ \frac{ \largemath{\sum}_{i=0}^{x/2}{ \begin{pmatrix}\frac{n-1}{2}-j \\ {\frac{x+1}{2}+i}\end{pmatrix} \cdot \begin{pmatrix}\frac{n+1}{2}+j \\ {\frac{x-1}{2}-i}\end{pmatrix} }}{\begin{pmatrix}n \\ x\end{pmatrix}} }} \]
+The value found in \Cref{pr:probabilityJ} is very low to occur in real examples, if, for example, we consider $k=3$, $n=m=10$ the probability that none is asked to grade the winner of the complete profile is $0.7^{10}$ (which approximated is $0.0282\%$).
+However, this is also very restrictive. For an alternative $j$, winner of the complete profile, not to be the winner of the incomplete profile it suffices for her median to be smaller than the one of other $k$ alternatives. 
+We do not need the vector of the alternative considered to be empty, just to be misrepresented enough to have a median lower than $k$ others.
 
-\commentBN{$P(\overline{h}=h)= 1-P(\overline{h}>h)\cdot P(\overline{h}<h)$ : probability of being properly labeled}
+\begin{example} \normalfont
+	Consider the following profile $P$:
+	\begin{center}
+		$
+		\begin{array}{ccccccc}
+			& i_1 & \dots & i_{\floor{\frac{n}{2}} + 1} & i_{\floor{\frac{n}{2}} + 2} & \dots & i_n \\
+			j_1 & \delta_7 & \dots &\delta_7 & \delta_5 & \dots & \delta_5 \\
+			j_2 & \delta_6 & \dots &\delta_6 & \delta_6 & \dots & \delta_6 \\
+			. & \delta_6 & \dots &\delta_6 & \delta_6 & \dots & \delta_6 \\
+			j_m & \delta_6 & \dots &\delta_6 & \delta_6 & \dots & \delta_6 \\
+		\end{array} \quad.
+		$
+	\end{center}	
+	Exactly $\floor{\frac{n}{2}} + 1$ voters grade the alternative $j_1$ with the highest grade $\delta_7$ and the rest of the voters grade her $\delta_5$. All voters grade any other alternative $\delta_6$.
+	The median grade of $j_1$ is $\fmaj(P_{j_1})=\delta_7$ and the one of all the other alternatives is $\fmaj(P_x)=\delta_6, \forall x \in A \setminus \{j_1\}$. Thus, $j_1$ is the winner of the profile $P$.
+	For $j_1$ not to be the winner of any $\Pbar$ such that $P \in C(\Pbar)$, it must be that $\fmajbar(j_1)=\delta_5$. This happens when the incomplete grade vector of $j_1$ has a number of $\delta_5$ grades at least as great as the number of $\delta_7$ grades. 
+	Let us denote with $q=|\Pbar_{j_1}|$ the size of the incomplete grade vector of $j_1$.
+	Assume, for the sake of simplicity, that $n$ and $q$ are both even, although this reasoning can easily be adapted in case they are odd.
+	An incomplete grade vector whose median is $\delta_5$, could be formed by $q/2$ $\delta_7$ grades and $q/2$ $\delta_5$ grades. To compute the probability of this vector to be formed, we must consider that there are $\binom{\frac{n}{2}+1}{ \frac{q}{2}}$ ways of taking $q/2$ of the $\frac{n}{2}+1$ $\delta_7$ grades of the complete vector. Moreover, there are $\binom{\frac{n}{2}-1}{ \frac{q}{2}}$ ways of taking $q/2$ of the $\frac{n}{2}-1$ $\delta_5$ grades. If we consider no restrictions there are $\binom{n}{q}$ ways of taking a vector of $q$ grades out of a vector of $n$ elements.
+	However, this is not the only vector whose median is $\delta_5$. In fact, we could have $q/2-1$ $\delta_7$ grades and $q/2+1$ $\delta_5$ grades. If we iterate this reasoning on all the possible division of $q$ we have that:
+	
+	\[ \mathcal{P}= \sum_{i=0}^{q/2} \frac{\binom{\frac{n}{2}+1}{ \frac{q}{2}-i}\cdot\binom{\frac{n}{2}-1}{\frac{q}{2}+i}}{\binom{n}{q}} \]
+	
+	Because we know from \Cref{rm:sizeGV} that the average size of any grade vector is $q=n\cdot\frac{k}{m}$, we experimentally computed this probability with different values of $n,m$ and $k$. Except when $k$ is very close to $m$, and then we have almost the whole vector, we have that this probability is $\mathcal{P}\approx \frac{1}{2}$.
+\end{example}
 
-The size $x$ of an incomplete vector $\overline{P_i}$ for $i \in A$, depends on the number of questions $k$ asked to the voters, in fact, if we ask $n$ voters to judge $k$ random alternatives, ideally, each alternative $i$ will be judged $\frac{k\cdot n}{m}$ times. Consider the value $k$ as a function of the number of alternatives: $k=c \cdot m$ where $c \in \R$. If $m=10$ and $k=5$ then $k=1/2 m$, i.e. we ask the voters to judge half of the candidates. Thus, the value $x$ depends only on the number of voters $n$ $x=\frac{k\cdot n}{m}= c \cdot n$, $c\in \R$. Without loss of generality we consider both $x$ and $n$ odd values.
+Again, the profile considered here is rather peculiar and not of practical use. In the next section we investigate experimentally different profile distributions.
 
-Consider the worst case scenario: the real vector $P_{w^*}$ has a proportion of $51\%-49\%$ of $\alpha-\beta$ grades. \Cref{fig:differentX51-49} shows the probability of electing a non-real winner in this scenario for different size $x$ of the incomplete vector $\overline{P_{w^*}}$. \Cref{tab:differentX51-49} shows in details those values. Note that when $x=1001$ the probability is about $25\%$, but we should keep in mind that $x= c \cdot n$, thus a vector of size $1000$ means that the alternative $w^*$ was judged by only $1/10$ of the voters. With this in mind, we see that with $x=\frac{n}{2}$ we obtain a very low probability of only $2.12\%$, but we need $4/5$ of the voters to judge each alternative to get zero probability of "miss-qualification".
 
-The situation change drastically for different proportions of $\alpha-\beta$ grades as \Cref{fig:differentX} shows. In particular, we only need about $200$ judgments (thus $1/50$n) to reach an almost zero probability of electing a non real winner when the real vector $P_{w^*}$ has a proportion of $60\% \alpha -40\% \beta$ grades. Recalling the formula:
-\begin{align}
-	x&=\frac{k \cdot n}{m} \\
-	200&=\frac{k}{m}\cdot 10000 \\
-	\frac{1}{50}&=\frac{k}{m} \\
-	k&=\frac{m}{50}
-\end{align}
-we note that asking one question per voter is more than enough to avoid the election of a non-real winner.
+\section{Experimental results}
 
-In the 2016 elections organised by LaPrimaire.org $n=10675$ voters participated in the first round, and each of them judged $k=5$ random alternatives out of the $m=12$ total ones. Each alternative received an average of $4449$ judgments. Using this data, we simulated th probability of electing a non-real winner for different proportions of $\alpha-\beta$ grades. \Cref{fig:original} and \Cref{tab:original} show the results.
+In our experiments we assume the existence of an Oracle who knows the complete profile, to whom we ask questions to elicit voters preferences. Specifically, we want to investigate what is the probability that starting from zero knowledge and asking $k$ questions to each voter the winner of the complete profile is not within the $k$ alternatives with the best medians of the incomplete profile.
+One of the first observations, also from the previous examples, is that given a number $n$ of voters, this probability is highly dependent on how well each grade vector is represented.
+Because the average size of each vector is equal to $q=n\cdot\frac{k}{m}$, we are particularly interested in how the probability of \textit{"missing the winner"} varies as a function of $k/m$. This, in fact, can be interpreted as the percentage of representation of the whole grade vector of $n$ elements. By knowing this relation we therefore know the percentage of each vector, on average, that must be known in order to have a given probability of missing the winner. From this, we can infer important information, for example how many questions, $k$, to ask each voter so that the probability of missing the winner is less than a given threshold.
+Another measure we are interested in follows somewhat the opposite reasoning, given a number of questions $k$ that I want to ask each voter, which can be fixed for reasons of cognitive and computational complexity, how large the electorate $n$ must be for the vectors to be well represented?
 
-By crossing these results we note that we could have asked the voters far less than $5$ questions, reducing the communication and the cognitive cost of the elicitation process.
+In what follows we consider two different scenarios. In the first we assume that each grade vector is randomly selected from a uniform distribution, somewhat like in the \textit{Impartial Culture} model used to evaluate ranking methods. In the second we consider that the grade vectors associated with the alternatives are distributed following the results of a real survey carried out during the French presidential election in 2022. The code to run the experiments is available at \url{	https://github.com/xoxor/elicitationMJ}.
 
-%xticklabel style = {font=\footnotesize},
-%x label style={at={(axis description cs:0.5,-0.05)},anchor=north}
-\begin{figure}
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-			ylabel=Prob. \%,
-			xlabel= x,
-			ymin=0,
-			ymax=50,
-			xmin=1,
-			xmax=10001,
-			xtick={1,1001,2001,3001,4001,5001,6001,7001,8001,9001,10001},
-			xticklabels={$10^{-3}$,1,2,3,4,5,6,7,8,9,10},
-			xticklabel style = {yshift=-0.5ex},
-			scaled x ticks= real:1000,
-			x label style={at={(axis description cs:0.5,-0.03)},anchor=north}
-			]
-			\addplot[thick, blue] table [x=x, y=ProbOfMiss, col sep=comma]{data/51-49-100.csv};			
-		\end{axis}
-	\end{tikzpicture}
-	\caption{Probability of electing a non-real winner, for different values of $x$, with $n=10000$, and $51\%-49\%$ proportion of $\alpha - \beta$ grades.}
-	\label{fig:differentX51-49}
-\end{figure}
+\subsection{Profile uniformly distributed}
+For the first experiment we consider a profile where each voter has equal probability of assigning a grade $\delta \in \Delta$ to each alternative. Because we observed that with a low number of voters the probability of missing the winner $\mathcal{P}$ is very high, and with an high number of voters it is very low, we arbitrarily take $n=100$ and $m=50$. Moreover, in order to avoid the use of tie breaking mechanisms, that can be non resolute in case of ties that cannot be broken, we assume a profile $P$ where there is an alternative $j_1$ whose median is always $\delta_7$ and there are no other alternatives with the same median. \commentOC{Doing this distorts very much the profiles you consider compared to realistic ones (or even, not-too-unrealistic ones). I suspect that this will artificially substantially raise the probability of finding the right winner (make the exercice easier). That’s a pity, considering that you can easily do much better than this, I think. Suffice to reject profiles where ties occur when drawing them.}\commentBN{Mmh we can leave this for another time but I'm not sure this is different from what I do. If I "reject profiles where ties occur when drawing them" (which I already do for any other alternative $\neq j_0$) it means there will be one alternative with the highest median. What does it change with enforcing this since the beginning? What I do now is $1)$ generate a random vector for $j_0$ such that its median is $\delta_7$ and $2)$ generate other $m-1$ random vectors discarding all those whose median is $\delta_7$.}
+Given such a profile $P$, we ask $k$ questions to each voter for all $k\in \{1,m/2\}$. We consider this interval because we observed that already with $k=m/2$ the probability $\mathcal{P}$ is very close to $0$. After the elicitation procedure is complete and the incomplete grade vectors are found, we compute the median for each of those vectors. The $k$ alternatives with the highest medians form the set $K$ and we check if $j_1$ is in this set. If yes, then we know it will be the winner in the next phase when the complete preferences are asked to each voters. Otherwise, $j_1$ will not be the winner and we count this incomplete profile $\Pbar$ for our $\mathcal{P}$. In fact, given the profile $P$ we repeat this operation $1000$ times, and $\mathcal{P}$ will be the number of profiles $\Pbar$ for which $j_1$ is not a winner, over the total number of incomplete profiles considered which is $1000$. 
+Moreover, we repeat this operations $1000$ times. Thus, we generate $1000$ complete profiles $P$ and for each we consider $1000$ incomplete profiles. At the end we obtain $1000$ probabilities for which we consider average and standard deviation.
 
-\sisetup{table-number-alignment = center, table-figures-integer=2, table-figures-decimal=1, table-auto-round}
+\Cref{tab:MJelicitationIC} shows the average probability for each value $k$ with the standard deviation over the $1000$ runs. We varied $k$ from $1$ to $25$ but omitted the results after $k=13$ because they are too small to be relevant. The complete results can be found at \url{https://github.com/xoxor/elicitationMJ} and they are displayed on \Cref{fig:MJelicitationIC}. 
+In fact, if we take the first line of \Cref{tab:MJelicitationIC}, we have that when we ask $k=1$ question to each voter we have $64\%$ of probability not to find $j_1$ in the set $K$. This happens when the incomplete vectors are, on average, $k/m=1/50$ ($2\%$) of the complete vector. If we take $k=5$, we know on average $1/10$ of each grade vector, and the probability drops at $0.19\%$. \Cref{fig:MJelicitationIC} shows this correlation.
+
 \begin{table}
 	\centering
-	\begin{tabular}{S[table-figures-integer=5, table-figures-decimal=0]S[table-figures-integer=2, table-figures-decimal=2]}
+	\caption{Average probability of missing the winner $\mathcal{P}$, given $n=100, m=50$ considering $1000$ complete profiles uniformly distributed and $1000$ incomplete profiles for each of them.}
+	\label{tab:MJelicitationIC}
+	\begin{tabular}{S[table-figures-integer=2, table-figures-decimal=0]S[table-number-alignment = right, table-figures-decimal=2]@{ \quad ± \quad }S[table-number-alignment = left]}
 		\toprule
-		{x} & {Prob. of Miss} \\
-		\midrule
-		1	&	48.9853044087	\\
-		1001	&	24.9190117413	\\
-		2001	&	15.5009678852	\\
-		3001	&	9.1920240364	\\
-		4001	&	4.8710050444	\\
-		5001	&	2.1180123415	\\
-		6001	&	0.645530701	\\
-		7001	&	0.096388706	\\
-		8001	&	0.0024354987	\\
-		9001	&	0.000000051	\\
-		10001	&	0.00	\\
+		{$k$} & {avg $\mathcal{P}$} & {sd} \\
+		\midrule		
+		1	&	0.638898	&	\num{2.43d-04}	\\
+		2	&	0.516191	&	\num{7.75d-04}	\\
+		3	&	0.392228	&	\num{2.40d-03}	\\
+		4	&	0.284388	&	\num{3.03d-03}	\\
+		5	&	0.190178	&	\num{3.10d-03}	\\
+		6	&	0.139743	&	\num{2.77d-03}	\\
+		7	&	0.111304	&	\num{2.60d-03}	\\
+		8	&	0.087645	&	\num{2.21d-03}	\\
+		9	&	0.064264	&	\num{1.60d-03}	\\
+		10	&	0.045563	&	\num{1.01d-03}	\\
+		11	&	0.029234	&	\num{5.85d-04}	\\
+		12	&	0.016319	&	\num{2.33d-04}	\\
+		13	&	\num{8.68d-03}	&	\num{1.01d-04}	\\
+		%			14	&	\num{4.25d-03}	&	\num{4.30d-05}	\\
+		%			15	&	\num{2.08d-03}	&	\num{1.30d-05}	\\
+		%			16	&	\num{1.19d-03}	&	\num{6.93d-06}	\\
+		%			17	&	\num{5.98d-04}	&	\num{3.05d-06}	\\
+		%			18	&	\num{4.30d-04}	&	\num{1.55d-06}	\\
+		%			19	&	\num{2.70d-04}	&	\num{9.81d-07}	\\
+		%			20	&	\num{1.27d-04}	&	\num{3.01d-07}	\\
+		%			21	&	\num{1.15d-04}	&	\num{3.52d-07}	\\
+		%			22	&	\num{5.50d-05}	&	\num{1.14d-07}	\\
+		%			23	&	\num{4.20d-05}	&	\num{1.50d-07}	\\
+		%			24	&	\num{2.30d-05}	&	\num{5.65d-08}	\\
+		%			25	&	\num{1.20d-05}	&	\num{1.39d-08}	\\
 		\bottomrule
 	\end{tabular}
-	\caption{Detailed numbers of \Cref{fig:differentX51-49}.}
-	\label{tab:differentX51-49}
 \end{table}
+
 
 \begin{figure}
 	\centering
+	\caption{Average probability of missing the winner under uniform distribution of preferences, given $n=100, m=50$ for $1000$ batches of $1000$ runs for $n=100,m=50$ and $k\in \intvl{1,25}$.}
+	\label{fig:MJelicitationIC}
 	\begin{tikzpicture}
 		\begin{axis}[
-			ylabel=Prob. \%,
-			xlabel= x,
+			%	y=8,
+			xlabel=$k/m$,
+			ylabel=Avg. Prob. of Miss.,
+			table/col sep=comma,
+			%	ytick={0,2,4,6,8,10},
+			%	xtick distance=10,
+			%	ytick distance=2,
+			%	xtick pos=left,
+			ymajorgrids=true,
+			ytick style={draw=none},
 			ymin=0,
-			ymax=50,
+			ymax=0.64,
+			xmin=0.02,
+			xmax=0.5,
+			%	yticklabels={0,2,4,6,8,10},
+			%	legend style={font=\scriptsize}
+			]
+			
+			\addplot[thick, red] table [x=kom, y=ProbOfMiss]{data/table.dat};
+			
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+\subsection{Profile real scenario}
+In the next experiment we want to investigate a different problem. Given a number of alternatives $m$, we assume that we want to ask a limited number of questions $k$ because asking questions is costly. How large the electorate $n$ must be for an incomplete grade vector of $n\cdot k/m$ elements to be sufficiently representative of a complete vector?
+Because randomly constructed profiles are often seen as unrepresentative of reality we decided to construct the grade vectors for each alternative following the grade distribution obtained in a real experiment conducted during the 2022 French presidential election.
+Given $12$ political candidates, voters were asked to give a grade from \textit{To be rejected}, corresponding to our $\delta_1$, to \textit{Excellent}, corresponding to $\delta_7$, to each of the alternatives. The winner is determined using \ac{MJ}.
+
+The same experiment was carried out independently by the association \textit{Mieux Voter} and the experimental study \textit{Un Autre Vote} (UAV). The results, that can be found respectively at \citet{MieuxVoterElection2022} and \citet{UAVElection2022}, are extremely similar. \commentOC{You should say something about why the results seem extremely left-wing favorable. It’s not representative at all of the general population, is it? Why not?}\commentBN{I don't think it's my place to do so. I don't care about the vote itself but only about a realistic distribution of preferences. But I see how this comment will probably be brought up again so I will.} We chose to use the distribution obtained from the candidates in the UAV experiment, see \Cref{fig:distributionUAV}, for no particular reason. The code can be easily adapted to the results obtained from MieuxVoter.
+Note that in the UAV study, some voters were asked to judge the alternatives on a $5-$grade scale and others to provide judgments on a $7-$grade scale. We consider the profile obtained in the second case.
+Also, if you have followed the French presidential election you may notice that the distribution shown in \Cref{fig:distributionUAV} is not an accurate portrait of the country's political situation. This is because the study did not capture a representative sample of the population. In their analysis of the results, \citet{UAVElection2022} try to correct this bias while acknowledging, nonetheless, that a discrepancy may still remain.
+However, this is not relevant to us for the purpose of our work. We take a voting profile and consider what happens when we do not know all the grades. We are not interested in the identity of the candidates nor in the purpose of the vote, taking the profile out of context it could represent voters opinions on a set of restaurants or movies. Our study focuses on considering a distribution of preferences in a realistic profile, a profile in which grades are not uniformly distributed but some alternatives are generally preferred over others.
+
+
+\begin{figure}
+	\caption{Result obtained from UAV experiment by asking $n=1147$ voters to judge $m=12$ alternatives.}
+	\includegraphics[scale=0.35]{data/profileUAV}
+	\label{fig:distributionUAV}
+\end{figure}
+
+The grade vector associated to the candidate Jean-Luc Mélenchon is composed for: $29\%$ of Excellent grades, $22\%$ of Very good, $16\%$ of Good, $11\%$ of Average, $7\%$ of Mediocre, $5\%$ of Inadequate and for $9\%$ of To be rejected.
+Because it is the winner of the complete profile this alternative will be our $j_0$ and its complete grade vector will be formed following the same proportions: $29\%$ of $\delta_7$, $22\%$ of $\delta_6$, $16\%$ of $\delta_5$, $11\%$ of $\delta_4$, $7\%$ of $\delta_3$, $5\%$ of $\delta_2$ and for $9\%$ of $\delta_1$.
+We follow the same reasoning for the other grade vectors in order to have the complete profile.
+
+Given $m=12$ alternatives we fix a value of $n$ and see what is the probability that $j_0$ is not in $K$ for $k$ from $1$ to $5$. Using the same reasoning as in the previous experiment we repeat this a total of $1,000,000$ times and we average over the probability. After that we increase $n$ and repeat the same experiment. We note that the probability decreases dramatically as $n$ increases so, although we varied $n$ from $10$ to $1500$, in \Cref{fig:MJelicitationUAV} we show the results only for a limited number of $n$ values.
+\Cref{tab:MJelicitationUAV} shows the data for the same values of $n$, the complete dataset can be found at \url{https://github.com/xoxor/elicitationMJ}. We see that when we have $n=50$ voters by asking $k=3$ questions per voter already we have an almost zero probability of not electing $j_0$. This result is obtained by asking $2$ questions per voter when $n=100$ and $1$ question when $n=500$.
+
+These results suggest that in small profiles with few voters this method can pose a serious risk of not electing the "correct" alternative unless many questions are asked. This risk, however, is almost absent for elections in which a large number of voters are involved. Although we cannot use these findings to reach a definite conclusion, working in this direction might help in the formulation of a more comprehensive result.
+
+\begin{figure}
+	\centering
+	\caption{Average probability of missing the winner using a real case distribution of preferences, given $m=12$ for $n\in \{10,25,50,100,250,500\}$ and $k\in \intvl{1,5}$.}
+	\label{fig:MJelicitationUAV}
+	\begin{tikzpicture}[scale=1.2]
+		\pgfplotsset{
+			every axis legend/.append style={
+				at={(0.5,1.1)},
+				anchor=south
+			},
+		}
+		\begin{axis}[
+			%	y=8,
+			xlabel=$k$,
+			ylabel=Avg. Prob. of Miss.,
+			table/col sep=comma,
+			legend columns=3,
+			%	ytick={0,2,4,6,8,10},
+			%	xtick distance=10,
+			%	ytick distance=2,
+			%	xtick pos=left,
+			ymajorgrids=true,
+			ytick style={draw=none},
+			ymin=0,
+			ymax=0.8,
 			xmin=1,
-			xmax=201,
-			enlarge x limits=-1, %hack to plot on the full x-axis scale
-			width=13cm, %set bigger width
-			height=6cm,
+			xmax=5,
+			yticklabels={0,2,4,6,8,10},
 			legend style={font=\scriptsize}
 			]
-			\addlegendimage{mark=*,teal,mark size=1.5}
-			\addlegendimage{mark=triangle*,orange,mark size=1.5}
-			\addlegendimage{mark=square*,blue,mark size=1.5}
-			\addlegendimage{mark=diamond*,red,mark size=1.5}
 			
-			\addplot[thick, mark=*, mark size = {2}, mark indices = {15}, teal] table [x=x, y=ProbOfMiss, col sep=comma]{data/60-40-2.csv};
-			\addlegendentry{$60\%-40\%$}
-			\addplot[thick, mark=triangle*, mark size = {2}, mark indices = {6}, orange] table [x=x, y=ProbOfMiss, col sep=comma]{data/70-30-2.csv};
-			\addlegendentry{$70\%-30\%$}	
-			\addplot[thick, mark=square*, mark size = {2}, mark indices = {4}, blue] table [x=x, y=ProbOfMiss, col sep=comma]{data/80-20-2.csv};	
-			\addlegendentry{$80\%-20\%$}
-			\addplot[thick, mark=diamond*, mark size = {2}, mark indices = {2}, red] table [x=x, y=ProbOfMiss, col sep=comma]{data/90-10-2.csv};			
-			\addlegendentry{$90\%-10\%$}
+			\addlegendimage{mark=halfsquare right*,brown,mark size=2}
+			\addlegendimage{mark=diamond*,red,mark size=2}
+			\addlegendimage{mark=pentagon*,cyan,mark size=2}
+			\addlegendimage{mark=halfcircle*,violet,mark size=2}
+			\addlegendimage{mark=*,pink,mark size=2}
+			\addlegendimage{mark=triangle*,green,mark size=2}
+			\addlegendimage{mark=halfsquare left*,blue,mark size=2}
+			\addlegendimage{mark=square*,teal,mark size=2}
+			\addlegendimage{mark=halfsquare*,magenta,mark size=2}
+			
+			
+			\addplot[thick, mark=halfsquare right*, mark size = {2}, mark indices = {3}, brown] table [x=k, y=p10]{data/electiontableFig.dat};
+			\addlegendentry{n=10}
+			\addplot[thick, mark=diamond*, mark size = {2}, mark indices = {3}, red] table [x=k, y=p25]{data/electiontableFig.dat};
+			\addlegendentry{n=25}
+			\addplot[thick, mark=pentagon*, mark size = {2}, mark indices = {2}, cyan] table [x=k, y=p50]{data/electiontableFig.dat};
+			\addlegendentry{n=50}
+			\addplot[thick, mark=halfcircle*, mark size = {2}, mark indices = {2}, violet] table [x=k, y=p100]{data/electiontableFig.dat};
+			\addlegendentry{n=100}
+			\addplot[thick, mark=*, mark size = {2}, mark indices = {1}, pink] table [x=k, y=p250]{data/electiontableFig.dat};
+			\addlegendentry{n=250}
+			\addplot[thick, mark=triangle*, mark size = {2}, mark indices = {1}, green] table [x=k, y=p500]{data/electiontableFig.dat};
+			\addlegendentry{n=500}
+			%				\addplot[thick, mark=halfsquare left*, mark size = {2}, mark indices = {1}, blue] table [x=k, y=p1000]{data/electiontableFig.dat};
+			%				\addlegendentry{n=1000}
+			%				\addplot[thick, mark=square*, mark size = {2}, mark indices = {1}, teal] table [x=k, y=p1500]{data/electiontableFig.dat};
+			%				\addlegendentry{n=1500}
+			
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Probability of electing a non-real winner, for different values of $x$ and different proportion of $\alpha - \beta$ grades, with $n=10000$.}
-	\label{fig:differentX}
 \end{figure}
 
-
-\begin{figure}
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-			ylabel=Prob. of Miss \%,
-			xlabel=Percentage of $\alpha$ Grades \%,
-			ymin=0,
-			ymax=5,
-			xmin=5445,
-			xmax=9608,
-			scaled ticks = false,
-			xtick={5445,6405,7473,8540,9608},
-			xticklabels={51,60,70,80,90}
-			]
-			\addplot[thick, red] table [x=BetterThanMed, y=ProbOfMiss, col sep=comma]{data/original.csv};			
-		\end{axis}
-	\end{tikzpicture}
-	\caption{Probability of electing a non-real winner, for $n=10675$, $x=4449$ and different proportion of $\alpha - \beta$ grades.}
-	\label{fig:original}
-\end{figure}
 
 \begin{table}
 	\centering
-	\begin{tabular}{cc}
+	\caption{Average probability of missing the winner using a real case distribution of preferences, given $m=12$ for different values of $k$ and $n$.}
+	\label{tab:MJelicitationUAV}
+	\begin{tabular}{S[table-figures-integer=1, table-figures-decimal=0]S[table-figures-decimal=2]S[table-figures-decimal=2]S[table-figures-decimal=2]S[table-figures-decimal=2]S[table-figures-decimal=2]S[table-figures-decimal=2]}
 		\toprule
-		{$\alpha-\beta$} & {Prob. of Miss} \\
-		\midrule
-		$51\%-49\%$	&	3.92	\\
-		$60\%-40\%$	&	2.79$10^{-69}$	\\
-		$70\%-30\%$	&	5.80$10^{-318}$	\\
-		$80\%-20\%$	&	0.00	\\
-		$90\%-10\%$	&	0.00	\\
+		{$k$} & {avg $\mathcal{P}_{n=10}$} & {avg $\mathcal{P}_{n=25}$}& {avg $\mathcal{P}_{n=50}$}& {avg $\mathcal{P}_{n=100}$}& {avg $\mathcal{P}_{n=250}$} & {avg $\mathcal{P}_{n=500}$} \\
+		\midrule		
+		1	&	0.705851	&	0.495156	&	0.336408	&	0.167265	&	0.033418	&	0.004053	\\
+		2	&	0.503269	&	0.218081	&	0.066655	&	0.008869	&	0.000117	&	0.00	\\
+		3	&	0.339681	&	0.095145	&	0.008971	&	0.000149	&	0.00	&	0.00	\\
+		4	&	0.184584	&	0.035866	&	0.000723	&	0.000001	&	0.00	&	0.00	\\
+		5	&	0.069446	&	0.0099	&	0.000025	&	0.00	&	0.00	&	0.00	\\				
 		\bottomrule
 	\end{tabular}
-	\caption{Detailed numbers of \Cref{fig:original}.}
-	\label{tab:original}
 \end{table}
 
+\section{Conclusions}
+In this paper we analyzed a procedure proposed by the association \textit{Mieux Voter} and used in a real life application by \textit{LaPrimaire.org} for eliciting judgments of a set of voters over a set of alternatives.
+The procedure consists of randomly asking each voter to judge $k$ candidates on the $m$ available. The $k$ alternatives with the best medians are then presented to all voters in a second round of voting, and the best alternative is selected by \ac{MJ} as the winner.
+We have proven that given a complete profile it is possible to find an incomplete profile (such that a possible completion is equal to the considered profile) with a different winner from the complete profile.
+We also showed that the probability of this happening depends on the profile considered. 
 
+Moreover, we have performed experiments on profiles in which each grade vector has a randomly generated distribution of grade. Fixing the number of voters, we analyzed how much of the grade vector we must know in order for the probability missing the winner to be low.
+We have also considered a profile created from the grade distribution of a real voting scenario. We have found that the probability of not selecting the winner of the complete profile greatly decreases as the number of voters increases, making this method suitable for elections with large numbers of voters but less appropriate for small profiles.
 
+Future work on this topic could investigate the manipulability of this elicitation process. Especially on the side of the "analyst" who is in charge of questioning voters and how she can potentially manipulate the outcome by asking particular questions to specific groups of voters. For example, if she knows that voters in a given electoral district tend to vote predominantly for a given party she may decide never to ask those voters about that party's candidate (or vice-versa depending on the party she favors). 
 
+Another step might involve the explainability of this process to voters. In fact, voters may not understand how judging only one person gives a good approximation of the result that would be obtained by asking for the full profile. Also, they may not appreciate judging a random candidate and not their favorite.
+
+The code to reproduce the experiments in this article and the files with the reported data are available at \url{https://github.com/xoxor/elicitationMJ}.
+
+\bibliography{biblio}
 
 \end{document}

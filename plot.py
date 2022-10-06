@@ -1,21 +1,63 @@
-import sys, os, statistics, math, csv
+import sys, os, statistics, math, csv, random
 
 
-def main():
+#def main():
     #Figure1: 
     # worst case scenario: 51%-49% alpha beta, plot in function of size of x, n= 10.003 
-    plotByX(5103,4900,100, 10001,"51-49")
+#    plotByX(5103,4900,100, 10001,"51-49")
 
     #Figure2: 
     # 60%-40% alpha beta, plot in function of size of x, n= 10.003 
-    plotByX(6003,4000,2, 1001,"60-40")
-    plotByX(7003,3000,2, 1001,"70-30")
-    plotByX(8003,2000,2, 1001,"80-20")
-    plotByX(9003,1000,2, 1001,"90-10")
+#    plotByX(6003,4000,2, 1001,"60-40")
+#    plotByX(7003,3000,2, 1001,"70-30")
+#    plotByX(8003,2000,2, 1001,"80-20")
+#    plotByX(9003,1000,2, 1001,"90-10")
 
     #Figure3: 
     # original scenario in the worst case 51%-49% alpha beta, x= 4449 , n= 10675 
-    plotDistributionOriginalVector(10675,4449)     #data of the primaire 2017
+#    plotDistributionOriginalVector(10675,4449)     #data of the primaire 2017
+
+def main():
+    condition(permutation(["a1","a2","b1","b2","c1","c2"]))
+    
+
+def permutation(lst):
+    if len(lst) == 0:
+        return []
+    if len(lst) == 1:
+        return [lst]
+    l = [] # empty list that will store current permutation
+    for i in range(len(lst)):
+       m = lst[i]
+       remLst = lst[:i] + lst[i+1:]
+       for p in permutation(remLst):
+           l.append([m] + p)
+    return l
+
+def condition(perm):
+    l = perm
+    for i in perm:
+        if not (index(""))
+        if(index("a1")>index("a2") and index("a2")==len(i)-1):
+            if(index("a1"))
+
+    
+
+def generate():
+    a = ["a1","a2"]
+    b = ["b1","b2"]
+    c = ["c1","c2"]
+    l=[0]*6
+    s=[]
+    for i in range(6):
+        takeonelement(a,b,c)
+        j = random.randint(0,1)
+        
+        while j in s:
+            j = random.randint(0,5)
+        s = s+[j]
+        l[i]=a[j]
+    print(l)
 
 def plotByX (alpha,beta,step,stop,name):
     path = "./data/"+ name + "-"+ str(step)+ ".csv"
